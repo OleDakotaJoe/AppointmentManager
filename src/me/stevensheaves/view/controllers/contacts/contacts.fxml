@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="me.stevensheaves.view.controllers.contacts.ContactsController"
+            prefHeight="850.0" prefWidth="1100">
+    <top>
+        <HBox spacing="100" alignment="CENTER">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="10" bottom="10"/>
+                </padding>
+                <Button text="Dashboard" fx:id="dashboardButton" onAction="#changeScene" />
+                <Button text="Appointments" fx:id="appointmentsButton" onAction="#changeScene"/>
+                <Button text="Customers" fx:id="customersButton" onAction="#changeScene"/>
+                <Button text="Contacts" fx:id="contactsButton" onAction="#changeScene" disable="true"/>
+                <Button text="Reports" fx:id="reportsButton" onAction="#changeScene"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+            </HBox>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox spacing="30" alignment="CENTER_LEFT">
+            <padding>
+                <Insets left="20" top="10" bottom="10"/>
+            </padding>
+            <Button text="Add" />
+            <Button text="Update" />
+            <Button text="View" />
+        </HBox>
+    </bottom>
+    <center>
+    </center>
+    <left>
+        <TableView prefHeight="Infinity">
+        </TableView>
+    </left>
+
+</BorderPane>

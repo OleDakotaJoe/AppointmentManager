@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import me.stevensheaves.custom.controls.TextFieldLimited?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.layout.*?>
+
+        <?import javafx.geometry.Insets?>
+        <?import me.stevensheaves.custom.controls.TextFieldLimited?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="me.stevensheaves.view.controllers.appointment.AppointmentController"
+          prefHeight="400.0" prefWidth="600.0"
+          alignment="BASELINE_LEFT"
+          hgap="10" vgap="10">
+    <padding>
+        <Insets top="100" />
+    </padding>
+    <Label text="Appointment ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="appointmentId" text="Auto-generated"
+               GridPane.rowIndex="0" GridPane.columnIndex="1"
+               disable="true"/>
+    <Label text="Appointment Title:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextFieldLimited fx:id="title" promptText="Appointment Title..."
+                      GridPane.rowIndex="1" GridPane.columnIndex="1"
+                      maxLength="60"/>
+    <Label text="Contact Name:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="contactName" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="2">
+        <Label text="Created by User:" />
+        <ComboBox fx:id="createdByUserId" />
+    </HBox>
+    <VBox alignment="BASELINE_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="0" >
+        <Label text="Description:"/>
+    </VBox>
+    <TextArea fx:id="description"
+              promptText="Enter appointment details here..."
+              GridPane.rowIndex="3" GridPane.columnIndex="1"
+              GridPane.columnSpan="2"  prefWidth="350"
+    />
+    <Label text="Location" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="location" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="2">
+        <Label text="Appointment Type:" />
+        <ComboBox fx:id="appointmentType"/>
+    </HBox>
+    <Label text="Appointment Date:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <DatePicker fx:id="appointmentDate" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+    <Label text="Start Time:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+    <HBox spacing="10" GridPane.rowIndex="7" GridPane.columnIndex="1">
+        <Label text="Hr" />
+        <ComboBox fx:id="startHour" />
+        <Label text="Min" />
+        <ComboBox fx:id="startMinute" />
+    </HBox >
+    <Label text="End Time:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+    <HBox spacing="10" GridPane.rowIndex="8" GridPane.columnIndex="1">
+        <Label text="Hr" />
+        <ComboBox fx:id="endHour" />
+        <Label text="Min" />
+        <ComboBox fx:id="endMinute" />
+    </HBox>
+    <HBox spacing="20" GridPane.rowIndex="12" GridPane.columnIndex="2">
+        <Button fx:id="saveButton" text="Save"/>
+        <Button fx:id="cancelButton" text="Cancel" />
+    </HBox>
+
+</GridPane>

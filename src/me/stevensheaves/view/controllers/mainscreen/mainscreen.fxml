@@ -1,0 +1,32 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<GridPane fx:controller="me.stevensheaves.view.controllers.mainscreen.Controller"
+          xmlns:fx="http://javafx.com/fxml"
+          alignment="center" hgap="10" vgap="10"
+          prefWidth="800" prefHeight="600"
+>
+    <Button fx:id="loginButton"
+            onAction="#changeScene"
+            GridPane.columnIndex="0"
+            GridPane.rowIndex="0"
+            GridPane.halignment="CENTER"
+    >
+        <text>
+            Login
+        </text>
+    </Button>
+    <Button fx:id="createAccount"
+            onAction="#changeScene"
+            disable="true"
+            GridPane.columnIndex="0"
+            GridPane.rowIndex="1"
+            GridPane.halignment="CENTER"
+    >
+        <text>
+            Create Account
+        </text>
+    </Button>
+</GridPane>

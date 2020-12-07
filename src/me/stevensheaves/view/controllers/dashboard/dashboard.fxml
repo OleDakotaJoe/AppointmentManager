@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Box?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="me.stevensheaves.view.controllers.dashboard.DashboardController"
+            prefHeight="850.0" prefWidth="1100">
+    <top>
+        <HBox spacing="100" alignment="CENTER">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="10" bottom="10"/>
+                </padding>
+                <Button text="Dashboard" fx:id="dashboardButton" onAction="#changeScene" disable="true"/>
+                <Button text="Appointments" fx:id="appointmentsButton" onAction="#changeScene"/>
+                <Button text="Customers" fx:id="customersButton" onAction="#changeScene"/>
+                <Button text="Contacts" fx:id="contactsButton" onAction="#changeScene"/>
+                <Button text="Reports" fx:id="reportsButton" onAction="#changeScene"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+            </HBox>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10" />
+                </padding>
+                <Label text="All Customers" />
+                <TableView fx:id="customers">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10"/>
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10" />
+                </padding>
+                <Label text="All Contacts" />
+                <TableView fx:id="contacts">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10"/>
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+    <left>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets topRightBottomLeft="10" />
+            </padding>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10" />
+                </padding>
+                <Label text="All Appointments" />
+                <TableView fx:id="appointmentsAll">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10" />
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10" />
+                </padding>
+                <Label text="Today's Appointments" />
+                <TableView fx:id="appointmentsToday">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10" />
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+    <right>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10"/>
+                </padding>
+                <Label text="Appointments This Week" />
+                <TableView fx:id="appointmentsWeek">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10"/>
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+            <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
+                <padding>
+                    <Insets topRightBottomLeft="10"/>
+                </padding>
+                <Label text="Appointments This Month" />
+                <TableView fx:id="appointmentsMonth">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets topRightBottomLeft="10"/>
+                    </padding>
+                    <Button text="Add" />
+                    <Button text="Update" />
+                    <Button text="View" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </right>
+
+</BorderPane>

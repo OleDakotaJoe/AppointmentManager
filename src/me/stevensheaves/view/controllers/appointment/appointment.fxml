@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import me.stevensheaves.custom.controls.TextFieldLimited?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="me.stevensheaves.view.controllers.appointment.AppointmentController"
+            fx:id="appointmentPane"
+            prefHeight="850.0" prefWidth="1100">
+    <top>
+        <HBox spacing="100" alignment="CENTER">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="10" bottom="10"/>
+                </padding>
+                <Button text="Dashboard" fx:id="dashboardButton" onAction="#changeScene"/>
+                <Button text="Appointments" fx:id="appointmentsButton" onAction="#changeScene" disable="true"/>
+                <Button text="Customers" fx:id="customersButton" onAction="#changeScene"/>
+                <Button text="Contacts" fx:id="contactsButton" onAction="#changeScene"/>
+                <Button text="Reports" fx:id="reportsButton" onAction="#changeScene"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+            </HBox>
+        </HBox>
+    </top>
+    <center>
+    </center>
+    <left>
+        <VBox alignment="CENTER">
+            <padding>
+                <Insets topRightBottomLeft="30"/>
+            </padding>
+            <VBox spacing="20" alignment="CENTER" style="-fx-border-style: solid; -fx-border-color: grey; -fx-border-radius:10;">
+                <padding>
+                    <Insets topRightBottomLeft="20" />
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <TextFieldLimited promptText="Search appointments..."/>
+                    <Button text="Search" fx:id="searchButton" />
+                </HBox>
+                <TableView prefHeight="500" prefWidth="350">
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets top="10" bottom="10"/>
+                    </padding>
+                    <Button text="Add" fx:id="addAppointmentButton" onAction="#changeScene"/>
+                    <Button text="Edit" fx:id="editAppointmentButton" onAction="#changeScene"/>
+                    <Button text="View"  fx:id="viewAppointmentButton" onAction="#changeScene"/>
+                    <Button text="Delete"  fx:id="deleteAppointmentButton" onAction="#changeScene"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+</BorderPane>
