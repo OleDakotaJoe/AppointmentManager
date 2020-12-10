@@ -12,6 +12,8 @@ import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
 
+// TODO: 12/10/2020 Implement search functionality for contacts list.
+
 /**
  * Controller for the <code>contacts.fxml</code> view.
  * Data that needs to be passed between this class and the <code>ContactsFormController</code> class

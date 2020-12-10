@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import me.stevensheaves.custom.controls.TextFieldLimited?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="me.stevensheaves.view.controllers.customers.CustomersController"
@@ -31,8 +32,36 @@
     <center>
     </center>
     <left>
-        <TableView prefHeight="Infinity">
-        </TableView>
+        <VBox alignment="CENTER">
+            <padding>
+                <Insets topRightBottomLeft="30"/>
+            </padding>
+            <VBox spacing="20" alignment="CENTER" style="-fx-border-style: solid; -fx-border-color: grey; -fx-border-radius:10;">
+                <padding>
+                    <Insets topRightBottomLeft="20" />
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <TextFieldLimited promptText="Search customers..."/>
+                    <Button text="Search" fx:id="searchButton" />
+                </HBox>
+                <TableView fx:id="customersTable" prefHeight="500" prefWidth="350">
+                    <columns>
+                        <TableColumn text="Contact ID" fx:id="customerId" prefWidth="75"/>
+                        <TableColumn text="Contact Name" fx:id="customerName" prefWidth="100" />
+                        <TableColumn text="Email Address" fx:id="email" prefWidth="175"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="30" alignment="CENTER">
+                    <padding>
+                        <Insets top="10" bottom="10"/>
+                    </padding>
+                    <Button text="Add" fx:id="addContactsButton" onAction="#changeScene"/>
+                    <Button text="Edit" fx:id="editContactsButton" onAction="#changeScene"/>
+                    <Button text="View"  fx:id="viewContactsButton" onAction="#changeScene"/>
+                    <Button text="Delete"  fx:id="deleteContactsButton" onAction="#deleteCustomer"/>
+                </HBox>
+            </VBox>
+        </VBox>
     </left>
 
 </BorderPane>
