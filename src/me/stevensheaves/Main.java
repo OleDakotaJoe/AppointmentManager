@@ -12,10 +12,6 @@ public class Main extends Application {
         // TODO: 12/4/2020 remove the below comment 
         //Locale.setDefault(new Locale("fr"));
         SceneChanger.showPrimary(primaryStage);
-        System.out.println(LocationData.getSystemCountry());
-        System.out.println(LocationData.getSystemLanguage());
-        System.out.println(LocationData.getDisplayCountry());
-        System.out.println(LocationData.getDisplayLanguage());
     }
 
 

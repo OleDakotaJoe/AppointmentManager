@@ -1,9 +1,9 @@
 package me.stevensheaves.view.controllers.utils;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -72,8 +72,11 @@ public class SceneChanger {
 
     public static void addChildScene(SceneNames sceneName, Pane currentPane) throws IOException {
         switch(sceneName) {
-            case ADD_APPOINTMENT:
-                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "appointment/addappointment.fxml")));
+            case APPOINTMENT_FORM:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "appointment/appointmentform.fxml")));
+                break;
+            case CONTACTS_FORM:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "contacts/contactsform.fxml")));
                 break;
             default:
                 break;

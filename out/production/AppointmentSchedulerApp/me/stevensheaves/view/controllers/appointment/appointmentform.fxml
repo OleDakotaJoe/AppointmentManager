@@ -13,10 +13,10 @@
         <?import me.stevensheaves.custom.controls.TextFieldLimited?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="me.stevensheaves.view.controllers.appointment.AppointmentController"
+          fx:controller="me.stevensheaves.view.controllers.appointment.AppointmentFormController"
           prefHeight="400.0" prefWidth="600.0"
           alignment="BASELINE_LEFT"
-          hgap="10" vgap="10">
+          hgap="10" vgap="20">
     <padding>
         <Insets top="100" />
     </padding>
@@ -27,24 +27,27 @@
     <Label text="Appointment Title:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
     <TextFieldLimited fx:id="title" promptText="Appointment Title..."
                       GridPane.rowIndex="1" GridPane.columnIndex="1"
-                      maxLength="60"/>
-    <Label text="Contact Name:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="contactName" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="2">
+                      maxLength="50"/>
+    <Label text="Customer Name:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+    <ComboBox fx:id="customerName" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+    <Label text="Contact Name:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="contactName" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="2">
         <Label text="Created by User:" />
         <ComboBox fx:id="createdByUserId" />
     </HBox>
-    <VBox alignment="BASELINE_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="0" >
+    <VBox alignment="BASELINE_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0" >
         <Label text="Description:"/>
     </VBox>
-    <TextArea fx:id="description"
-              promptText="Enter appointment details here..."
-              GridPane.rowIndex="3" GridPane.columnIndex="1"
-              GridPane.columnSpan="2"  prefWidth="350"
+    <TextFieldLimited fx:id="description"
+                      maxLength="50"
+                      promptText="Enter appointment details here..."
+                      GridPane.rowIndex="4" GridPane.columnIndex="1"
+                      GridPane.columnSpan="2"  prefWidth="350"
     />
-    <Label text="Location" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="location" GridPane.rowIndex="4" GridPane.columnIndex="1" />
-    <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="2">
+    <Label text="Location" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <TextFieldLimited fx:id="location" promptText="Enter Location..."  maxLength="50" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="2">
         <Label text="Appointment Type:" />
         <ComboBox fx:id="appointmentType"/>
     </HBox>

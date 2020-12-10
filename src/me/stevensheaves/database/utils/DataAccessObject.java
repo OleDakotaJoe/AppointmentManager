@@ -13,7 +13,7 @@ public abstract class DataAccessObject<T> {
     }
 
     public abstract T find(int id);
-    public abstract T update(T dto);
-    public abstract T create(T dto);
-    public abstract void delete(long id);
+    public abstract boolean update(T dto);
+    public abstract boolean create(T dto);
+    public abstract void delete(int id);
 }

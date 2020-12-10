@@ -28,16 +28,6 @@
             </HBox>
         </HBox>
     </top>
-    <bottom>
-        <HBox spacing="30" alignment="CENTER_LEFT">
-            <padding>
-                <Insets left="20" top="10" bottom="10"/>
-            </padding>
-            <Button text="Add" />
-            <Button text="Update" />
-            <Button text="View" />
-        </HBox>
-    </bottom>
     <center>
     </center>
     <left>

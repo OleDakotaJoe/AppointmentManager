@@ -17,17 +17,17 @@ public class CustomerDAO extends DataAccessObject<Customer>{
     }
 
     @Override
-    public Customer update(Customer dto) {
-        return null;
+    public boolean update(Customer dto) {
+        return false;
     }
 
     @Override
-    public Customer create(Customer dto) {
-        return null;
+    public boolean create(Customer dto) {
+        return false;
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(int id) {
 
     }
 }

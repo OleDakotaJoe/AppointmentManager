@@ -9,5 +9,6 @@ public enum SceneNames {
     CUSTOMERS,
     CONTACTS,
     ADD_USER,
-    ADD_APPOINTMENT
+    APPOINTMENT_FORM,
+    CONTACTS_FORM
 }

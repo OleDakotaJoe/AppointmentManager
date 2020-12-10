@@ -2,12 +2,8 @@ package me.stevensheaves.view.controllers.appointment;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
@@ -35,7 +31,7 @@ public class AppointmentController {
             SceneChanger.changeScene(SceneNames.DASHBOARD);
         }
         if(event.getSource().equals(addAppointmentButton)) {
-            SceneChanger.addChildScene(SceneNames.ADD_APPOINTMENT, appointmentPane);
+            SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM, appointmentPane);
         }
     }
 

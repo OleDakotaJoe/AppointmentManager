@@ -2,23 +2,78 @@ package me.stevensheaves.view.controllers.contacts;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import me.stevensheaves.data.model.Contact;
+import me.stevensheaves.database.utils.ContactDAO;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
 
+/**
+ * Controller for the <code>contacts.fxml</code> view.
+ * Data that needs to be passed between this class and the <code>ContactsFormController</code> class
+ * is passed using the <code>ContactDataState</code> controller.
+ */
 public class ContactsController {
     @FXML private Button appointmentsButton;
     @FXML private Button contactsButton;
     @FXML private Button reportsButton;
     @FXML private Button customersButton;
     @FXML private Button dashboardButton;
+    @FXML private Button addContactsButton, editContactsButton,viewContactsButton,deleteContactsButton;
+    @FXML private BorderPane parentPane;
+    @FXML private TableView contactsTable;
+    @FXML private TableColumn<Contact,Integer> contactId;
+    @FXML private TableColumn<Contact,String> contactName;
+    @FXML private TableColumn<Contact,String> email;
 
-
-
+    /**
+     * Called when the class is instantiated.
+     */
     @FXML
-    private void changeScene(ActionEvent event) throws IOException {
+    private void initialize() {
+        setTableData();
+
+    }
+
+    /**
+     * Utility function for making a call to the database, and setting the <code>allContacts</code> <code>ObservableList</code>'s data.
+     * This method is used anytime a change is made to the database, which needs to be updated in the <code>contactsTable</code> element in the
+     * <code>contacts.fxml</code> view.
+     */
+    private void fetchTableData() {
+        ContactDAO dao = new ContactDAO();
+        ContactDataState.setAllContacts(dao.findAll());
+    }
+
+    /**
+     * Sets the values for each column in the <code>contactsTable</code>.
+     */
+    @FXML
+    private void setTableData() {
+        fetchTableData();
+        contactId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        contactName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        contactsTable.setItems(ContactDataState.getAllContacts());
+    }
+
+
+    /**
+     * Utility function for handling the changing of the scene.
+     * This function works in tandem with the SceneChanger class to organize the navigation of the application.
+     * it checks to see which button was clicked using the <code>ActionEvent</code>'s source, and changes the appropriate scene.
+     * The purpose of this is to abstract the responsibility of scene changes away from this class, and handle it in one class, with static methods.
+     * @param event
+     * Passed by the button which calls the method.
+     * @throws IOException
+     * Throws and exception if there is an issue in the <code>SceneChanger.changeScene()</code> method call.
+     */
+    @FXML
+    private void changeScene(ActionEvent event)  throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
             SceneChanger.changeScene(SceneNames.APPOINTMENT);
         }
@@ -34,6 +89,108 @@ public class ContactsController {
         if(event.getSource().equals(dashboardButton)) {
             SceneChanger.changeScene(SceneNames.DASHBOARD);
         }
+        if(event.getSource().equals(addContactsButton)) {
+            ContactDataState.setCurrentFormType(ContactDataState.FormType.ADD);
+            SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
+        }
+        if(event.getSource().equals(editContactsButton)) {
+            if(ContactDataState.getAllContacts().isEmpty()) {
+                showEmptyListAlert();
+                return;
+            }
+            int index = contactsTable.getSelectionModel().getSelectedIndex();
+            if(index < 0) {
+                showNoContactSelectedAlert();
+                return;
+            }
+
+            ContactDataState.setCurrentFormType(ContactDataState.FormType.EDIT);
+            ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
+            SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
+        }
+        if(event.getSource().equals(viewContactsButton)) {
+            if(ContactDataState.getAllContacts().isEmpty()) {
+                showEmptyListAlert();
+                return;
+            }
+
+            int index = contactsTable.getSelectionModel().getSelectedIndex();
+            if(index < 0) {
+                showNoContactSelectedAlert();
+                return;
+            }
+
+            ContactDataState.setCurrentFormType(ContactDataState.FormType.VIEW);
+            ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
+            SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
+        }
+
+    }
+
+    /**
+     * Deletes the selected Contact after displaying a confirmation dialog.
+     */
+    @FXML
+    private void deleteContact() {
+        if(ContactDataState.getAllContacts().isEmpty()) {
+            showEmptyListAlert();
+            return;
+        }
+        int index = contactsTable.getSelectionModel().getSelectedIndex();
+        if(index < 0) {
+            showNoContactSelectedAlert();
+            return;
+        }
+
+        Contact selectedItem = (Contact) contactsTable.getSelectionModel().getSelectedItem();
+        ButtonType result = showDeleteConfirmation(selectedItem.getName());
+        if (result.equals(ButtonType.CANCEL)) return;
+        ContactDAO dao = new ContactDAO();
+        int selectedId = selectedItem.getId();
+        dao.delete(selectedId);
+        fetchTableData();
+    }
+
+    /**
+     * Shows an Alert dialog that informs the user that the list of contacts is empty.
+     */
+    @FXML
+    private void showEmptyListAlert(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("No contacts");
+        alert.setHeaderText("You haven't added any contacts yet.");
+        alert.setContentText("Before you can complete this action, you must first add a contact to the database. Try adding " +
+                "a contact before proceeding.");
+        alert.show();
+    }
+
+    /**
+     * Shows an Alert dialog that confirms that the user wants to delete the selected contact.
+     * @param contactName
+     * When calling this function, the String value of the contact to be deleted is passed in, to inform the user which contact is being deleted.
+     * @return
+     * Returns the button type that the user clicks, so that the method which calls it may determine whether or not to proceed.
+     */
+    @FXML
+    private ButtonType showDeleteConfirmation(String contactName) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Contact");
+        alert.setHeaderText("Are you sure you want to delete " + contactName + "?");
+        alert.setContentText("This action cannot be reversed. Only proceed if you are absolutely sure you want to delete this contact.");
+        alert.showAndWait();
+        return alert.getResult();
+    }
+    /**
+     * Shows an Alert dialog that informs the user that no contact is selected.
+     */
+    @FXML
+    private void showNoContactSelectedAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("No contact selected");
+        alert.setHeaderText("You didn't select a contact");
+        alert.setContentText("Before you can complete this action, you must first select a contact. to the database. Try clicking on " +
+                "a contact before proceeding.");
+        alert.show();
     }
 
 }

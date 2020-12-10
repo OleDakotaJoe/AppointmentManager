@@ -18,4 +18,5 @@ module AppointmentSchedulerApp {
     exports me.stevensheaves.data.utils;
     exports me.stevensheaves.data.security;
     exports me.stevensheaves.custom.controls;
+    exports me.stevensheaves.data.model;
 }
