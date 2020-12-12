@@ -1,5 +1,7 @@
 package me.stevensheaves.database.utils;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import me.stevensheaves.data.model.User;
 import me.stevensheaves.data.security.VerifyProvidedPassword;
 
@@ -10,13 +12,27 @@ import java.sql.SQLException;
 public class UserDAO extends DataAccessObject<User> {
     private final String FIND_BY_ID = "SELECT * FROM users WHERE  User_ID = ?";
     private final String FIND_BY_USER_NAME = "SELECT * FROM users WHERE  User_Name = ?";
+    private final String FIND_ALL_USER_NAMES = "SELECT users.User_Name FROM users";
+
+
+    public ObservableList<String> findAllUserNames() {
+        ObservableList<String> userList = FXCollections.observableArrayList();
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_USER_NAMES)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                userList.add(rs.getString("User_Name"));
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userList;
+    }
 
     public User find(String userName){
         try(PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_NAME)){
             statement.setString(1, userName);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                System.out.println(rs.getString("User_Name"));
                 return new User(rs.getInt("User_ID"), rs.getString("User_Name"));
             }
         } catch (SQLException throwables) {

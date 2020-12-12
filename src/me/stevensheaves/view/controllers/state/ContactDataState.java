@@ -1,4 +1,4 @@
-package me.stevensheaves.view.controllers.contacts;
+package me.stevensheaves.view.controllers.state;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

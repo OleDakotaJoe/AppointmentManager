@@ -6,9 +6,62 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="me.stevensheaves.view.controllers.customers.Customersform"
-            prefHeight="400.0" prefWidth="600.0">
+<?import me.stevensheaves.custom.controls.TextFieldLimited?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.collections.FXCollections?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="me.stevensheaves.view.controllers.customers.CustomersFormController"
+          fx:id="mainPane"
+          prefHeight="400.0" prefWidth="600.0"
+          alignment="BASELINE_LEFT"
+          hgap="10" vgap="20">
+    <padding>
+        <Insets top="100" />
+    </padding>
+    <Label text="Customer ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="customerId" text="Auto-generated"
+               GridPane.rowIndex="0" GridPane.columnIndex="1"
+               disable="true"/>
 
-</AnchorPane>
+
+    <Label text="Customer Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextFieldLimited fx:id="name" promptText="Customer Name..."
+                      GridPane.rowIndex="1" GridPane.columnIndex="1"
+                      maxLength="50"/>
+
+
+    <Label text="Phone Number:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+    <TextFieldLimited fx:id="phoneNumber" GridPane.rowIndex="2" GridPane.columnIndex="1" maxLength="50"/>
+
+    <Label text="Address:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <TextFieldLimited fx:id="address"
+                      maxLength="100"
+                      promptText="Enter customer details here..."
+                      GridPane.rowIndex="3" GridPane.columnIndex="1"
+                      GridPane.columnSpan="2" prefWidth="350"
+    />
+
+
+    <Label text="Postal Code:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <TextFieldLimited fx:id="postalCode" GridPane.rowIndex="4" GridPane.columnIndex="1" maxLength="50"/>
+
+
+    <Label text="Created by User:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+    <ComboBox fx:id="createdByUserName" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+    <Label text="Country:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="country" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="2">
+        <Label text="Division:" />
+        <ComboBox fx:id="division" />
+    </HBox >
+
+    <HBox spacing="20" GridPane.rowIndex="12" GridPane.columnIndex="2">
+        <Button fx:id="saveButton" text="Save" onAction="#handleSaveCustomer"/>
+        <Button fx:id="cancelButton" text="Cancel" />
+    </HBox>
+
+
+</GridPane>

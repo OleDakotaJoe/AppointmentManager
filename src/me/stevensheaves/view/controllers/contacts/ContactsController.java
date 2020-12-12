@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import me.stevensheaves.data.model.Contact;
+import me.stevensheaves.view.controllers.state.ContactDataState;
 import me.stevensheaves.database.utils.ContactDAO;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
@@ -25,8 +26,9 @@ public class ContactsController {
     @FXML private Button reportsButton;
     @FXML private Button customersButton;
     @FXML private Button dashboardButton;
-    @FXML private Button addContactsButton, editContactsButton,viewContactsButton,deleteContactsButton;
+    @FXML private Button addContactButton, editContactButton, viewContactButton, deleteContactButton;
     @FXML private BorderPane parentPane;
+    // TODO: 12/11/2020 test if i can specify type in the below table and remove casting in appropriate table data sections
     @FXML private TableView contactsTable;
     @FXML private TableColumn<Contact,Integer> contactId;
     @FXML private TableColumn<Contact,String> contactName;
@@ -91,11 +93,11 @@ public class ContactsController {
         if(event.getSource().equals(dashboardButton)) {
             SceneChanger.changeScene(SceneNames.DASHBOARD);
         }
-        if(event.getSource().equals(addContactsButton)) {
+        if(event.getSource().equals(addContactButton)) {
             ContactDataState.setCurrentFormType(ContactDataState.FormType.ADD);
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
-        if(event.getSource().equals(editContactsButton)) {
+        if(event.getSource().equals(editContactButton)) {
             if(ContactDataState.getAllContacts().isEmpty()) {
                 showEmptyListAlert();
                 return;
@@ -110,7 +112,7 @@ public class ContactsController {
             ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
-        if(event.getSource().equals(viewContactsButton)) {
+        if(event.getSource().equals(viewContactButton)) {
             if(ContactDataState.getAllContacts().isEmpty()) {
                 showEmptyListAlert();
                 return;

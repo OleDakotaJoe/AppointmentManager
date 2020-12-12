@@ -2,6 +2,7 @@ package me.stevensheaves.view.controllers.utils;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -77,6 +78,9 @@ public class SceneChanger {
                 break;
             case CONTACTS_FORM:
                 ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "contacts/contactsform.fxml")));
+                break;
+            case CUSTOMER_FORM:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "customers/customersform.fxml")));
                 break;
             default:
                 break;

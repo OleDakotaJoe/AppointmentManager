@@ -1,20 +1,18 @@
-package me.stevensheaves.data.model;
+package me.stevensheaves.view.controllers.state;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import me.stevensheaves.data.model.User;
 
 public class UsersList {
-    private  ObservableList<User> users = FXCollections.observableArrayList();
+    private static final ObservableList<User> users = FXCollections.observableArrayList();
 
-    public UsersList(ObservableList<User> users) {
-        this.users = users;
-    }
 
     public ObservableList<User> getUsers() {
         return users;
     }
 
     public void setUsers(ObservableList<User> users) {
-        this.users = users;
+        UsersList.users.setAll(users);
     }
 }

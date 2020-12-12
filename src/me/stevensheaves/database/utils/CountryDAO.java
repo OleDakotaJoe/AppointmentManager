@@ -1,5 +1,7 @@
 package me.stevensheaves.database.utils;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import me.stevensheaves.data.model.Country;
 
 import java.sql.PreparedStatement;
@@ -9,11 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountryDAO extends DataAccessObject<Country> {
-    private final String GET_ALL = "SELECT * FROM countries";
+    private final String GET_ALL_WITH_DIVISIONS = "SELECT countries.Country, countries.Country_ID FROM countries" +
+            " INNER JOIN first_level_divisions ON countries.Country_ID=first_level_divisions.Country_ID GROUP BY Country_ID";
+    private final String GET_COUNTRY_BY_DIVISION_ID = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID= ?) GROUP BY Country;";
+    private final String GET_COUNTRY_ID_BY_COUNTRY_NAME= "SELECT countries.Country_ID FROM countries WHERE Country = ?";
 
-    public List<Country> findAll() {
-        List<Country> tempList= new ArrayList<>();
-        try(PreparedStatement statement = connection.prepareStatement(GET_ALL)) {
+
+    public String findCountryNameByDivisionID(int divisionId) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_BY_DIVISION_ID)) {
+            statement.setInt(1, divisionId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Country");
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+    public ObservableList<Country> findAll() {
+        ObservableList<Country> tempList= FXCollections.observableArrayList();
+        try(PreparedStatement statement = connection.prepareStatement(GET_ALL_WITH_DIVISIONS)) {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 Country country = new Country( rs.getInt("Country_ID"), rs.getString("Country"));
@@ -25,6 +43,16 @@ public class CountryDAO extends DataAccessObject<Country> {
         return tempList;
     }
 
+    public int findCountryId(String countryName) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_ID_BY_COUNTRY_NAME)) {
+            statement.setString(1, countryName);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) return rs.getInt("Country_ID");
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
     @Override
     public Country find(int id) {
         return null;

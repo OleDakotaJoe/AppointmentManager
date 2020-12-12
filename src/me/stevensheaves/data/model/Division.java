@@ -5,15 +5,11 @@ import java.time.LocalDateTime;
 public class Division {
     private int divisionId;
     private String divisionName;
-    private LocalDateTime createdDateTime;
-    private LocalDateTime lastUpdatedDateTime;
     private int countryId;
 
-    public Division(int divisionId, String divisionName, LocalDateTime createdDateTime, LocalDateTime lastUpdatedDateTime, int countryId) {
+    public Division(int divisionId, String divisionName, int countryId) {
         this.divisionId = divisionId;
         this.divisionName = divisionName;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
         this.countryId = countryId;
     }
 
@@ -33,22 +29,6 @@ public class Division {
         this.divisionName = divisionName;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    public LocalDateTime getLastUpdatedDateTime() {
-        return lastUpdatedDateTime;
-    }
-
-    public void setLastUpdatedDateTime(LocalDateTime lastUpdatedDateTime) {
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-    }
-
     public int getCountryId() {
         return countryId;
     }
@@ -62,8 +42,6 @@ public class Division {
         return "Division{" +
                 "divisionId=" + divisionId +
                 ", divisionName='" + divisionName + '\'' +
-                ", createdDateTime=" + createdDateTime +
-                ", lastUpdatedDateTime=" + lastUpdatedDateTime +
                 ", countryId=" + countryId +
                 '}';
     }

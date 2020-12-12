@@ -11,6 +11,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="me.stevensheaves.view.controllers.customers.CustomersController"
+            fx:id="mainPane"
             prefHeight="850.0" prefWidth="1100">
     <top>
         <HBox spacing="100" alignment="CENTER">
@@ -46,19 +47,22 @@
                 </HBox>
                 <TableView fx:id="customersTable" prefHeight="500" prefWidth="350">
                     <columns>
-                        <TableColumn text="Contact ID" fx:id="customerId" prefWidth="75"/>
-                        <TableColumn text="Contact Name" fx:id="customerName" prefWidth="100" />
-                        <TableColumn text="Email Address" fx:id="email" prefWidth="175"/>
+                        <TableColumn text="Customer ID" fx:id="customerId" />
+                        <TableColumn text="Customer Name" fx:id="customerName"/>
+                        <TableColumn text="Address" fx:id="customerAddress" />
+                        <TableColumn text="Postal Code" fx:id="postalCode" />
+                        <TableColumn text="Phone Number" fx:id="phoneNumber" />
+                        <TableColumn text="Division" fx:id="divisionId" />
                     </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets top="10" bottom="10"/>
                     </padding>
-                    <Button text="Add" fx:id="addContactsButton" onAction="#changeScene"/>
-                    <Button text="Edit" fx:id="editContactsButton" onAction="#changeScene"/>
-                    <Button text="View"  fx:id="viewContactsButton" onAction="#changeScene"/>
-                    <Button text="Delete"  fx:id="deleteContactsButton" onAction="#deleteCustomer"/>
+                    <Button text="Add" fx:id="addCustomerButton" onAction="#changeScene"/>
+                    <Button text="Edit" fx:id="editCustomerButton" onAction="#changeScene"/>
+                    <Button text="View"  fx:id="viewCustomerButton" onAction="#changeScene"/>
+                    <Button text="Delete"  fx:id="deleteCustomerButton" onAction="#deleteCustomer"/>
                 </HBox>
             </VBox>
         </VBox>

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.data.model.Contact;
+import me.stevensheaves.view.controllers.state.ContactDataState;
 import me.stevensheaves.database.utils.ContactDAO;
 
 /**
@@ -76,21 +77,20 @@ public class ContactsFormController {
      * Switch method which calls specific methods appropriate to each FormType.
      * FormType is first checked, and then the appropriate methods are called depending on which type the current form is.
      */
-    @FXML
     private void initializeForm() {
         ContactDataState.FormType formType = ContactDataState.getCurrentFormType();
         switch (formType) {
             case ADD:
                 clearForm();
-                enableFormFields();
+                setDisabledFields(false);
                 break;
             case EDIT:
                 populateForm();
-                enableFormFields();
+                setDisabledFields(false);
                 break;
             case VIEW:
                 populateForm();
-                disableAllFormFields();
+                setDisabledFields(true);
                 break;
             default:
                 break;
@@ -102,7 +102,6 @@ public class ContactsFormController {
      * <code>ContactDataState</code> acts a data-shuttle containing pertinent data to the state of the application, including which contact is currently selected in the
      * <code>contactsTable</code> in the <code>contacts.fxml</code> view.
      */
-    @FXML
     private void populateForm() {
         Contact currentContact = ContactDataState.getSelectedContact();
         contactId.setText(String.valueOf(currentContact.getId()));
@@ -111,28 +110,22 @@ public class ContactsFormController {
     }
 
     /**
-     * Disables all form fields, as well as the <code>saveButton</code>.
+     * Sets the <code>.setDisable()</code> property of controls in the view.
+     * A value of false sets all appropriate forms to be enabled, and a value of true sets all forms to be disabled.
+     * @param bool
+     * Value to be set for the disable property.
      */
-    @FXML
-    private void disableAllFormFields() {
-        contactName.setDisable(true);
-        email.setDisable(true);
-        saveButton.setDisable(true);
+    private void setDisabledFields(boolean bool) {
+        contactName.setDisable(bool);
+        email.setDisable(bool);
+        saveButton.setDisable(bool);
     }
-    /**
-     * Enables all form fields, as well as the <code>saveButton</code>.
-     */
-    @FXML
-    private void enableFormFields() {
-        contactName.setDisable(false);
-        email.setDisable(false);
-        saveButton.setDisable(false);
-    }
+
+
 
     /**
      * Clears all text data from the appropriate <code>TextField</code>s.
      */
-    @FXML
     private void clearForm() {
         contactId.setText("Auto-Generated...");
         contactName.setText("");

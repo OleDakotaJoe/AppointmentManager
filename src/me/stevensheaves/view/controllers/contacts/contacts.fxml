@@ -56,10 +56,10 @@
                     <padding>
                         <Insets top="10" bottom="10"/>
                     </padding>
-                    <Button text="Add" fx:id="addContactsButton" onAction="#changeScene"/>
-                    <Button text="Edit" fx:id="editContactsButton" onAction="#changeScene"/>
-                    <Button text="View"  fx:id="viewContactsButton" onAction="#changeScene"/>
-                    <Button text="Delete"  fx:id="deleteContactsButton" onAction="#deleteContact"/>
+                    <Button text="Add" fx:id="addContactButton" onAction="#changeScene"/>
+                    <Button text="Edit" fx:id="editContactButton" onAction="#changeScene"/>
+                    <Button text="View" fx:id="viewContactButton" onAction="#changeScene"/>
+                    <Button text="Delete" fx:id="deleteContactButton" onAction="#deleteContact"/>
                 </HBox>
             </VBox>
         </VBox>

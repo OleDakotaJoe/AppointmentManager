@@ -1,32 +1,33 @@
 package me.stevensheaves.data.model;
 
-import java.time.LocalDateTime;
-
 public class Customer {
     private int customerId;
     private String customerName;
     private String address;
     private String postalCode;
     private String phoneNumber;
-    private LocalDateTime createdDateTime;
     private String createdByUserName;
-    private LocalDateTime lastUpdateDateTime;
     private String lastUpdatedByUserName;
-    private int divisionID;
+    private int divisionId;
 
-    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber,
-                    LocalDateTime createdDateTime, String createdByUserName, LocalDateTime lastUpdateDateTime,
-                    String lastUpdatedByUserName, int divisionID) {
+    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber, String createdByUserName, String lastUpdatedByUserName, int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.createdDateTime = createdDateTime;
         this.createdByUserName = createdByUserName;
-        this.lastUpdateDateTime = lastUpdateDateTime;
         this.lastUpdatedByUserName = lastUpdatedByUserName;
-        this.divisionID = divisionID;
+        this.divisionId = divisionId;
+    }
+    public Customer(String customerName, String address, String postalCode, String phoneNumber, String createdByUserName, String lastUpdatedByUserName, int divisionId) {
+        this.customerName = customerName;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.createdByUserName = createdByUserName;
+        this.lastUpdatedByUserName = lastUpdatedByUserName;
+        this.divisionId = divisionId;
     }
 
     public int getCustomerId() {
@@ -69,14 +70,6 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
     public String getCreatedByUserName() {
         return createdByUserName;
     }
@@ -85,13 +78,6 @@ public class Customer {
         this.createdByUserName = createdByUserName;
     }
 
-    public LocalDateTime getLastUpdateDateTime() {
-        return lastUpdateDateTime;
-    }
-
-    public void setLastUpdateDateTime(LocalDateTime lastUpdateDateTime) {
-        this.lastUpdateDateTime = lastUpdateDateTime;
-    }
 
     public String getLastUpdatedByUserName() {
         return lastUpdatedByUserName;
@@ -101,12 +87,12 @@ public class Customer {
         this.lastUpdatedByUserName = lastUpdatedByUserName;
     }
 
-    public int getDivisionID() {
-        return divisionID;
+    public int getDivisionId() {
+        return divisionId;
     }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 
     @Override
@@ -117,11 +103,9 @@ public class Customer {
                 ", address='" + address + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", createdDateTime=" + createdDateTime +
                 ", createdByUserName='" + createdByUserName + '\'' +
-                ", lastUpdateDateTime=" + lastUpdateDateTime +
                 ", lastUpdatedByUserName='" + lastUpdatedByUserName + '\'' +
-                ", divisionID=" + divisionID +
+                ", divisionID=" + divisionId +
                 '}';
     }
 }

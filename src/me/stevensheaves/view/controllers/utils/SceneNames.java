@@ -10,5 +10,6 @@ public enum SceneNames {
     CONTACTS,
     ADD_USER,
     APPOINTMENT_FORM,
-    CONTACTS_FORM
+    CONTACTS_FORM,
+    CUSTOMER_FORM
 }
