@@ -39,10 +39,6 @@ public class Division {
 
     @Override
     public String toString() {
-        return "Division{" +
-                "divisionId=" + divisionId +
-                ", divisionName='" + divisionName + '\'' +
-                ", countryId=" + countryId +
-                '}';
+        return divisionName;
     }
 }

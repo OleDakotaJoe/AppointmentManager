@@ -33,7 +33,7 @@
 
 
     <Label text="Phone Number:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-    <TextFieldLimited fx:id="phoneNumber" GridPane.rowIndex="2" GridPane.columnIndex="1" maxLength="50"/>
+    <TextFieldLimited fx:id="phoneNumber" onKeyReleased="#removeLettersFromTextField" GridPane.rowIndex="2" GridPane.columnIndex="1" maxLength="50"/>
 
     <Label text="Address:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
     <TextFieldLimited fx:id="address"
@@ -48,12 +48,9 @@
     <TextFieldLimited fx:id="postalCode" GridPane.rowIndex="4" GridPane.columnIndex="1" maxLength="50"/>
 
 
-    <Label text="Created by User:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-    <ComboBox fx:id="createdByUserName" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-
-    <Label text="Country:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="country" GridPane.rowIndex="6" GridPane.columnIndex="1" />
-    <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="2">
+    <Label text="Country:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="country" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+    <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="2">
         <Label text="Division:" />
         <ComboBox fx:id="division" />
     </HBox >

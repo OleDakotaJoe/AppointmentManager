@@ -1,6 +1,7 @@
 package me.stevensheaves.view.controllers.contacts;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import me.stevensheaves.custom.controls.TextFieldLimited;
@@ -43,6 +44,7 @@ public class ContactsFormController {
      */
     @FXML
     private void handleSaveContact() {
+        if(!isFormComplete()) return;
         ContactDAO dao = new ContactDAO();
         ContactDataState.FormType typeOfForm = ContactDataState.getCurrentFormType();
         Contact contact;
@@ -132,4 +134,30 @@ public class ContactsFormController {
         email.setText("");
     }
 
+    /**
+     * Checks for completeness of the form
+     * @return
+     * Returns true if form is complete, and false if not.
+     */
+    private boolean isFormComplete() {
+        boolean isComplete;
+        if(contactName.getText().isBlank() || email.getText().isBlank()) {
+            formNotCompleteAlert();
+            isComplete = false;
+        } else {
+            isComplete = true;
+        }
+        return isComplete;
+    }
+
+    /**
+     * Utility function for alerting the user that the form is not complete.a
+     */
+    private void formNotCompleteAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Form not Complete");
+        alert.setHeaderText("All fields are required.");
+        alert.setContentText("You have not completed the form. You're content has not been saved. Please complete all required fields then try again. ");
+        alert.show();
+    }
 }

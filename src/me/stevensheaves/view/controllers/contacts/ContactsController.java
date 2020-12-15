@@ -98,31 +98,14 @@ public class ContactsController {
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
         if(event.getSource().equals(editContactButton)) {
-            if(ContactDataState.getAllContacts().isEmpty()) {
-                showEmptyListAlert();
-                return;
-            }
-            int index = contactsTable.getSelectionModel().getSelectedIndex();
-            if(index < 0) {
-                showNoContactSelectedAlert();
-                return;
-            }
+            if(!isValidSelection()) return;
 
             ContactDataState.setCurrentFormType(ContactDataState.FormType.EDIT);
             ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
         if(event.getSource().equals(viewContactButton)) {
-            if(ContactDataState.getAllContacts().isEmpty()) {
-                showEmptyListAlert();
-                return;
-            }
-
-            int index = contactsTable.getSelectionModel().getSelectedIndex();
-            if(index < 0) {
-                showNoContactSelectedAlert();
-                return;
-            }
+            if(!isValidSelection()) return;
 
             ContactDataState.setCurrentFormType(ContactDataState.FormType.VIEW);
             ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
@@ -136,15 +119,7 @@ public class ContactsController {
      */
     @FXML
     private void deleteContact() {
-        if(ContactDataState.getAllContacts().isEmpty()) {
-            showEmptyListAlert();
-            return;
-        }
-        int index = contactsTable.getSelectionModel().getSelectedIndex();
-        if(index < 0) {
-            showNoContactSelectedAlert();
-            return;
-        }
+        if(!isValidSelection()) return;
 
         Contact selectedItem = (Contact) contactsTable.getSelectionModel().getSelectedItem();
         ButtonType result = showDeleteConfirmation(selectedItem.getName());
@@ -153,6 +128,25 @@ public class ContactsController {
         int selectedId = selectedItem.getId();
         dao.delete(selectedId);
         fetchTableData();
+    }
+
+    /**
+     * Checks whether the user has selected a contact from the table
+     * @return
+     * Returns true if a contact is selected, false otherwise.
+     * Returns false and shows a alert if no contact is selected, or if table is empty.
+     */
+    private boolean isValidSelection() {
+        if(ContactDataState.getAllContacts().isEmpty()) {
+            showEmptyListAlert();
+            return false;
+        }
+        int index = contactsTable.getSelectionModel().getSelectedIndex();
+        if(index < 0) {
+            showNoContactSelectedAlert();
+            return false;
+        }
+        return true;
     }
 
     /**

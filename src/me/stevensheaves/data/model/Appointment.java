@@ -17,8 +17,24 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
+    private String contactName;
 
-    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, LocalDateTime createdTimestamp, String createdByUserName, LocalDateTime lastUpdateTimestamp, String lastUpdatedByUserName, int customerId, int userId, int contactId) {
+    public Appointment(int appointmentId,
+                       String title,
+                       String description,
+                       String location,
+                       String type,
+                       LocalDateTime startDateTime,
+                       LocalDateTime endDateTime,
+                       LocalDateTime createdTimestamp,
+                       String createdByUserName,
+                       LocalDateTime lastUpdateTimestamp,
+                       String lastUpdatedByUserName,
+                       int customerId,
+                       int userId,
+                       int contactId,
+                       String contactName
+    ) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -33,6 +49,69 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+        this.contactName = contactName;
+    }
+
+    public Appointment(int appointmentId,
+                       String title,
+                       String description,
+                       String location,
+                       String type,
+                       LocalDateTime startDateTime,
+                       LocalDateTime endDateTime,
+                       LocalDateTime createdTimestamp,
+                       String createdByUserName,
+                       LocalDateTime lastUpdateTimestamp,
+                       String lastUpdatedByUserName,
+                       int customerId,
+                       int userId,
+                       int contactId
+    ) {
+        this.appointmentId = appointmentId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.createdTimestamp = createdTimestamp;
+        this.createdByUserName = createdByUserName;
+        this.lastUpdateTimestamp = lastUpdateTimestamp;
+        this.lastUpdatedByUserName = lastUpdatedByUserName;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
+
+    public Appointment(String title,
+                       String description,
+                       String location,
+                       String type,
+                       LocalDateTime startDateTime,
+                       LocalDateTime endDateTime,
+                       LocalDateTime createdTimestamp,
+                       String createdByUserName,
+                       LocalDateTime lastUpdateTimestamp,
+                       String lastUpdatedByUserName,
+                       int customerId,
+                       int userId,
+                       int contactId,
+                       String contactName
+    ) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.createdTimestamp = createdTimestamp;
+        this.createdByUserName = createdByUserName;
+        this.lastUpdateTimestamp = lastUpdateTimestamp;
+        this.lastUpdatedByUserName = lastUpdatedByUserName;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+        this.contactName = contactName;
     }
 
     public int getAppointmentId() {
@@ -147,6 +226,14 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
     @Override
     public String toString() {
         return "Appointment{" +
@@ -164,6 +251,7 @@ public class Appointment {
                 ", customerId=" + customerId +
                 ", userId=" + userId +
                 ", contactId=" + contactId +
+                ", contactName='" + contactName + '\'' +
                 '}';
     }
 }

@@ -1,17 +1,21 @@
 package me.stevensheaves.database.utils;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import me.stevensheaves.data.model.Appointment;
+import me.stevensheaves.data.model.Contact;
+import me.stevensheaves.data.model.CurrentUser;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentDAO extends DataAccessObject<Appointment> {
-    private final String FIND_ALL = "SELECT * FROM appointments";
+    private final String FIND_ALL = "SELECT * FROM appointments LEFT JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID";
     private final String FIND_BY_ID = "SELECT * FROM appointments WHERE Appointment_ID = ?";
+    private final String SELECT_LAST_INSERTED_ROW = "SELECT * FROM appointments WHERE Appointment_ID =(SELECT last_insert_id())";
+    private final String DELETE = "DELETE FROM appointments WHERE Appointment_ID = ?";
     private final String UPDATE = "UPDATE appointments SET " +
             "Title = ?,\n" +
             "Description = ?,\n" +
@@ -44,9 +48,9 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             "(?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?);\n";
 
 
-    public List<Appointment> findAll() {
+    public ObservableList<Appointment> findAll() {
         // TODO: 12/7/2020 test this 
-        List<Appointment> tempList = new ArrayList<>();
+        ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try(PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
@@ -64,7 +68,8 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
                         rs.getString("Last_Updated_By"),
                         rs.getInt("Customer_ID"),
                         rs.getInt("User_ID"),
-                        rs.getInt("Contact_ID")
+                        rs.getInt("Contact_ID"),
+                        rs.getString("Contact_Name")
                 );
                 tempList.add(appointment);
             }
@@ -107,16 +112,70 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
 
     @Override
     public boolean update(Appointment dto) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setString(1,dto.getTitle());
+            statement.setString(2, dto.getDescription());
+            statement.setString(3,dto.getLocation());
+            statement.setString(4, dto.getType());
+            statement.setTimestamp(5, Timestamp.valueOf(dto.getStartDateTime()));
+            statement.setTimestamp(6, Timestamp.valueOf(dto.getEndDateTime()));
+            statement.setString(7, CurrentUser.getUserName());
+            statement.setInt(8, dto.getCustomerId());
+            statement.setInt(9, dto.getUserId());
+            statement.setInt(10, dto.getContactId());
+            statement.setInt(11,dto.getAppointmentId());
+            int numRows = statement.executeUpdate();
+            if(numRows > 0) return true;
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
         return false;
     }
 
     @Override
     public boolean create(Appointment dto) {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT)) {
+            statement.setString(1,dto.getTitle());
+            statement.setString(2, dto.getDescription());
+            statement.setString(3,dto.getLocation());
+            statement.setString(4, dto.getType());
+            statement.setTimestamp(5, Timestamp.valueOf(dto.getStartDateTime()));
+            statement.setTimestamp(6, Timestamp.valueOf(dto.getEndDateTime()));
+            statement.setString(7, CurrentUser.getUserName());
+            statement.setInt(8, dto.getCustomerId());
+            statement.setInt(9, dto.getUserId());
+            statement.setInt(10, dto.getContactId());
+            statement.setInt(11,dto.getAppointmentId());
+            if(statement.executeUpdate() > 0) return true;
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return false;
+    }
+
+    public Appointment findLast() {
+        try (Statement inserted = connection.createStatement()) {
+            int id;
+            ResultSet rs = inserted.executeQuery(SELECT_LAST_INSERTED_ROW);
+            if (rs.next()) {
+                id = rs.getInt("Appointment_ID");
+                return find(id);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+        return null;
     }
 
     @Override
     public void delete(int id) {
-
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

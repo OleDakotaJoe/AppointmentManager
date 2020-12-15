@@ -85,7 +85,7 @@ public class ContactDAO extends DataAccessObject<Contact> {
         try (Statement inserted = connection.createStatement()) {
             int id;
             ResultSet rs = inserted.executeQuery(SELECT_LAST_INSERTED_ROW);
-            while (rs.next()) {
+            if (rs.next()) {
                 id = rs.getInt("Contact_ID");
                 return find(id);
             }

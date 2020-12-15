@@ -45,7 +45,18 @@
                     <TextFieldLimited promptText="Search appointments..."/>
                     <Button text="Search" fx:id="searchButton" />
                 </HBox>
-                <TableView prefHeight="500" prefWidth="350">
+                <TableView fx:id="appointmentTable" prefHeight="500" prefWidth="350">
+                    <columns>
+                        <TableColumn text="Appointment ID" fx:id="appointmentId" />
+                        <TableColumn text="Title" fx:id="title"/>
+                        <TableColumn text="Description" fx:id="description" />
+                        <TableColumn text="Location" fx:id="appointmentLocation"/>
+                        <TableColumn text="Contact Name" fx:id="contact"/>
+                        <TableColumn text="Type" fx:id="type"/>
+                        <TableColumn text="Start Date and Time" fx:id="startTime"/>
+                        <TableColumn text="End Date and Time" fx:id="endTime"/>
+                        <TableColumn text="Customer ID" fx:id="customerId"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>

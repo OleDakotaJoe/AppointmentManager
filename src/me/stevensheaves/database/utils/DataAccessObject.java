@@ -7,8 +7,6 @@ public abstract class DataAccessObject<T> {
     protected final Connection connection;
 
     public DataAccessObject(){
-        // TODO: 12/4/2020 determine whether or not the below code is actually necessary
-        //super();
         this.connection = DataBaseConnectionExecutor.getConnection();
     }
 

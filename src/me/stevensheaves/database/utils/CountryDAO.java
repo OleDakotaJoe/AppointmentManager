@@ -13,7 +13,7 @@ import java.util.List;
 public class CountryDAO extends DataAccessObject<Country> {
     private final String GET_ALL_WITH_DIVISIONS = "SELECT countries.Country, countries.Country_ID FROM countries" +
             " INNER JOIN first_level_divisions ON countries.Country_ID=first_level_divisions.Country_ID GROUP BY Country_ID";
-    private final String GET_COUNTRY_BY_DIVISION_ID = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID= ?) GROUP BY Country;";
+    private final String GET_COUNTRY_BY_DIVISION_ID = "SELECT * FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID = ?);";
     private final String GET_COUNTRY_ID_BY_COUNTRY_NAME= "SELECT countries.Country_ID FROM countries WHERE Country = ?";
 
 
@@ -29,6 +29,22 @@ public class CountryDAO extends DataAccessObject<Country> {
         }
         return null;
     }
+
+    public Country findCountryByDivisionId(int divisionId) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_BY_DIVISION_ID)) {
+            statement.setInt(1, divisionId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                Country country = new Country( rs.getInt("Country_ID"), rs.getString("Country"));
+                return country;
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
     public ObservableList<Country> findAll() {
         ObservableList<Country> tempList= FXCollections.observableArrayList();
         try(PreparedStatement statement = connection.prepareStatement(GET_ALL_WITH_DIVISIONS)) {

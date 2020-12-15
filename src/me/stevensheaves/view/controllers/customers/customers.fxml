@@ -52,7 +52,7 @@
                         <TableColumn text="Address" fx:id="customerAddress" />
                         <TableColumn text="Postal Code" fx:id="postalCode" />
                         <TableColumn text="Phone Number" fx:id="phoneNumber" />
-                        <TableColumn text="Division" fx:id="divisionId" />
+                        <TableColumn text="Division" fx:id="divisionName" />
                     </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">

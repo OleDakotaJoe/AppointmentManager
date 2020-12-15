@@ -9,6 +9,19 @@ public class Customer {
     private String createdByUserName;
     private String lastUpdatedByUserName;
     private int divisionId;
+    private String divisionName;
+
+    public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber, String createdByUserName, String lastUpdatedByUserName, int divisionId, String divisionName) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.createdByUserName = createdByUserName;
+        this.lastUpdatedByUserName = lastUpdatedByUserName;
+        this.divisionId = divisionId;
+        this.divisionName = divisionName;
+    }
 
     public Customer(int customerId, String customerName, String address, String postalCode, String phoneNumber, String createdByUserName, String lastUpdatedByUserName, int divisionId) {
         this.customerId = customerId;
@@ -20,6 +33,7 @@ public class Customer {
         this.lastUpdatedByUserName = lastUpdatedByUserName;
         this.divisionId = divisionId;
     }
+
     public Customer(String customerName, String address, String postalCode, String phoneNumber, String createdByUserName, String lastUpdatedByUserName, int divisionId) {
         this.customerName = customerName;
         this.address = address;
@@ -29,7 +43,6 @@ public class Customer {
         this.lastUpdatedByUserName = lastUpdatedByUserName;
         this.divisionId = divisionId;
     }
-
     public int getCustomerId() {
         return customerId;
     }
@@ -95,17 +108,16 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    public String getDivisionName() {
+        return divisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+    }
+
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", address='" + address + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", createdByUserName='" + createdByUserName + '\'' +
-                ", lastUpdatedByUserName='" + lastUpdatedByUserName + '\'' +
-                ", divisionID=" + divisionId +
-                '}';
+        return customerName;
     }
 }

@@ -7,6 +7,7 @@ import me.stevensheaves.data.model.Contact;
 public class ContactDataState {
     private static FormType currentFormType;
     private static final ObservableList<Contact> allContacts = FXCollections.observableArrayList();
+    private static final ObservableList<String> contactNames = FXCollections.observableArrayList();
     private static Contact selectedContact;
 
     public static FormType getCurrentFormType() {
@@ -21,8 +22,15 @@ public class ContactDataState {
         return allContacts;
     }
 
+    public static ObservableList<String> getContactNames() {
+        return contactNames;
+    }
+
     public static void setAllContacts(ObservableList<Contact> allContacts) {
         ContactDataState.allContacts.setAll(allContacts);
+        for (Contact contact : getAllContacts()) {
+            contactNames.add(contact.getName());
+        }
     }
 
     public static Contact getSelectedContact() {

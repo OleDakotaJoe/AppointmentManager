@@ -33,8 +33,8 @@
     <Label text="Contact Name:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
     <ComboBox fx:id="contactName" GridPane.rowIndex="3" GridPane.columnIndex="1" />
     <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="2">
-        <Label text="Created by User:" />
-        <ComboBox fx:id="createdByUserId" />
+        <Label text="User Responsible for call:" />
+        <ComboBox fx:id="userName" />
     </HBox>
     <VBox alignment="BASELINE_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0" >
         <Label text="Description:"/>
@@ -46,29 +46,29 @@
                       GridPane.columnSpan="2"  prefWidth="350"
     />
     <Label text="Location" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <TextFieldLimited fx:id="location" promptText="Enter Location..."  maxLength="50" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+    <TextFieldLimited fx:id="appointmentLocation" promptText="Enter Location..."  maxLength="50" GridPane.rowIndex="5" GridPane.columnIndex="1" />
     <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="2">
         <Label text="Appointment Type:" />
-        <ComboBox fx:id="appointmentType"/>
+        <TextFieldLimited fx:id="appointmentType" maxLength="50"/>
     </HBox>
-    <Label text="Appointment Date:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-    <DatePicker fx:id="appointmentDate" GridPane.rowIndex="6" GridPane.columnIndex="1" />
-    <Label text="Start Time:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-    <HBox spacing="10" GridPane.rowIndex="7" GridPane.columnIndex="1">
+    <Label text="Start Date and Time:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <DatePicker fx:id="startDate" prefWidth="110"/>
         <Label text="Hr" />
         <ComboBox fx:id="startHour" />
         <Label text="Min" />
         <ComboBox fx:id="startMinute" />
     </HBox >
-    <Label text="End Time:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-    <HBox spacing="10" GridPane.rowIndex="8" GridPane.columnIndex="1">
+    <Label text="End Date and Time:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+    <HBox spacing="10" GridPane.rowIndex="7" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <DatePicker fx:id="endDate" prefWidth="110"/>
         <Label text="Hr" />
         <ComboBox fx:id="endHour" />
         <Label text="Min" />
         <ComboBox fx:id="endMinute" />
     </HBox>
     <HBox spacing="20" GridPane.rowIndex="12" GridPane.columnIndex="2">
-        <Button fx:id="saveButton" text="Save"/>
+        <Button fx:id="saveButton" text="Save" onAction="#handleSaveAppointment" />
         <Button fx:id="cancelButton" text="Cancel" />
     </HBox>
 

@@ -1,23 +1,26 @@
 package me.stevensheaves.view.controllers.customers;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Border;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import me.stevensheaves.data.model.Customer;
-import me.stevensheaves.database.utils.ContactDAO;
+import me.stevensheaves.data.utils.Validator;
 import me.stevensheaves.database.utils.CustomerDAO;
-import me.stevensheaves.view.controllers.state.ContactDataState;
 import me.stevensheaves.view.controllers.state.CustomerDataState;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
 
+
+// TODO: 12/12/2020 search functionality
+
+/**
+ * Controller class for the <code>customers.fxml</code> view.
+ */
 public class CustomersController {
     @FXML private Button appointmentsButton;
     @FXML private Button contactsButton;
@@ -32,12 +35,14 @@ public class CustomersController {
     @FXML private TableColumn<Customer, String> customerAddress;
     @FXML private TableColumn<Customer, String> postalCode;
     @FXML private TableColumn<Customer, String> phoneNumber;
-    @FXML private TableColumn<Customer, Integer> divisionId;
+    @FXML private TableColumn<Customer, String> divisionName;
 
-    
+
+    /**
+     * Retrieves and sets table data during the initialization of the instance of this class.
+     */
     @FXML
     private void initialize() {
-        fetchTableData();
         setTableData();
     }
 
@@ -63,9 +68,18 @@ public class CustomersController {
         customerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        divisionId.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        divisionName.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
         customersTable.setItems(CustomerDataState.getAllCustomers());
     }
+
+    /**
+     * Utility function for changing the scenes.
+     * @param event
+     * The event which calls the funcion.
+     * Used for checking which button was clicked, and which scene to show.
+     * @throws IOException
+     * Throws and IOException if there are any errors when loading the FMXL file
+     */
     @FXML
     private void changeScene(ActionEvent event) throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
@@ -88,46 +102,57 @@ public class CustomersController {
             SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, mainPane);
         }
         if(event.getSource().equals(editCustomerButton)) {
-            if(CustomerDataState.getAllCustomers().isEmpty()) {
-                showEmptyListAlert();
-                return;
-            }
-
-            int index = customersTable.getSelectionModel().getSelectedIndex();
-            if(index < 0) {
-                showNoCustomerSelectedAlert();
-                return;
-            }
+            if(!isValidSelection()) return;
             CustomerDataState.setCurrentFormType(CustomerDataState.FormType.EDIT);
             CustomerDataState.setSelectedCustomer((Customer) customersTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, mainPane);
         }
         if(event.getSource().equals(viewCustomerButton)) {
-            if(CustomerDataState.getAllCustomers().isEmpty()) {
-                showEmptyListAlert();
-                return;
-            }
-
-            int index = customersTable.getSelectionModel().getSelectedIndex();
-            if(index < 0) {
-                showNoCustomerSelectedAlert();
-                return;
-            }
+            if(!isValidSelection()) return;
             CustomerDataState.setCurrentFormType(CustomerDataState.FormType.VIEW);
             CustomerDataState.setSelectedCustomer((Customer) customersTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, mainPane);
         }
     }
 
+    /**
+     * Deletes the selected customer.
+     */
     @FXML
     private void deleteCustomer() {
-        // TODO: 12/11/2020 implement delete customer function
+        if(!isValidSelection()) return;
+        Customer selected = customersTable.getSelectionModel().getSelectedItem();
+        ButtonType buttonType = showDeleteConfirmation(selected.getCustomerName());
+        if(buttonType.equals(ButtonType.CANCEL)) return;
+
+        CustomerDAO dao = new CustomerDAO();
+        dao.delete(selected.getCustomerId());
+        fetchTableData();
+    }
+
+    /**
+     * Checks whether the user has selected a customer from the table
+     * @return
+     * Returns true if a customer is selected, false otherwise.
+     * Returns false and shows a alert if no customer is selected, or if table is empty.
+     */
+    private boolean isValidSelection() {
+        if(CustomerDataState.getAllCustomers().isEmpty()) {
+            showEmptyListAlert();
+            return false;
+        }
+
+        int index = customersTable.getSelectionModel().getSelectedIndex();
+        if(index < 0) {
+            showNoCustomerSelectedAlert();
+            return false;
+        }
+        return true;
     }
 
     /**
      * Shows an Alert dialog that informs the user that the list of customers is empty.
      */
-    @FXML
     private void showEmptyListAlert(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("No customers");
@@ -144,7 +169,6 @@ public class CustomersController {
      * @return
      * Returns the button type that the user clicks, so that the method which calls it may determine whether or not to proceed.
      */
-    @FXML
     private ButtonType showDeleteConfirmation(String customerName) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Customer");
@@ -156,12 +180,11 @@ public class CustomersController {
     /**
      * Shows an Alert dialog that informs the user that no contact is selected.
      */
-    @FXML
     private void showNoCustomerSelectedAlert() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("No customer selected");
         alert.setHeaderText("You didn't select a customer");
-        alert.setContentText("Before you can complete this action, you must first select a customer. to the database. Try clicking on " +
+        alert.setContentText("Before you can complete this action, you must first select a customer. Try clicking on " +
                 "a customer before proceeding.");
         alert.show();
     }
