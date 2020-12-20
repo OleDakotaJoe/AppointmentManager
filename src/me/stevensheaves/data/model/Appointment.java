@@ -1,6 +1,6 @@
 package me.stevensheaves.data.model;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Appointment {
     private int appointmentId;
@@ -8,11 +8,11 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private LocalDateTime createdTimestamp;
+    private ZonedDateTime startDateTime;
+    private ZonedDateTime endDateTime;
+    private ZonedDateTime createdTimestamp;
     private String createdByUserName;
-    private LocalDateTime lastUpdateTimestamp;
+    private ZonedDateTime lastUpdateTimestamp;
     private String lastUpdatedByUserName;
     private int customerId;
     private int userId;
@@ -24,11 +24,11 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       LocalDateTime startDateTime,
-                       LocalDateTime endDateTime,
-                       LocalDateTime createdTimestamp,
+                       ZonedDateTime startDateTime,
+                       ZonedDateTime endDateTime,
+                       ZonedDateTime createdTimestamp,
                        String createdByUserName,
-                       LocalDateTime lastUpdateTimestamp,
+                       ZonedDateTime lastUpdateTimestamp,
                        String lastUpdatedByUserName,
                        int customerId,
                        int userId,
@@ -57,11 +57,11 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       LocalDateTime startDateTime,
-                       LocalDateTime endDateTime,
-                       LocalDateTime createdTimestamp,
+                       ZonedDateTime startDateTime,
+                       ZonedDateTime endDateTime,
+                       ZonedDateTime createdTimestamp,
                        String createdByUserName,
-                       LocalDateTime lastUpdateTimestamp,
+                       ZonedDateTime lastUpdateTimestamp,
                        String lastUpdatedByUserName,
                        int customerId,
                        int userId,
@@ -87,11 +87,11 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       LocalDateTime startDateTime,
-                       LocalDateTime endDateTime,
-                       LocalDateTime createdTimestamp,
+                       ZonedDateTime startDateTime,
+                       ZonedDateTime endDateTime,
+                       ZonedDateTime createdTimestamp,
                        String createdByUserName,
-                       LocalDateTime lastUpdateTimestamp,
+                       ZonedDateTime lastUpdateTimestamp,
                        String lastUpdatedByUserName,
                        int customerId,
                        int userId,
@@ -113,6 +113,35 @@ public class Appointment {
         this.contactId = contactId;
         this.contactName = contactName;
     }
+    public Appointment(String title,
+                       String description,
+                       String location,
+                       String type,
+                       ZonedDateTime startDateTime,
+                       ZonedDateTime endDateTime,
+                       ZonedDateTime createdTimestamp,
+                       String createdByUserName,
+                       ZonedDateTime lastUpdateTimestamp,
+                       String lastUpdatedByUserName,
+                       int customerId,
+                       int userId,
+                       int contactId
+    ) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.createdTimestamp = createdTimestamp;
+        this.createdByUserName = createdByUserName;
+        this.lastUpdateTimestamp = lastUpdateTimestamp;
+        this.lastUpdatedByUserName = lastUpdatedByUserName;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
+
 
     public int getAppointmentId() {
         return appointmentId;
@@ -154,27 +183,27 @@ public class Appointment {
         this.type = type;
     }
 
-    public LocalDateTime getStartDateTime() {
+    public ZonedDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
+    public void setStartDateTime(ZonedDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime getEndDateTime() {
+    public ZonedDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
+    public void setEndDateTime(ZonedDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
-    public LocalDateTime getCreatedTimestamp() {
+    public ZonedDateTime getCreatedTimestamp() {
         return createdTimestamp;
     }
 
-    public void setCreatedTimestamp(LocalDateTime createdTimestamp) {
+    public void setCreatedTimestamp(ZonedDateTime createdTimestamp) {
         this.createdTimestamp = createdTimestamp;
     }
 
@@ -186,11 +215,11 @@ public class Appointment {
         this.createdByUserName = createdByUserName;
     }
 
-    public LocalDateTime getLastUpdateTimestamp() {
+    public ZonedDateTime getLastUpdateTimestamp() {
         return lastUpdateTimestamp;
     }
 
-    public void setLastUpdateTimestamp(LocalDateTime lastUpdateTimestamp) {
+    public void setLastUpdateTimestamp(ZonedDateTime lastUpdateTimestamp) {
         this.lastUpdateTimestamp = lastUpdateTimestamp;
     }
 

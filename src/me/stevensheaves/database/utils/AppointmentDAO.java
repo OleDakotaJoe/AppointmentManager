@@ -3,13 +3,10 @@ package me.stevensheaves.database.utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import me.stevensheaves.data.model.Appointment;
-import me.stevensheaves.data.model.Contact;
 import me.stevensheaves.data.model.CurrentUser;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.*;
 
 public class AppointmentDAO extends DataAccessObject<Appointment> {
     private final String FIND_ALL = "SELECT * FROM appointments LEFT JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID";
@@ -23,7 +20,7 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             "Type = ?,\n" +
             "Start = ?,\n" +
             "End = ?,\n" +
-            "Last_Update = CURRENT_TIMESTAMP,\n" +
+            "Last_Update = UTC_TIMESTAMP,\n" +
             "Last_Updated_By = ?,\n" +
             "Customer_ID =?,\n" +
             "User_ID = ?,\n" +
@@ -45,11 +42,10 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             "User_ID,\n" +
             "Contact_ID)\n" +
             "VALUES\n" +
-            "(?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?);\n";
+            "(?, ?, ?, ?, ?, ?, UTC_TIMESTAMP, ?, UTC_TIMESTAMP, ?, ?, ?, ?);\n";
 
 
     public ObservableList<Appointment> findAll() {
-        // TODO: 12/7/2020 test this 
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try(PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
             ResultSet rs = statement.executeQuery();
@@ -60,11 +56,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
                         rs.getString("Description"),
                         rs.getString("Location"),
                         rs.getString("Type"),
-                        rs.getObject("Start", LocalDateTime.class),
-                        rs.getObject("End", LocalDateTime.class),
-                        rs.getObject("Create_Date", LocalDateTime.class),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Start")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("End")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Create_Date")),
                         rs.getString("Created_By"),
-                        rs.getObject("Last_Update", LocalDateTime.class),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Last_Update")),
                         rs.getString("Last_Updated_By"),
                         rs.getInt("Customer_ID"),
                         rs.getInt("User_ID"),
@@ -81,7 +77,6 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
     }
     @Override
     public Appointment find(int id) {
-        // TODO: 12/7/2020 test this function 
         try(PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
@@ -92,11 +87,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
                         rs.getString("Description"),
                         rs.getString("Location"),
                         rs.getString("Type"),
-                        rs.getObject("Start", LocalDateTime.class),
-                        rs.getObject("End", LocalDateTime.class),
-                        rs.getObject("Create_Date", LocalDateTime.class),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Start")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("End")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Create_Date")),
                         rs.getString("Created_By"),
-                        rs.getObject("Last_Update", LocalDateTime.class),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Last_Update")),
                         rs.getString("Last_Updated_By"),
                         rs.getInt("Customer_ID"),
                         rs.getInt("User_ID"),
@@ -117,8 +112,8 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             statement.setString(2, dto.getDescription());
             statement.setString(3,dto.getLocation());
             statement.setString(4, dto.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(dto.getStartDateTime()));
-            statement.setTimestamp(6, Timestamp.valueOf(dto.getEndDateTime()));
+            statement.setTimestamp(5, convertZonedDateTimeToTimestamp(dto.getStartDateTime()));
+            statement.setTimestamp(6, convertZonedDateTimeToTimestamp(dto.getEndDateTime()));
             statement.setString(7, CurrentUser.getUserName());
             statement.setInt(8, dto.getCustomerId());
             statement.setInt(9, dto.getUserId());
@@ -140,13 +135,13 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             statement.setString(2, dto.getDescription());
             statement.setString(3,dto.getLocation());
             statement.setString(4, dto.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(dto.getStartDateTime()));
-            statement.setTimestamp(6, Timestamp.valueOf(dto.getEndDateTime()));
+            statement.setTimestamp(5, convertZonedDateTimeToTimestamp(dto.getStartDateTime()));
+            statement.setTimestamp(6, convertZonedDateTimeToTimestamp(dto.getEndDateTime()));
             statement.setString(7, CurrentUser.getUserName());
-            statement.setInt(8, dto.getCustomerId());
-            statement.setInt(9, dto.getUserId());
-            statement.setInt(10, dto.getContactId());
-            statement.setInt(11,dto.getAppointmentId());
+            statement.setString(8, CurrentUser.getUserName());
+            statement.setInt(9, dto.getCustomerId());
+            statement.setInt(10, dto.getUserId());
+            statement.setInt(11,dto.getContactId());
             if(statement.executeUpdate() > 0) return true;
         } catch(SQLException throwables) {
             throwables.printStackTrace();
@@ -177,5 +172,13 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         } catch(SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private ZonedDateTime convertTimestampToZonedDateTime(Timestamp timestamp) {
+        return timestamp.toLocalDateTime().atZone(ZoneId.systemDefault());
+    }
+
+    private Timestamp convertZonedDateTimeToTimestamp(ZonedDateTime zonedDateTime) {
+        return Timestamp.valueOf(zonedDateTime.toLocalDateTime());
     }
 }

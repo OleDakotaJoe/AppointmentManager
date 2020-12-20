@@ -2,27 +2,29 @@ package me.stevensheaves.view.controllers.appointment;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.data.model.*;
-import me.stevensheaves.database.utils.AppointmentDAO;
-import me.stevensheaves.database.utils.ContactDAO;
-import me.stevensheaves.database.utils.CustomerDAO;
-import me.stevensheaves.database.utils.UserDAO;
+import me.stevensheaves.data.utils.Validator;
+import me.stevensheaves.database.utils.*;
 import me.stevensheaves.view.controllers.state.AppointmentDataState;
 import me.stevensheaves.view.controllers.state.ContactDataState;
 import me.stevensheaves.view.controllers.state.CustomerDataState;
+import me.stevensheaves.view.controllers.utils.SceneChanger;
+import me.stevensheaves.view.controllers.utils.SceneNames;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.io.IOException;
+import java.time.*;
 
 public class AppointmentFormController {
 
     @FXML
     private TextField appointmentId;
+    @FXML
+    private GridPane mainPane;
     @FXML
     private TextFieldLimited title, description, appointmentLocation, appointmentType;
     @FXML
@@ -33,6 +35,8 @@ public class AppointmentFormController {
     private ComboBox<Contact> contactName;
     @FXML
     private DatePicker startDate,endDate;
+    @FXML
+    private Button saveButton;
 
     // TODO: 12/13/2020 go back and fix other inefficient use of comboboxes in customer area.
     @FXML
@@ -41,6 +45,7 @@ public class AppointmentFormController {
         setCustomerNameComboBoxValues();
         setUserNameComboBoxValues();
         setContactComboBoxValues();
+        initializeForm();
     }
 
     private void fetchTableData() {
@@ -77,7 +82,7 @@ public class AppointmentFormController {
 
     @FXML
     private void handleSaveAppointment() {
-        //if(!isFormComplete()) return;
+        if(!isFormComplete()) return;
         AppointmentDAO dao = new AppointmentDAO();
         AppointmentDataState.FormType typeOfForm = AppointmentDataState.getCurrentFormType();
         Appointment appointment;
@@ -91,58 +96,83 @@ public class AppointmentFormController {
                         appointmentType.getText(),
                         getStartDateTime(),
                         getEndDateTime(),
-                        LocalDateTime.now(),
+                        ZonedDateTime.now(),
                         CurrentUser.getUserName(),
-                        LocalDateTime.now(),
+                        ZonedDateTime.now(),
                         CurrentUser.getUserName(),
-                        12,
-                        12,
-                        12,
-                        "steve"
+                        customerName.getValue().getCustomerId(),
+                        new UserDAO().find(String.valueOf(userName.getValue())).getId() ,
+                        contactName.getValue().getId()
                 );
                 isSaved = dao.create(appointment);
                 if (isSaved) {
                     AppointmentDataState.setSelectedAppointment(dao.findLast());
                     AppointmentDataState.setCurrentFormType(AppointmentDataState.FormType.VIEW);
+                    try {
+                        SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM,((BorderPane) mainPane.getParent()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     fetchTableData();
-                   // initializeForm();
                 }
                 break;
-/*            case EDIT:
-               appointment = new Appointment();
+            case EDIT:
+               appointment = new Appointment(
+                       Integer.parseInt(appointmentId.getText()),
+                       title.getText(),
+                       description.getText(),
+                       appointmentLocation.getText(),
+                       appointmentType.getText(),
+                       getStartDateTime(),
+                       getEndDateTime(),
+                       ZonedDateTime.now(),
+                       CurrentUser.getUserName(),
+                       ZonedDateTime.now(),
+                       CurrentUser.getUserName(),
+                       customerName.getValue().getCustomerId(),
+                       new UserDAO().find(String.valueOf(userName.getValue())).getId(),
+                       contactName.getValue().getId()
+               );
                 isSaved = dao.update(appointment);
                 if (isSaved) {
                     AppointmentDataState.setCurrentFormType(AppointmentDataState.FormType.VIEW);
+                    try {
+                        SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM,((BorderPane) mainPane.getParent()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     fetchTableData();
-                    //initializeForm();
                 }
-                break;*/
+                break;
             default:
                 return;
         }
     }
 
 
-    private LocalDateTime getStartDateTime() {
+    private ZonedDateTime getStartDateTime() {
         LocalDate startDatePart = startDate.getValue();
         LocalTime startTimePart = LocalTime.parse(startHour.getValue() + ":" + startMinute.getValue());
-        return LocalDateTime.of(startDatePart,startTimePart);
+        LocalDateTime localDateTime =  LocalDateTime.of(startDatePart,startTimePart);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+        return zonedDateTime;
     }
 
-    private LocalDateTime getEndDateTime() {
+    private ZonedDateTime getEndDateTime() {
         LocalDate endDatePart = endDate.getValue();
         LocalTime endTimePart = LocalTime.parse(endHour.getValue() + ":"+ endMinute.getValue());
-        return LocalDateTime.of(endDatePart,endTimePart);
+        LocalDateTime localDateTime = LocalDateTime.of(endDatePart,endTimePart);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+        return zonedDateTime;
     }
 
 
-/*
-    */
+
 /**
      * Method for initializing the Form data.
      * Switch method which calls specific methods appropriate to each FormType.
      * FormType is first checked, and then the appropriate methods are called depending on which type the current form is.
-     *//*
+     */
 
     private void initializeForm() {
         AppointmentDataState.FormType formType = AppointmentDataState.getCurrentFormType();
@@ -164,7 +194,140 @@ public class AppointmentFormController {
         }
     }
 
-*/
+    private void populateForm() {
+        ContactDAO contactDAO = new ContactDAO();
+        CustomerDAO customerDAO = new CustomerDAO();
+        UserDAO userDAO = new UserDAO();
+        Appointment currentAppointment = AppointmentDataState.getSelectedAppointment();
+        appointmentId.setText(String.valueOf(currentAppointment.getAppointmentId()));
+        title.setText(currentAppointment.getTitle());
+        customerName.setValue(customerDAO.find(currentAppointment.getCustomerId()));
+        contactName.setValue(contactDAO.find(currentAppointment.getContactId()));
+        userName.setValue(userDAO.find(currentAppointment.getUserId()).getUserName());
+        description.setText(currentAppointment.getDescription());
+        appointmentLocation.setText(currentAppointment.getLocation());
+        appointmentType.setText(currentAppointment.getType());
+        startDate.setValue(currentAppointment.getStartDateTime().toLocalDate());
+        endDate.setValue(currentAppointment.getEndDateTime().toLocalDate());
+        LocalTime startTime = currentAppointment.getStartDateTime().toLocalTime();
+        LocalTime endTime = currentAppointment.getEndDateTime().toLocalTime();
+        startHour.getSelectionModel().select(startTime.getHour());
+        endHour.getSelectionModel().select(endTime.getHour());
+        startMinute.getSelectionModel().select(startTime.getMinute());
+        endMinute.getSelectionModel().select(endTime.getMinute());
 
 
+    }
+
+
+
+    /**
+     * Sets the <code>.setDisable()</code> property of controls in the view.
+     * A value of false sets all appropriate forms to be enabled, and a value of true sets all forms to be disabled.
+     * @param bool
+     * Value to be set for the disable property.
+     */
+    private void setDisabledFields(boolean bool) {
+        title.setDisable(bool);
+        customerName.setDisable(bool);
+        contactName.setDisable(bool);
+        userName.setDisable(bool);
+        description.setDisable(bool);
+        appointmentLocation.setDisable(bool);
+        appointmentType.setDisable(bool);
+        endDate.setDisable(bool);
+        endHour.setDisable(bool);
+        endMinute.setDisable(bool);
+        startMinute.setDisable(bool);
+        startDate.setDisable(bool);
+        startHour.setDisable(bool);
+        saveButton.setDisable(bool);
+
+
+    }
+
+
+    /**
+     * Utility function for clearing all user-defined text from the form.
+     */
+    private void clearForm() {
+        appointmentId.setText("Auto-generated");
+        title.setText("");
+        customerName.setValue(null);
+        contactName.setValue(null);
+        userName.setValue(null);
+        description.setText("");
+        appointmentLocation.setText("");
+        appointmentType.setText("");
+        endDate.setValue(null);
+        endHour.setValue(null);
+        endMinute.setValue(null);
+        startMinute.setValue(null);
+        startDate.setValue(null);
+        startHour.setValue(null);
+
+    }
+
+    /**
+     * Removes letters from the field which is the source of the <code>KeyEvent</code>.
+     * @param event
+     * The <code>KeyEvent</code> which calls the code.
+     * Used for determining the <code>.source()</code> of the event, and removing the letters from the user defined input.
+     */
+    @FXML
+    private void removeLettersFromTextField(KeyEvent event) {
+        Validator.removeLetters(event);
+    }
+
+    /**
+     * Checks for completeness of the form
+     * @return
+     * Returns true if form is complete, and false if not.
+     */
+    private boolean isFormComplete() {
+        boolean isComplete;
+        if(title.getText().isBlank()
+                || (customerName.getValue() == null)
+                || (contactName.getValue() == null)
+                || (userName.getValue() == null)
+                || description.getText().isBlank()
+                || appointmentLocation.getText().isBlank()
+                || appointmentType.getText().isBlank()
+                || (startDate.getValue() == null)
+                || (startHour.getValue() == null )
+                || (startMinute.getValue() == null)
+                || (endDate.getValue() == null)
+                || (endHour.getValue() == null)
+                || (endMinute.getValue() == null)
+        ) {
+            showFormNotCompleteAlert();
+            isComplete = false;
+        } else {
+            if (getEndDateTime().compareTo(getStartDateTime()) < 0) {
+                showDateTimeIncorrectAlert();
+                return false;
+            }
+            isComplete = true;
+        }
+        return isComplete;
+    }
+
+    /**
+     * Utility function for alerting the user that the form is not complete.
+     */
+    private void showFormNotCompleteAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Form not Complete");
+        alert.setHeaderText("All fields are required.");
+        alert.setContentText("You have not completed the form. You're content has not been saved. Please complete all required fields then try again. ");
+        alert.show();
+    }
+
+    private void showDateTimeIncorrectAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Date/Time is incorrect");
+        alert.setHeaderText("End date/time must be after start date/time.");
+        alert.setContentText("Either your end date or end time is before the start date or time. You're content has not been saved. Please complete all required fields then try again. ");
+        alert.show();
+    }
 }

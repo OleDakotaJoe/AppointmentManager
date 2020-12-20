@@ -13,6 +13,7 @@
         <?import me.stevensheaves.custom.controls.TextFieldLimited?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
+          fx:id="mainPane"
           fx:controller="me.stevensheaves.view.controllers.appointment.AppointmentFormController"
           prefHeight="400.0" prefWidth="600.0"
           alignment="BASELINE_LEFT"

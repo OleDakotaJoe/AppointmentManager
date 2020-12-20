@@ -65,7 +65,7 @@
                     <Button text="Add" fx:id="addAppointmentButton" onAction="#changeScene"/>
                     <Button text="Edit" fx:id="editAppointmentButton" onAction="#changeScene"/>
                     <Button text="View"  fx:id="viewAppointmentButton" onAction="#changeScene"/>
-                    <Button text="Delete"  fx:id="deleteAppointmentButton" onAction="#changeScene"/>
+                    <Button text="Delete"  fx:id="deleteAppointmentButton" onAction="#deleteAppointment"/>
                 </HBox>
             </VBox>
         </VBox>

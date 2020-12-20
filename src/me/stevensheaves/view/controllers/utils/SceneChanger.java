@@ -14,14 +14,14 @@ import me.stevensheaves.data.utils.LocationData;
 import java.io.IOException;
 
 public class SceneChanger {
-    // TODO: 12/6/2020 implement a stateManager static class
     private static Stage primaryStage;
     private final static String BASE_PATH= "/me/stevensheaves/view/controllers/";
     private static String systemLanguage = LocationData.getSystemLanguage();
-    // TODO: 12/5/2020 implement "You're loggin in from: sysCo"
+    // TODO: 12/5/2020 implement "You're logging in from: sysCountry"
     private static String systemCountry = LocationData.getSystemCountry();
 
     public static void showPrimary(Stage primaryStage) throws IOException {
+        // TODO: 12/19/2020 Change back to loading from login screen 
         SceneChanger.primaryStage = primaryStage;
 //      Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "mainscreen/mainscreen.fxml"));
         Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "dashboard/dashboard.fxml"));

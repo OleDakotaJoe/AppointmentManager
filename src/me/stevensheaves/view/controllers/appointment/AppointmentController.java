@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
+import me.stevensheaves.custom.utils.DateTimeCellFormatter;
 import me.stevensheaves.data.model.Appointment;
 import me.stevensheaves.database.utils.AppointmentDAO;
 import me.stevensheaves.view.controllers.state.AppointmentDataState;
@@ -12,7 +14,9 @@ import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
 // TODO: 12/12/2020 FINISH UPDATING JAVADOCS
 
@@ -34,8 +38,8 @@ public class AppointmentController {
     @FXML private TableColumn<Appointment, String> appointmentLocation;
     @FXML private TableColumn<Appointment, String> contact;
     @FXML private TableColumn<Appointment, String> type;
-    @FXML private TableColumn<Appointment, LocalDateTime> startTime;
-    @FXML private TableColumn<Appointment, LocalDateTime> endTime;
+    @FXML private TableColumn<Appointment, ZonedDateTime> startTime;
+    @FXML private TableColumn<Appointment, ZonedDateTime> endTime;
     @FXML private TableColumn<Appointment, Integer> appointmentId;
     @FXML private TableColumn<Appointment, Integer> customerId;
     /**
@@ -70,7 +74,9 @@ public class AppointmentController {
         contact.setCellValueFactory(new PropertyValueFactory<>("contactName"));;
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
         startTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        startTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));
         endTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        endTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));;
         customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         appointmentTable.setItems(AppointmentDataState.getAllAppointments());
     }
@@ -114,7 +120,7 @@ public class AppointmentController {
      * Deletes the selected customer.
      */
     @FXML
-    private void deleteCustomer() {
+    private void deleteAppointment() {
         if(!isValidSelection()) return;
         Appointment selected = appointmentTable.getSelectionModel().getSelectedItem();
         ButtonType buttonType = showDeleteConfirmation(selected.getTitle());
