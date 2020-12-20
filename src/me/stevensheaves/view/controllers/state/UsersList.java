@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import me.stevensheaves.data.model.User;
 
 public class UsersList {
+    // TODO: 12/19/2020 remove if unnecessary 
     private static final ObservableList<User> users = FXCollections.observableArrayList();
 
 
