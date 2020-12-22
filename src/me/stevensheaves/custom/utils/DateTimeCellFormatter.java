@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
 public class DateTimeCellFormatter<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
-    private DateTimeFormatter format;
+    private final DateTimeFormatter format;
 
     public DateTimeCellFormatter(String format) {
         super();

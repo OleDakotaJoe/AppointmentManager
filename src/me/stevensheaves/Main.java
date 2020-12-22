@@ -2,7 +2,6 @@ package me.stevensheaves;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import me.stevensheaves.data.utils.LocationData;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 
 public class Main extends Application {

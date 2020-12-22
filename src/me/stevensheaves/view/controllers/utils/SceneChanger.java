@@ -16,9 +16,9 @@ import java.io.IOException;
 public class SceneChanger {
     private static Stage primaryStage;
     private final static String BASE_PATH= "/me/stevensheaves/view/controllers/";
-    private static String systemLanguage = LocationData.getSystemLanguage();
+    private static final String systemLanguage = LocationData.getSystemLanguage();
     // TODO: 12/5/2020 implement "You're logging in from: sysCountry"
-    private static String systemCountry = LocationData.getSystemCountry();
+    private static final String systemCountry = LocationData.getSystemCountry();
 
     public static void showPrimary(Stage primaryStage) throws IOException {
         // TODO: 12/19/2020 Change back to loading from login screen 

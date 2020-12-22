@@ -41,6 +41,39 @@
                 <padding>
                     <Insets topRightBottomLeft="20" />
                 </padding>
+                <VBox spacing="15">
+                    <HBox spacing="15">
+                        <RadioButton fx:id="allAppointments" text="All Appointments" selected="true" onAction="#handleAppointmentListChange">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="appointmentFilter"   />
+                            </toggleGroup>>
+                        </RadioButton>
+                        <RadioButton fx:id="pastAppointments" text="Past Appointments" onAction="#handleAppointmentListChange">
+                            <toggleGroup>
+                                <fx:reference source="appointmentFilter" />
+                            </toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                    <HBox spacing="15">
+                        <RadioButton fx:id="todayAppointments" text="Today" onAction="#handleAppointmentListChange">
+                            <toggleGroup>
+                                <fx:reference source="appointmentFilter" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="weekAppointments" text="This Week" onAction="#handleAppointmentListChange">
+                            <toggleGroup>
+                                <fx:reference source="appointmentFilter" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="monthAppointments" text="This Month" onAction="#handleAppointmentListChange">
+                            <toggleGroup>
+                                <fx:reference source="appointmentFilter" />
+                            </toggleGroup>
+                        </RadioButton>
+                    </HBox>
+
+
+                </VBox>
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <TextFieldLimited promptText="Search appointments..."/>
                     <Button text="Search" fx:id="searchButton" />

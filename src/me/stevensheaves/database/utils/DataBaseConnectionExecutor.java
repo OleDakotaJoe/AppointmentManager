@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataBaseConnectionExecutor  {
-    private static DataBaseConnectionManager dcm;
+    private static final DataBaseConnectionManager dcm;
     private static Connection connection;
 
     static {

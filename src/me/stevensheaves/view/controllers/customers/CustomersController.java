@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import me.stevensheaves.data.model.Customer;
 import me.stevensheaves.data.utils.Validator;
+import me.stevensheaves.database.utils.AppointmentDAO;
 import me.stevensheaves.database.utils.CustomerDAO;
 import me.stevensheaves.view.controllers.state.CustomerDataState;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
@@ -104,13 +105,13 @@ public class CustomersController {
         if(event.getSource().equals(editCustomerButton)) {
             if(!isValidSelection()) return;
             CustomerDataState.setCurrentFormType(CustomerDataState.FormType.EDIT);
-            CustomerDataState.setSelectedCustomer((Customer) customersTable.getSelectionModel().getSelectedItem());
+            CustomerDataState.setSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, mainPane);
         }
         if(event.getSource().equals(viewCustomerButton)) {
             if(!isValidSelection()) return;
             CustomerDataState.setCurrentFormType(CustomerDataState.FormType.VIEW);
-            CustomerDataState.setSelectedCustomer((Customer) customersTable.getSelectionModel().getSelectedItem());
+            CustomerDataState.setSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, mainPane);
         }
     }
@@ -122,6 +123,10 @@ public class CustomersController {
     private void deleteCustomer() {
         if(!isValidSelection()) return;
         Customer selected = customersTable.getSelectionModel().getSelectedItem();
+        if((new AppointmentDAO().findByCustomerId(selected.getCustomerId())).size() > 0 ) {
+            showCustomerHasAppointmentsAlert(selected.getCustomerId());
+            return;
+        }
         ButtonType buttonType = showDeleteConfirmation(selected.getCustomerName());
         if(buttonType.equals(ButtonType.CANCEL)) return;
 
@@ -186,6 +191,16 @@ public class CustomersController {
         alert.setHeaderText("You didn't select a customer");
         alert.setContentText("Before you can complete this action, you must first select a customer. Try clicking on " +
                 "a customer before proceeding.");
+        alert.show();
+    }
+
+    private void showCustomerHasAppointmentsAlert( int id) {
+        // TODO: 12/19/2020 create Appointment sorted by user/cx/contact  report
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Customer cannot be deleted");
+        alert.setHeaderText("This customer still has appointments scheduled.");
+        alert.setContentText("Before you can complete this action, you must first delete all appointments associated with this customer. You can visit the reports tab to" +
+                " view an \"All appointments by Customer ID\" report to find out which report is associated with this customer. \n\n This customer's ID is: " + id);
         alert.show();
     }
 

@@ -1,5 +1,8 @@
 package me.stevensheaves.view.controllers.appointment;
 
+import javafx.beans.InvalidationListener;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -42,12 +45,16 @@ public class AppointmentController {
     @FXML private TableColumn<Appointment, ZonedDateTime> endTime;
     @FXML private TableColumn<Appointment, Integer> appointmentId;
     @FXML private TableColumn<Appointment, Integer> customerId;
+    @FXML private RadioButton allAppointments, pastAppointments, todayAppointments, weekAppointments, monthAppointments;
+    @FXML private ToggleGroup appointmentFilter;
+
     /**
      * Retrieves and sets table data during the initialization of the instance of this class.
      */
     @FXML
     private void initialize() {
         setTableData();
+        handleAppointmentListChange();
     }
 
 
@@ -66,19 +73,43 @@ public class AppointmentController {
      */
     @FXML
     private void setTableData() {
-        fetchTableData();
         appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-        contact.setCellValueFactory(new PropertyValueFactory<>("contactName"));;
+        contact.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
         startTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
         startTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));
         endTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-        endTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));;
+        endTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));
         customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        appointmentTable.setItems(AppointmentDataState.getAllAppointments());
+        appointmentTable.setItems(AppointmentDataState.getFilteredAppointmentList());
+    }
+
+
+    @FXML
+    private void handleAppointmentListChange() {
+        fetchTableData();
+        if (pastAppointments.isSelected()) {
+            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now()));
+        }
+        if (allAppointments.isSelected()) {
+            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> true);
+        }
+        if (todayAppointments.isSelected()) {
+            AppointmentDataState.getFilteredAppointmentList().setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusDays(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
+
+        }
+        if (weekAppointments.isSelected()) {
+            AppointmentDataState.getFilteredAppointmentList().setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusWeeks(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
+
+        }
+        if (monthAppointments.isSelected()) {
+            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now().plusMonths(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
+
+        }
+
     }
 
     @FXML
@@ -123,12 +154,12 @@ public class AppointmentController {
     private void deleteAppointment() {
         if(!isValidSelection()) return;
         Appointment selected = appointmentTable.getSelectionModel().getSelectedItem();
-        ButtonType buttonType = showDeleteConfirmation(selected.getTitle());
+        ButtonType buttonType = showDeleteConfirmation(selected);
         if(buttonType.equals(ButtonType.CANCEL)) return;
 
         AppointmentDAO dao = new AppointmentDAO();
         dao.delete(selected.getAppointmentId());
-        fetchTableData();
+        handleAppointmentListChange();
     }
 
     /**
@@ -165,16 +196,18 @@ public class AppointmentController {
 
     /**
      * Shows an Alert dialog that confirms that the user wants to delete the selected contact.
-     * @param appointmentName
-     * When calling this function, the String value of the contact to be deleted is passed in, to inform the user which contact is being deleted.
+     * @param appointment
+     * When calling this function, the appointment object to be deleted is passed in, to inform the user which appointment is being deleted.
      * @return
      * Returns the button type that the user clicks, so that the method which calls it may determine whether or not to proceed.
      */
-    private ButtonType showDeleteConfirmation(String appointmentName) {
+    private ButtonType showDeleteConfirmation(Appointment appointment) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Appointment");
-        alert.setHeaderText("Are you sure you want to delete " + appointmentName + "?");
-        alert.setContentText("This action cannot be reversed. Only proceed if you are absolutely sure you want to delete this appointment.");
+        alert.setHeaderText("Are you sure you want to delete this appointment?");
+        alert.setContentText("This action cannot be reversed. Only proceed if you are absolutely sure you want to delete the appointment. \n" +
+                " \t\tTitle: " + appointment.getTitle()+"\n" +
+                "\t\tType: " + appointment.getType());
         alert.showAndWait();
         return alert.getResult();
     }

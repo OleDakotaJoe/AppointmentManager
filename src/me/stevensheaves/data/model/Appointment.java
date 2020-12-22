@@ -1,5 +1,7 @@
 package me.stevensheaves.data.model;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.time.ZonedDateTime;
 
 public class Appointment {
@@ -263,7 +265,7 @@ public class Appointment {
         this.contactName = contactName;
     }
 
-    @Override
+/*    @Override
     public String toString() {
         return "Appointment{" +
                 "appointmentId=" + appointmentId +
@@ -281,6 +283,13 @@ public class Appointment {
                 ", userId=" + userId +
                 ", contactId=" + contactId +
                 ", contactName='" + contactName + '\'' +
+                '}';
+    }*/
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "title='" + title + '\'' +
                 '}';
     }
 }

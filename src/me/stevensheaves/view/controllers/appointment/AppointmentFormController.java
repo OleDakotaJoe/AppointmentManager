@@ -1,14 +1,13 @@
 package me.stevensheaves.view.controllers.appointment;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.data.model.*;
-import me.stevensheaves.data.utils.Validator;
 import me.stevensheaves.database.utils.*;
 import me.stevensheaves.view.controllers.state.AppointmentDataState;
 import me.stevensheaves.view.controllers.state.ContactDataState;
@@ -18,6 +17,7 @@ import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class AppointmentFormController {
 
@@ -38,7 +38,10 @@ public class AppointmentFormController {
     @FXML
     private Button saveButton;
 
-    // TODO: 12/13/2020 go back and fix other inefficient use of comboboxes in customer area.
+    /**
+     * Initializes the class with appropriate data.
+     * Called when the class is instatiated.
+     */
     @FXML
     private void initialize() {
         setTimePickerValues();
@@ -48,10 +51,16 @@ public class AppointmentFormController {
         initializeForm();
     }
 
+    /**
+     * Retrieves all appointments from database and sets them as the ObservableArrayList Which is the PropertyValueFactory for the appointmentTable in the appointments.fxml view.
+     */
     private void fetchTableData() {
         AppointmentDataState.setAllAppointments(new AppointmentDAO().findAll());
     }
 
+    /**
+     * Sets the values for the <code>startMinute</code>,<code>startHour</code>,<code>endMinute</code>, and <code>endHour</code> <code>ComboBox</code>es
+     */
     @FXML
     private void setTimePickerValues() {
         startMinute.setItems(FXCollections.observableArrayList("00","15","30","45"));
@@ -59,6 +68,7 @@ public class AppointmentFormController {
         endMinute.setItems(FXCollections.observableArrayList("00","15","30","45"));
         endHour.setItems(FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"));
     }
+
     @FXML
     private void setCustomerNameComboBoxValues() {
         CustomerDAO dao = new CustomerDAO();
@@ -108,12 +118,12 @@ public class AppointmentFormController {
                 if (isSaved) {
                     AppointmentDataState.setSelectedAppointment(dao.findLast());
                     AppointmentDataState.setCurrentFormType(AppointmentDataState.FormType.VIEW);
+                    fetchTableData();
                     try {
                         SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM,((BorderPane) mainPane.getParent()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    fetchTableData();
                 }
                 break;
             case EDIT:
@@ -135,13 +145,14 @@ public class AppointmentFormController {
                );
                 isSaved = dao.update(appointment);
                 if (isSaved) {
+                    AppointmentDataState.setSelectedAppointment(appointment);
                     AppointmentDataState.setCurrentFormType(AppointmentDataState.FormType.VIEW);
+                    fetchTableData();
                     try {
                         SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM,((BorderPane) mainPane.getParent()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    fetchTableData();
                 }
                 break;
             default:
@@ -154,7 +165,7 @@ public class AppointmentFormController {
         LocalDate startDatePart = startDate.getValue();
         LocalTime startTimePart = LocalTime.parse(startHour.getValue() + ":" + startMinute.getValue());
         LocalDateTime localDateTime =  LocalDateTime.of(startDatePart,startTimePart);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return zonedDateTime;
     }
 
@@ -162,7 +173,7 @@ public class AppointmentFormController {
         LocalDate endDatePart = endDate.getValue();
         LocalTime endTimePart = LocalTime.parse(endHour.getValue() + ":"+ endMinute.getValue());
         LocalDateTime localDateTime = LocalDateTime.of(endDatePart,endTimePart);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return zonedDateTime;
     }
 
@@ -211,11 +222,10 @@ public class AppointmentFormController {
         endDate.setValue(currentAppointment.getEndDateTime().toLocalDate());
         LocalTime startTime = currentAppointment.getStartDateTime().toLocalTime();
         LocalTime endTime = currentAppointment.getEndDateTime().toLocalTime();
-        startHour.getSelectionModel().select(startTime.getHour());
-        endHour.getSelectionModel().select(endTime.getHour());
-        startMinute.getSelectionModel().select(startTime.getMinute());
-        endMinute.getSelectionModel().select(endTime.getMinute());
-
+        startHour.setValue(DateTimeFormatter.ofPattern("HH").format(startTime));
+        endHour.setValue(DateTimeFormatter.ofPattern("HH").format(endTime));
+        endMinute.setValue(DateTimeFormatter.ofPattern("mm").format(endTime));
+        startMinute.setValue(DateTimeFormatter.ofPattern("mm").format(startTime));
 
     }
 
@@ -268,16 +278,6 @@ public class AppointmentFormController {
 
     }
 
-    /**
-     * Removes letters from the field which is the source of the <code>KeyEvent</code>.
-     * @param event
-     * The <code>KeyEvent</code> which calls the code.
-     * Used for determining the <code>.source()</code> of the event, and removing the letters from the user defined input.
-     */
-    @FXML
-    private void removeLettersFromTextField(KeyEvent event) {
-        Validator.removeLetters(event);
-    }
 
     /**
      * Checks for completeness of the form
@@ -285,7 +285,6 @@ public class AppointmentFormController {
      * Returns true if form is complete, and false if not.
      */
     private boolean isFormComplete() {
-        boolean isComplete;
         if(title.getText().isBlank()
                 || (customerName.getValue() == null)
                 || (contactName.getValue() == null)
@@ -301,15 +300,99 @@ public class AppointmentFormController {
                 || (endMinute.getValue() == null)
         ) {
             showFormNotCompleteAlert();
-            isComplete = false;
-        } else {
-            if (getEndDateTime().compareTo(getStartDateTime()) < 0) {
-                showDateTimeIncorrectAlert();
+            return false;
+        } else if (getEndDateTime().compareTo(getStartDateTime()) < 0) {
+            showDateTimeIncorrectAlert();
+            return false;
+        } else return isAppointmentTimeValid();
+    }
+
+    private boolean isAppointmentTimeValid() {
+        ZonedDateTime startTime = getStartDateTime();
+        ZonedDateTime endTime = getEndDateTime();
+        ZonedDateTime startOfBusiness = LocalDateTime.of(startDate.getValue(), LocalTime.parse("08:00") ).atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime closeOfBusiness = LocalDateTime.of(startDate.getValue(), LocalTime.parse("22:00") ).atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime midnightPM = LocalDateTime.of(startDate.getValue(),LocalTime.parse("23:59") ).atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime midnightAM = LocalDateTime.of(startDate.getValue(),LocalTime.parse("00:00") ).atZone(ZoneId.of("America/New_York"));
+
+
+        AppointmentDAO dao = new AppointmentDAO();
+        ObservableList<Appointment> appointmentsByCx = dao.findByCustomerId(customerName.getSelectionModel().getSelectedItem().getCustomerId());
+        for (Appointment appointment : appointmentsByCx) {
+            //checks all appointments for an overlap.
+            if (checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), startTime, endTime,false)
+                && (AppointmentDataState.getCurrentFormType() == AppointmentDataState.FormType.ADD || (appointment.getAppointmentId() != Integer.parseInt(appointmentId.getText()))))
+            {
+                //if overlap is found, shows appointment overlap, then
+                showAppointmentOverlapAlert(appointment);
+                return false;
+            } else if (checkForOverlap(midnightAM.withZoneSameInstant(ZoneId.of("UTC")),startOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")),true)
+                    || checkForOverlap(closeOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),midnightPM.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")), true)
+                    || getEndDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
+                    || getEndDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
+                    || getStartDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
+                    || getStartDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
+            ){
+                //If appointment overlaps with business hours or falls on a weekend, then
+                showAppointmentOutsideBusinessHoursAlert();
                 return false;
             }
-            isComplete = true;
         }
-        return isComplete;
+        return true;
+    }
+
+
+    /**
+     * Utility method for checking if two time periods overlap.
+     * Can check any <code>Comparable</code> time class.
+     * If times without dates are checked, the method assumes the same date.
+     * All Time parameters must be of the same type.
+     *
+     * @param startTime1 The time object which represents the start time of time period 1. Can be any Comparable time object
+     * @param endTime1 The time object which represents the start time of time period 1. Can be any Comparable time object
+     * @param startTime2 The time object which represents the start time of time period 2. Can be any Comparable time object
+     * @param endTime2 The time object which represents the start time of time period 2. Can be any Comparable time object
+     * @param canBeAdjacent boolean value which determines whether or not a time period can end when another begins or begin when another ends. If true is passed in, method
+     *                      disregards times that start at the same time another ends, or end at the same time another begins.
+     * @param <T> Type of all time parameters. Must extend <code>Comparable</code>
+     * @return Returns <code>true</code> if an overlap is found, and <code>false</code> if there is no overlap found.
+     */
+    private <T extends Comparable<T> > boolean checkForOverlap(T startTime1, T endTime1, T startTime2, T endTime2, boolean canBeAdjacent) {
+        if ((startTime2.compareTo(startTime1) > 0) && (startTime2.compareTo(endTime1) < 0)) return true;
+        if ((endTime2.compareTo(startTime1) > 0) && (endTime2.compareTo(endTime1) < 0)) return true;
+        if ((startTime2.compareTo(startTime1) > 0) && (endTime2.compareTo(endTime1) < 0)) return true;
+        if ((startTime2.compareTo(endTime1) < 0) && (endTime2.compareTo(endTime1) > 0 )) return true;
+        if (startTime2.equals(startTime1)) return true;
+        if (endTime2.equals(endTime1)) return true;
+        if(!canBeAdjacent) {
+            if (startTime2.equals(endTime1)) return true;
+            return endTime2.equals(startTime1);
+        }
+
+        return false;
+    }
+
+    /**
+     * Utility function for alerting the user that the form is not complete.
+     */
+    private void showAppointmentOverlapAlert(Appointment appointment) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Appointment Time Invalid");
+        alert.setHeaderText("Appointment time overlaps with another appointment");
+        alert.setContentText("The customer (ID:  " + appointment.getCustomerId() + ") already has an appointment scheduled at " + appointment.getStartDateTime() +". The" +
+                "appointment has not been saved. Check with the customer to see if you can arrange another time.");
+        alert.show();
+    }
+
+    /**
+     * Utility function for alerting the user that the form is not complete.
+     */
+    private void showAppointmentOutsideBusinessHoursAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Appointment Time Invalid");
+        alert.setHeaderText("Appointment time falls outside business hours");
+        alert.setContentText("Appointment time must fall between business hours. Business hours are from 8AM to 10PM EST, Monday - Friday");
+        alert.show();
     }
 
     /**
@@ -323,6 +406,9 @@ public class AppointmentFormController {
         alert.show();
     }
 
+    /**
+     * Utility function for alerting the user that the form is not complete.
+     */
     private void showDateTimeIncorrectAlert() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Date/Time is incorrect");

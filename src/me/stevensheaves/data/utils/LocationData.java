@@ -3,10 +3,10 @@ package me.stevensheaves.data.utils;
 import java.util.Locale;
 
 public class LocationData {
-    private static String systemLanguage;
-    private static String systemCountry;
-    private static String displayLanguage;
-    private static String displayCountry;
+    private static final String systemLanguage;
+    private static final String systemCountry;
+    private static final String displayLanguage;
+    private static final String displayCountry;
 
      static {
         Locale locale = Locale.getDefault();
