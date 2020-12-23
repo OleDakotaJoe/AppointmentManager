@@ -23,8 +23,8 @@ public class SceneChanger {
     public static void showPrimary(Stage primaryStage) throws IOException {
         // TODO: 12/19/2020 Change back to loading from login screen 
         SceneChanger.primaryStage = primaryStage;
-//      Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "mainscreen/mainscreen.fxml"));
-        Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "dashboard/dashboard.fxml"));
+        Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "mainscreen/mainscreen.fxml"));
+//        Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "dashboard/dashboard.fxml"));
 
         primaryStage.setTitle("Appointment Manager");
         primaryStage.setScene(new Scene(root));
@@ -36,10 +36,13 @@ public class SceneChanger {
         switch (sceneNames) {
             case LOGIN:
                 String title;
+                String label;
                 if(systemLanguage == "fr") {
                     title = "Connectez-vous à votre compte";
+                    label = "Connexion depuis: ";
                 } else {
                     title = "Login to Your Account";
+                    label = "Logging in from: ";
                 }
                 Stage stage = new Stage();
                 Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "login/login.fxml"));

@@ -80,9 +80,9 @@ public class AppointmentController {
         contact.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
         startTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-        startTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));
+        startTime.setCellFactory(new DateTimeCellFormatter<>("h:mm a z M/d/yy"));
         endTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-        endTime.setCellFactory(new DateTimeCellFormatter<>("M/d/yyyy h:mm a z"));
+        endTime.setCellFactory(new DateTimeCellFormatter<>("h:mm a z M/d/yy"));
         customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         appointmentTable.setItems(AppointmentDataState.getFilteredAppointmentList());
     }

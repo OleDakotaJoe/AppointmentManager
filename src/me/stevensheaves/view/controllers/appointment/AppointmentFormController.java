@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import me.stevensheaves.custom.controls.TextFieldLimited;
+import me.stevensheaves.custom.utils.TimeUtilities;
 import me.stevensheaves.data.model.*;
 import me.stevensheaves.database.utils.*;
 import me.stevensheaves.view.controllers.state.AppointmentDataState;
@@ -16,9 +17,11 @@ import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+// TODO: 12/23/2020 Finish Javadocs
 public class AppointmentFormController {
 
     @FXML
@@ -162,19 +165,12 @@ public class AppointmentFormController {
 
 
     private ZonedDateTime getStartDateTime() {
-        LocalDate startDatePart = startDate.getValue();
-        LocalTime startTimePart = LocalTime.parse(startHour.getValue() + ":" + startMinute.getValue());
-        LocalDateTime localDateTime =  LocalDateTime.of(startDatePart,startTimePart);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        return zonedDateTime;
+        return new TimeUtilities().ZonedDateTimeBuilder(startDate.getValue(),startHour.getValue(),startMinute.getValue());
+
     }
 
     private ZonedDateTime getEndDateTime() {
-        LocalDate endDatePart = endDate.getValue();
-        LocalTime endTimePart = LocalTime.parse(endHour.getValue() + ":"+ endMinute.getValue());
-        LocalDateTime localDateTime = LocalDateTime.of(endDatePart,endTimePart);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        return zonedDateTime;
+        return new TimeUtilities().ZonedDateTimeBuilder(endDate.getValue(),endHour.getValue(),endMinute.getValue());
     }
 
 
@@ -320,14 +316,14 @@ public class AppointmentFormController {
         ObservableList<Appointment> appointmentsByCx = dao.findByCustomerId(customerName.getSelectionModel().getSelectedItem().getCustomerId());
         for (Appointment appointment : appointmentsByCx) {
             //checks all appointments for an overlap.
-            if (checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), startTime, endTime,false)
+            if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), startTime, endTime,false)
                 && (AppointmentDataState.getCurrentFormType() == AppointmentDataState.FormType.ADD || (appointment.getAppointmentId() != Integer.parseInt(appointmentId.getText()))))
             {
                 //if overlap is found, shows appointment overlap, then
                 showAppointmentOverlapAlert(appointment);
                 return false;
-            } else if (checkForOverlap(midnightAM.withZoneSameInstant(ZoneId.of("UTC")),startOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")),true)
-                    || checkForOverlap(closeOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),midnightPM.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")), true)
+            } else if (new TimeUtilities().checkForOverlap(midnightAM.withZoneSameInstant(ZoneId.of("UTC")),startOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")),true)
+                    || new TimeUtilities().checkForOverlap(closeOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),midnightPM.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")), true)
                     || getEndDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
                     || getEndDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
                     || getStartDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
@@ -341,46 +337,18 @@ public class AppointmentFormController {
         return true;
     }
 
-
-    /**
-     * Utility method for checking if two time periods overlap.
-     * Can check any <code>Comparable</code> time class.
-     * If times without dates are checked, the method assumes the same date.
-     * All Time parameters must be of the same type.
-     *
-     * @param startTime1 The time object which represents the start time of time period 1. Can be any Comparable time object
-     * @param endTime1 The time object which represents the start time of time period 1. Can be any Comparable time object
-     * @param startTime2 The time object which represents the start time of time period 2. Can be any Comparable time object
-     * @param endTime2 The time object which represents the start time of time period 2. Can be any Comparable time object
-     * @param canBeAdjacent boolean value which determines whether or not a time period can end when another begins or begin when another ends. If true is passed in, method
-     *                      disregards times that start at the same time another ends, or end at the same time another begins.
-     * @param <T> Type of all time parameters. Must extend <code>Comparable</code>
-     * @return Returns <code>true</code> if an overlap is found, and <code>false</code> if there is no overlap found.
-     */
-    private <T extends Comparable<T> > boolean checkForOverlap(T startTime1, T endTime1, T startTime2, T endTime2, boolean canBeAdjacent) {
-        if ((startTime2.compareTo(startTime1) > 0) && (startTime2.compareTo(endTime1) < 0)) return true;
-        if ((endTime2.compareTo(startTime1) > 0) && (endTime2.compareTo(endTime1) < 0)) return true;
-        if ((startTime2.compareTo(startTime1) > 0) && (endTime2.compareTo(endTime1) < 0)) return true;
-        if ((startTime2.compareTo(endTime1) < 0) && (endTime2.compareTo(endTime1) > 0 )) return true;
-        if (startTime2.equals(startTime1)) return true;
-        if (endTime2.equals(endTime1)) return true;
-        if(!canBeAdjacent) {
-            if (startTime2.equals(endTime1)) return true;
-            return endTime2.equals(startTime1);
-        }
-
-        return false;
-    }
-
     /**
      * Utility function for alerting the user that the form is not complete.
      */
     private void showAppointmentOverlapAlert(Appointment appointment) {
+        Customer customer = new CustomerDAO().find(appointment.getCustomerId());
+        String time = DateTimeFormatter.ofPattern("h:mm a z M/d/yy").format(appointment.getStartDateTime()) ;
+
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Appointment Time Invalid");
         alert.setHeaderText("Appointment time overlaps with another appointment");
-        alert.setContentText("The customer (ID:  " + appointment.getCustomerId() + ") already has an appointment scheduled at " + appointment.getStartDateTime() +". The" +
-                "appointment has not been saved. Check with the customer to see if you can arrange another time.");
+        alert.setContentText("The customer, " +customer.getCustomerName() + " (ID:  " + appointment.getCustomerId() + "), already has an appointment scheduled at " + time +". The" +
+                " appointment has not been saved. Check with the customer to see if you can arrange another time.");
         alert.show();
     }
 

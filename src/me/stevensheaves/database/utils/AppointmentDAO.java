@@ -14,6 +14,7 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
     private final String SELECT_LAST_INSERTED_ROW = "SELECT * FROM appointments WHERE Appointment_ID =(SELECT last_insert_id())";
     private final String DELETE = "DELETE FROM appointments WHERE Appointment_ID = ?";
     private final String FIND_BY_CUSTOMER_ID = "SELECT * FROM appointments WHERE Customer_ID = ?";
+    private final String FIND_BY_USER_ID = "SELECT * FROM appointments WHERE User_ID = ?";
     private final String UPDATE = "UPDATE appointments SET " +
             "Title = ?,\n" +
             "Description = ?,\n" +
@@ -80,6 +81,37 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
     public ObservableList<Appointment> findByCustomerId(int id) {
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_CUSTOMER_ID)) {
+            statement.setInt(1,id);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                Appointment appointment = new Appointment(
+                        rs.getInt("Appointment_ID"),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Location"),
+                        rs.getString("Type"),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Start")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("End")),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Create_Date")),
+                        rs.getString("Created_By"),
+                        convertTimestampToZonedDateTime(rs.getTimestamp("Last_Update")),
+                        rs.getString("Last_Updated_By"),
+                        rs.getInt("Customer_ID"),
+                        rs.getInt("User_ID"),
+                        rs.getInt("Contact_ID")
+                );
+                tempList.add(appointment);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+        return tempList;
+    }
+
+    public ObservableList<Appointment> findByUserId(int id) {
+        ObservableList<Appointment> tempList = FXCollections.observableArrayList();
+        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)) {
             statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
