@@ -13,11 +13,11 @@ import me.stevensheaves.data.model.Appointment;
 import me.stevensheaves.data.model.CurrentUser;
 import me.stevensheaves.data.model.Customer;
 import me.stevensheaves.data.model.User;
+import me.stevensheaves.data.utils.ActivityLogger;
 import me.stevensheaves.data.utils.LocationData;
 import me.stevensheaves.database.utils.AppointmentDAO;
 import me.stevensheaves.database.utils.CustomerDAO;
 import me.stevensheaves.database.utils.UserDAO;
-import me.stevensheaves.view.controllers.state.AppointmentDataState;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
@@ -77,40 +77,58 @@ public class LoginController {
      */
     @FXML
     private void loginHandler() {
-    UserDAO dao = new UserDAO();
-    User currentUser = (userName.getText().matches("\\d")
-            ? dao.validateUser(Integer.parseInt(userName.getText()), password.getText())
-            : dao.validateUser(userName.getText(), password.getText()));
-       if (currentUser != null)  {
-           CurrentUser.login(currentUser.getId(), currentUser.getUserName(), true, LocalDateTime.now());
-           ObservableList<Appointment> usersAppointments =  new AppointmentDAO().findByUserId(currentUser.getId());
-           boolean hasAppointment = false;
-           for (Appointment appointment : usersAppointments) {
-               //checks all appointments for an overlap.
-               if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), ZonedDateTime.now(ZoneId.systemDefault()), ZonedDateTime.now(ZoneId.systemDefault()).plusMinutes(15), false)) {
-                   //if overlap is found, shows appointment overlap, then
-                   showUpcomingAppointmentAlert(appointment);
-                   hasAppointment = true;
-                   break;
-               }
-           }
-           if (!hasAppointment) showNoUpcomingAppointmentAlert();
+        User currentUser = validateAndReturnUser();
+        writeLoginActivityToFile(currentUser, userName.getText());
+        if (currentUser != null)  {
+           setUserLoggedIn(currentUser);
+           checkForUpcomingAppointments(currentUser);
            try {
                SceneChanger.changeScene(SceneNames.DASHBOARD);
                closeWindow();
            } catch (IOException e) {
                e.printStackTrace();
            }
-       } else {
+        } else {
            warningLabel.setText(warningLabelText);
-       }
+        }
     }
 
+    private User validateAndReturnUser() {
+        UserDAO dao = new UserDAO();
+        User currentUser = (userName.getText().matches("\\d")
+                ? dao.validateUser(Integer.parseInt(userName.getText()), password.getText())
+                : dao.validateUser(userName.getText(), password.getText()));
+        return currentUser;
+    }
+
+    private void setUserLoggedIn(User currentUser) {
+        CurrentUser.login(currentUser.getId(), currentUser.getUserName(), true, LocalDateTime.now());
+    }
+
+    private void checkForUpcomingAppointments(User currentUser) {
+        ObservableList<Appointment> usersAppointments =  new AppointmentDAO().findByUserId(currentUser.getId());
+        boolean hasAppointment = false;
+        for (Appointment appointment : usersAppointments) {
+            //checks all appointments for an overlap.
+            if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(),
+                    appointment.getEndDateTime(),
+                    ZonedDateTime.now(ZoneId.systemDefault()),
+                    ZonedDateTime.now(ZoneId.systemDefault()).plusMinutes(15),
+                    false
+            )) {
+                //if overlap is found, shows appointment overlap, then
+                showUpcomingAppointmentAlert(appointment);
+                hasAppointment = true;
+                break;
+            }
+        }
+        if (!hasAppointment) showNoUpcomingAppointmentAlert();
+    }
 
     private void showUpcomingAppointmentAlert(Appointment appointment) {
         Customer customer = new CustomerDAO().find(appointment.getCustomerId());
         String time = DateTimeFormatter.ofPattern("h:mm a z M/d/yy").format(appointment.getStartDateTime()) ;
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Upcoming Appointment");
         alert.setHeaderText("You have an appointment coming up soon.");
         alert.setContentText("You have an upcoming appointment with " + customer.getCustomerName() + ", ID:  " + appointment.getCustomerId() + ". The appointment (ID: "+appointment.getAppointmentId()+") is scheduled" +
@@ -119,10 +137,15 @@ public class LoginController {
     }
 
     private void showNoUpcomingAppointmentAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No upcoming appointments");
         alert.setHeaderText("You don't have any appointments within the next 15 minutes.");
         alert.showAndWait();
+    }
+
+    private void writeLoginActivityToFile(User user, String attemptedUsername) {
+        boolean wasSuccessful = user != null;
+        ActivityLogger.getInstance().writeActivityToLog(attemptedUsername , wasSuccessful);
     }
 
     @FXML
