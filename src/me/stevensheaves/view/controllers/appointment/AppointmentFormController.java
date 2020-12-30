@@ -29,9 +29,9 @@ public class AppointmentFormController {
     @FXML
     private GridPane mainPane;
     @FXML
-    private TextFieldLimited title, description, appointmentLocation, appointmentType;
+    private TextFieldLimited title, description, appointmentLocation;
     @FXML
-    private ComboBox<String> startHour, startMinute, endHour, endMinute,userName;
+    private ComboBox<String> startHour, startMinute, endHour, endMinute, userName, appointmentType;
     @FXML
     private ComboBox<Customer> customerName;
     @FXML
@@ -70,6 +70,13 @@ public class AppointmentFormController {
         startHour.setItems(FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"));
         endMinute.setItems(FXCollections.observableArrayList("00","15","30","45"));
         endHour.setItems(FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"));
+        appointmentType.setItems(FXCollections.observableArrayList( "Information-Gathering",
+                "Needs-Assessment",
+                "Product Demo",
+                "Closing Sale",
+                "Follow-Up",
+                "Other"
+        ));
     }
 
     @FXML
@@ -106,7 +113,7 @@ public class AppointmentFormController {
                         title.getText(),
                         description.getText(),
                         appointmentLocation.getText(),
-                        appointmentType.getText(),
+                        appointmentType.getValue(),
                         getStartDateTime(),
                         getEndDateTime(),
                         ZonedDateTime.now(),
@@ -135,7 +142,7 @@ public class AppointmentFormController {
                        title.getText(),
                        description.getText(),
                        appointmentLocation.getText(),
-                       appointmentType.getText(),
+                       appointmentType.getValue(),
                        getStartDateTime(),
                        getEndDateTime(),
                        ZonedDateTime.now(),
@@ -213,7 +220,7 @@ public class AppointmentFormController {
         userName.setValue(userDAO.find(currentAppointment.getUserId()).getUserName());
         description.setText(currentAppointment.getDescription());
         appointmentLocation.setText(currentAppointment.getLocation());
-        appointmentType.setText(currentAppointment.getType());
+        appointmentType.setValue(currentAppointment.getType());
         startDate.setValue(currentAppointment.getStartDateTime().toLocalDate());
         endDate.setValue(currentAppointment.getEndDateTime().toLocalDate());
         LocalTime startTime = currentAppointment.getStartDateTime().toLocalTime();
@@ -264,7 +271,7 @@ public class AppointmentFormController {
         userName.setValue(null);
         description.setText("");
         appointmentLocation.setText("");
-        appointmentType.setText("");
+        appointmentType.setValue(null);
         endDate.setValue(null);
         endHour.setValue(null);
         endMinute.setValue(null);
@@ -287,7 +294,7 @@ public class AppointmentFormController {
                 || (userName.getValue() == null)
                 || description.getText().isBlank()
                 || appointmentLocation.getText().isBlank()
-                || appointmentType.getText().isBlank()
+                || (appointmentType.getValue() == null)
                 || (startDate.getValue() == null)
                 || (startHour.getValue() == null )
                 || (startMinute.getValue() == null)

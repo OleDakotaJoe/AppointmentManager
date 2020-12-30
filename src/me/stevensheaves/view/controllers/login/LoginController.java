@@ -84,14 +84,17 @@ public class LoginController {
        if (currentUser != null)  {
            CurrentUser.login(currentUser.getId(), currentUser.getUserName(), true, LocalDateTime.now());
            ObservableList<Appointment> usersAppointments =  new AppointmentDAO().findByUserId(currentUser.getId());
+           boolean hasAppointment = false;
            for (Appointment appointment : usersAppointments) {
                //checks all appointments for an overlap.
                if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), ZonedDateTime.now(ZoneId.systemDefault()), ZonedDateTime.now(ZoneId.systemDefault()).plusMinutes(15), false)) {
                    //if overlap is found, shows appointment overlap, then
                    showUpcomingAppointmentAlert(appointment);
+                   hasAppointment = true;
                    break;
                }
            }
+           if (!hasAppointment) showNoUpcomingAppointmentAlert();
            try {
                SceneChanger.changeScene(SceneNames.DASHBOARD);
                closeWindow();
@@ -110,12 +113,17 @@ public class LoginController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Upcoming Appointment");
         alert.setHeaderText("You have an appointment coming up soon.");
-        alert.setContentText("You have an upcoming appointment with " + customer.getCustomerName() + ", ID:  " + appointment.getCustomerId() + ". The appointment is scheduled" +
+        alert.setContentText("You have an upcoming appointment with " + customer.getCustomerName() + ", ID:  " + appointment.getCustomerId() + ". The appointment (ID: "+appointment.getAppointmentId()+") is scheduled" +
                 "for " + time +".");
         alert.showAndWait();
     }
 
-
+    private void showNoUpcomingAppointmentAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("No upcoming appointments");
+        alert.setHeaderText("You don't have any appointments within the next 15 minutes.");
+        alert.showAndWait();
+    }
 
     @FXML
     private void closeWindow() {

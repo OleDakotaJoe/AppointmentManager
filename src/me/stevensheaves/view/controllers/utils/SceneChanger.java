@@ -31,18 +31,15 @@ public class SceneChanger {
         primaryStage.show();
     }
 
-    public static void changeScene(SceneNames sceneNames) throws IOException {
+    public static Parent changeScene(SceneNames sceneNames) throws IOException {
         Parent pane = null;
         switch (sceneNames) {
             case LOGIN:
                 String title;
-                String label;
                 if(systemLanguage == "fr") {
                     title = "Connectez-vous à votre compte";
-                    label = "Connexion depuis: ";
                 } else {
                     title = "Login to Your Account";
-                    label = "Logging in from: ";
                 }
                 Stage stage = new Stage();
                 Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "login/login.fxml"));
@@ -72,6 +69,7 @@ public class SceneChanger {
         }
 
         if (pane != null) primaryStage.setScene(new Scene(pane));
+        return pane;
     }
 
     public static void addChildScene(SceneNames sceneName, Pane currentPane) throws IOException {

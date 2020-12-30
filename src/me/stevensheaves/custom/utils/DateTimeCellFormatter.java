@@ -8,7 +8,7 @@ import javafx.util.Callback;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
-public class DateTimeCellFormatter<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+public class DateTimeCellFormatter<S, T extends TemporalAccessor> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
     private final DateTimeFormatter format;
 
     public DateTimeCellFormatter(String format) {
@@ -25,7 +25,7 @@ public class DateTimeCellFormatter<S, T> implements Callback<TableColumn<S, T>, 
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(format.format((TemporalAccessor) item));
+                    setText(format.format(item));
                 }
             }
         };

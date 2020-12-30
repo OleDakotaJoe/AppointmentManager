@@ -50,7 +50,7 @@
     <TextFieldLimited fx:id="appointmentLocation" promptText="Enter Location..."  maxLength="50" GridPane.rowIndex="5" GridPane.columnIndex="1" />
     <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="2">
         <Label text="Appointment Type:" />
-        <TextFieldLimited fx:id="appointmentType" maxLength="50"/>
+        <ComboBox fx:id="appointmentType"/>
     </HBox>
     <Label text="Start Date and Time:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
     <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.columnSpan="3">

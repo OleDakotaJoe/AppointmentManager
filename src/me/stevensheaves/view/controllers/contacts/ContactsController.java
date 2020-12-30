@@ -29,7 +29,7 @@ public class ContactsController {
     @FXML private Button addContactButton, editContactButton, viewContactButton, deleteContactButton;
     @FXML private BorderPane parentPane;
     // TODO: 12/11/2020 test if i can specify type in the below table and remove casting in appropriate table data sections
-    @FXML private TableView contactsTable;
+    @FXML private TableView<Contact> contactsTable;
     @FXML private TableColumn<Contact,Integer> contactId;
     @FXML private TableColumn<Contact,String> contactName;
     @FXML private TableColumn<Contact,String> email;
@@ -53,6 +53,7 @@ public class ContactsController {
         ContactDataState.setAllContacts(dao.findAll());
     }
 
+    // TODO: 12/28/2020 refactor to separate fetchTableData() from the rest of the function
     /**
      * Sets the values for each column in the <code>contactsTable</code>.
      */
@@ -101,14 +102,14 @@ public class ContactsController {
             if(!isValidSelection()) return;
 
             ContactDataState.setCurrentFormType(ContactDataState.FormType.EDIT);
-            ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
+            ContactDataState.setSelectedContact(contactsTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
         if(event.getSource().equals(viewContactButton)) {
             if(!isValidSelection()) return;
 
             ContactDataState.setCurrentFormType(ContactDataState.FormType.VIEW);
-            ContactDataState.setSelectedContact( (Contact) contactsTable.getSelectionModel().getSelectedItem());
+            ContactDataState.setSelectedContact(contactsTable.getSelectionModel().getSelectedItem());
             SceneChanger.addChildScene(SceneNames.CONTACTS_FORM, parentPane);
         }
 

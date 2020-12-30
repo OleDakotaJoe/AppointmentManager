@@ -40,15 +40,23 @@
                     <Insets topRightBottomLeft="10" />
                 </padding>
                 <Label text="All Customers" />
-                <TableView fx:id="customers">
+                <TableView fx:id="customersTable">
+                    <columns>
+                        <TableColumn text="Customer ID" fx:id="customerId" />
+                        <TableColumn text="Customer Name" fx:id="customerName"/>
+                        <TableColumn text="Address" fx:id="customerAddress" />
+                        <TableColumn text="Postal Code" fx:id="postalCode" />
+                        <TableColumn text="Phone Number" fx:id="phoneNumber" />
+                        <TableColumn text="Division" fx:id="divisionName" />
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10"/>
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addCustomer" onAction="#handleCustomerCRUD"/>
+                    <Button text="Update" fx:id="editCustomer" onAction="#handleCustomerCRUD" />
+                    <Button text="View" fx:id="viewCustomer" onAction="#handleCustomerCRUD" />
                 </HBox>
             </VBox>
             <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
@@ -56,15 +64,20 @@
                     <Insets topRightBottomLeft="10" />
                 </padding>
                 <Label text="All Contacts" />
-                <TableView fx:id="contacts">
+                <TableView fx:id="contactsTable">
+                    <columns>
+                        <TableColumn text="Contact ID" fx:id="contactId" prefWidth="75"/>
+                        <TableColumn text="Contact Name" fx:id="contactName" prefWidth="100" />
+                        <TableColumn text="Email Address" fx:id="email" prefWidth="175"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10"/>
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addContact" onAction="#handleContactCRUD"/>
+                    <Button text="Update" fx:id="editContact" onAction="#handleContactCRUD" />
+                    <Button text="View" fx:id="viewContact" onAction="#handleContactCRUD" />
                 </HBox>
             </VBox>
         </VBox>
@@ -79,15 +92,26 @@
                     <Insets topRightBottomLeft="10" />
                 </padding>
                 <Label text="All Appointments" />
-                <TableView fx:id="appointmentsAll">
+                <TableView fx:id="allAppointments" prefWidth="350" >
+                    <columns>
+                        <TableColumn text="Appointment ID" fx:id="allAppointmentId" />
+                        <TableColumn text="Title" fx:id="allAppointmentsTitle"/>
+                        <TableColumn text="Description" fx:id="allAppointmentsDescription" />
+                        <TableColumn text="Location" fx:id="allAppointmentsLocation"/>
+                        <TableColumn text="Contact Name" fx:id="allAppointmentsContact"/>
+                        <TableColumn text="Type" fx:id="allAppointmentsType"/>
+                        <TableColumn text="Start Date and Time" fx:id="allAppointmentsStartTime"/>
+                        <TableColumn text="End Date and Time" fx:id="allAppointmentsEndTime"/>
+                        <TableColumn text="Customer ID" fx:id="allAppointmentsCustomerId"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10" />
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addAppointmentButtonAll" onAction="#handleEditAppointmentAll"/>
+                    <Button text="Update" fx:id="editAppointmentButtonAll" onAction="#handleEditAppointmentAll" />
+                    <Button text="View" fx:id="viewAppointmentButtonAll" onAction="#handleEditAppointmentAll" />
                 </HBox>
             </VBox>
             <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
@@ -95,15 +119,26 @@
                     <Insets topRightBottomLeft="10" />
                 </padding>
                 <Label text="Today's Appointments" />
-                <TableView fx:id="appointmentsToday">
+                <TableView fx:id="todayAppointments"  prefWidth="350" >
+                    <columns>
+                        <TableColumn text="Appointment ID" fx:id="todayAppointmentId" />
+                        <TableColumn text="Title" fx:id="todayAppointmentsTitle"/>
+                        <TableColumn text="Description" fx:id="todayAppointmentsDescription" />
+                        <TableColumn text="Location" fx:id="todayAppointmentsLocation"/>
+                        <TableColumn text="Contact Name" fx:id="todayAppointmentsContact"/>
+                        <TableColumn text="Type" fx:id="todayAppointmentsType"/>
+                        <TableColumn text="Start Date and Time" fx:id="todayAppointmentsStartTime"/>
+                        <TableColumn text="End Date and Time" fx:id="todayAppointmentsEndTime"/>
+                        <TableColumn text="Customer ID" fx:id="todayAppointmentsCustomerId"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10" />
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addAppointmentButtonToday" onAction="#handleEditAppointmentToday"/>
+                    <Button text="Update" fx:id="editAppointmentButtonToday" onAction="#handleEditAppointmentToday" />
+                    <Button text="View" fx:id="viewAppointmentButtonToday" onAction="#handleEditAppointmentToday" />
                 </HBox>
             </VBox>
         </VBox>
@@ -118,15 +153,26 @@
                     <Insets topRightBottomLeft="10"/>
                 </padding>
                 <Label text="Appointments This Week" />
-                <TableView fx:id="appointmentsWeek">
+                <TableView fx:id="weekAppointments"  prefWidth="350" >
+                    <columns>
+                        <TableColumn text="Appointment ID" fx:id="weekAppointmentId" />
+                        <TableColumn text="Title" fx:id="weekAppointmentsTitle"/>
+                        <TableColumn text="Description" fx:id="weekAppointmentsDescription" />
+                        <TableColumn text="Location" fx:id="weekAppointmentsLocation"/>
+                        <TableColumn text="Contact Name" fx:id="weekAppointmentsContact"/>
+                        <TableColumn text="Type" fx:id="weekAppointmentsType"/>
+                        <TableColumn text="Start Date and Time" fx:id="weekAppointmentsStartTime"/>
+                        <TableColumn text="End Date and Time" fx:id="weekAppointmentsEndTime"/>
+                        <TableColumn text="Customer ID" fx:id="weekAppointmentsCustomerId"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10"/>
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addAppointmentButtonWeek" onAction="#handleEditAppointmentWeek"/>
+                    <Button text="Update" fx:id="editAppointmentButtonWeek" onAction="#handleEditAppointmentWeek" />
+                    <Button text="View" fx:id="viewAppointmentButtonWeek" onAction="#handleEditAppointmentWeek" />
                 </HBox>
             </VBox>
             <VBox spacing="10" alignment="CENTER" style="-fx-border-style: solid; -fx-border-radius: 10; -fx-border-color: grey;">
@@ -134,15 +180,26 @@
                     <Insets topRightBottomLeft="10"/>
                 </padding>
                 <Label text="Appointments This Month" />
-                <TableView fx:id="appointmentsMonth">
+                <TableView fx:id="monthAppointments"  prefWidth="350" >
+                    <columns>
+                        <TableColumn text="Appointment ID" fx:id="monthAppointmentId" />
+                        <TableColumn text="Title" fx:id="monthAppointmentsTitle"/>
+                        <TableColumn text="Description" fx:id="monthAppointmentsDescription" />
+                        <TableColumn text="Location" fx:id="monthAppointmentsLocation"/>
+                        <TableColumn text="Contact Name" fx:id="monthAppointmentsContact"/>
+                        <TableColumn text="Type" fx:id="monthAppointmentsType"/>
+                        <TableColumn text="Start Date and Time" fx:id="monthAppointmentsStartTime"/>
+                        <TableColumn text="End Date and Time" fx:id="monthAppointmentsEndTime"/>
+                        <TableColumn text="Customer ID" fx:id="monthAppointmentsCustomerId"/>
+                    </columns>
                 </TableView>
                 <HBox spacing="30" alignment="CENTER">
                     <padding>
                         <Insets topRightBottomLeft="10"/>
                     </padding>
-                    <Button text="Add" />
-                    <Button text="Update" />
-                    <Button text="View" />
+                    <Button text="Add" fx:id="addAppointmentButtonMonth" onAction="#handleEditAppointmentMonth"/>
+                    <Button text="Update" fx:id="editAppointmentButtonMonth" onAction="#handleEditAppointmentMonth" />
+                    <Button text="View" fx:id="viewAppointmentButtonMonth" onAction="#handleEditAppointmentMonth" />
                 </HBox>
             </VBox>
         </VBox>

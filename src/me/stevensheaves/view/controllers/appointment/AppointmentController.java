@@ -92,21 +92,24 @@ public class AppointmentController {
     private void handleAppointmentListChange() {
         fetchTableData();
         if (pastAppointments.isSelected()) {
-            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now()));
+            AppointmentDataState.getFilteredAppointmentList()
+                    .setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now()));
         }
         if (allAppointments.isSelected()) {
-            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> true);
+            AppointmentDataState.getFilteredAppointmentList()
+                    .setPredicate(s -> true);
         }
         if (todayAppointments.isSelected()) {
-            AppointmentDataState.getFilteredAppointmentList().setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusDays(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
-
+            AppointmentDataState.getFilteredAppointmentList()
+                    .setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusDays(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
         }
         if (weekAppointments.isSelected()) {
-            AppointmentDataState.getFilteredAppointmentList().setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusWeeks(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
-
+            AppointmentDataState.getFilteredAppointmentList()
+                    .setPredicate(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusWeeks(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
         }
         if (monthAppointments.isSelected()) {
-            AppointmentDataState.getFilteredAppointmentList().setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now().plusMonths(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
+            AppointmentDataState.getFilteredAppointmentList()
+                    .setPredicate(s -> s.getStartDateTime().isBefore(ZonedDateTime.now().plusMonths(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now()));
 
         }
 

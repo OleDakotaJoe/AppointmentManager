@@ -7,8 +7,7 @@ import me.stevensheaves.data.model.Country;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class CountryDAO extends DataAccessObject<Country> {
     private final String GET_ALL_WITH_DIVISIONS = "SELECT countries.Country, countries.Country_ID FROM countries" +

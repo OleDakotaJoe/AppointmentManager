@@ -47,7 +47,6 @@ public class UserDAO extends DataAccessObject<User> {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                System.out.println(rs.getString("User_Name"));
                 return new User(rs.getInt("User_ID"), rs.getString("User_Name"));
             }
 
