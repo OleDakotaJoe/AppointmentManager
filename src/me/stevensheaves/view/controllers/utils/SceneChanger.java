@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.stevensheaves.data.utils.LocationData;
+import me.stevensheaves.view.controllers.reports.Report;
 
 import java.io.IOException;
 
@@ -17,15 +18,10 @@ public class SceneChanger {
     private static Stage primaryStage;
     private final static String BASE_PATH= "/me/stevensheaves/view/controllers/";
     private static final String systemLanguage = LocationData.getSystemLanguage();
-    // TODO: 12/5/2020 implement "You're logging in from: sysCountry"
-    private static final String systemCountry = LocationData.getSystemCountry();
 
     public static void showPrimary(Stage primaryStage) throws IOException {
-        // TODO: 12/19/2020 Change back to loading from login screen 
         SceneChanger.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "mainscreen/mainscreen.fxml"));
-//        Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "dashboard/dashboard.fxml"));
-
         primaryStage.setTitle("Appointment Manager");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -88,5 +84,22 @@ public class SceneChanger {
 
         }
     }
+
+    public static void addChildScene(Report.ReportType reportType, Pane currentPane) throws IOException {
+        switch(reportType) {
+            case APPOINTMENT_BY_CUSTOMER:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbycustomer.fxml")));
+                break;
+            case APPOINTMENT_BY_TYPE:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbytype.fxml")));
+                break;
+            case SCHEDULE_BY_CONTACT:
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/schedulebycontact.fxml")));
+                break;
+            default:
+                break;
+        }
+    }
+
 
 }

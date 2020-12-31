@@ -9,40 +9,36 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            fx:id="mainPane"
             fx:controller="me.stevensheaves.view.controllers.reports.ReportsController"
             prefHeight="850.0" prefWidth="1100">
     <top>
-        <HBox spacing="100" alignment="CENTER">
-            <HBox spacing="15" alignment="CENTER_LEFT">
+        <VBox>
+            <HBox spacing="100" alignment="CENTER">
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="10" bottom="10"/>
+                    </padding>
+                    <Button text="Dashboard" fx:id="dashboardButton" onAction="#changeScene" />
+                    <Button text="Appointments" fx:id="appointmentsButton" onAction="#changeScene"/>
+                    <Button text="Customers" fx:id="customersButton" onAction="#changeScene"/>
+                    <Button text="Contacts" fx:id="contactsButton" onAction="#changeScene"/>
+                    <Button text="Reports" fx:id="reportsButton" onAction="#changeScene" disable="true"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+                </HBox>
+            </HBox>
+            <HBox spacing="50" alignment="CENTER_LEFT">
                 <padding>
-                    <Insets top="10" bottom="10"/>
+                    <Insets left="50" top="10" bottom="10" />
                 </padding>
-                <Button text="Dashboard" fx:id="dashboardButton" onAction="#changeScene" />
-                <Button text="Appointments" fx:id="appointmentsButton" onAction="#changeScene"/>
-                <Button text="Customers" fx:id="customersButton" onAction="#changeScene"/>
-                <Button text="Contacts" fx:id="contactsButton" onAction="#changeScene"/>
-                <Button text="Reports" fx:id="reportsButton" onAction="#changeScene" disable="true"/>
+                <ComboBox fx:id="reportTypes"/>
+                <Button text="Run Report" onAction="#runReport" />
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
-                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
-            </HBox>
-        </HBox>
+        </VBox>
     </top>
-    <bottom>
-        <HBox spacing="30" alignment="CENTER_LEFT">
-            <padding>
-                <Insets left="20" top="10" bottom="10"/>
-            </padding>
-            <Button text="Add" />
-            <Button text="Update" />
-            <Button text="View" />
-        </HBox>
-    </bottom>
     <center>
     </center>
-    <left>
-        <TableView prefHeight="Infinity">
-        </TableView>
-    </left>
 
 </BorderPane>
