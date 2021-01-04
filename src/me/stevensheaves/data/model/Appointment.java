@@ -1,8 +1,11 @@
 package me.stevensheaves.data.model;
 
+import me.stevensheaves.custom.utils.TimeUtilities;
+import me.stevensheaves.database.utils.CustomerDAO;
 import org.w3c.dom.ls.LSOutput;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
     private int appointmentId;
@@ -265,31 +268,27 @@ public class Appointment {
         this.contactName = contactName;
     }
 
-/*    @Override
-    public String toString() {
-        return "Appointment{" +
-                "appointmentId=" + appointmentId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", location='" + location + '\'' +
-                ", type='" + type + '\'' +
-                ", startDateTime=" + startDateTime +
-                ", endDateTime=" + endDateTime +
-                ", createdTimestamp=" + createdTimestamp +
-                ", createdByUserName='" + createdByUserName + '\'' +
-                ", lastUpdateTimestamp=" + lastUpdateTimestamp +
-                ", lastUpdatedByUserName='" + lastUpdatedByUserName + '\'' +
-                ", customerId=" + customerId +
-                ", userId=" + userId +
-                ", contactId=" + contactId +
-                ", contactName='" + contactName + '\'' +
-                '}';
-    }*/
+
+
+
+    public String toScheduleFormatted() {
+        return "\t\tTitle: " + title + " | Appointment ID: " + appointmentId + "\n\t\t"
+                + TimeUtilities.formatDate(startDateTime)
+                + " - "
+                + TimeUtilities.formatDate(endDateTime)
+                + "\n\t\tCustomer: "
+                + (new CustomerDAO().find(customerId).getCustomerName())
+                + ", ID: " + customerId
+                + "\n\t\tDescription: " + description;
+    }
 
     @Override
     public String toString() {
         return "Appointment{" +
-                "title='" + title + '\'' +
+                "appointmentId=" + appointmentId +
+                ", title='" + title + '\'' +
+                ", startDateTime=" + startDateTime +
+                ", endDateTime=" + endDateTime +
                 '}';
     }
 }

@@ -26,7 +26,7 @@
                 <Button text="Reports" fx:id="reportsButton" onAction="#changeScene"/>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
-                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+                <Button text="Help" fx:id="helpButton" onAction="#showHelpDialog"/>
             </HBox>
         </HBox>
     </top>

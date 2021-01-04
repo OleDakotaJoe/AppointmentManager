@@ -26,7 +26,7 @@
                 <Button text="Reports" fx:id="reportsButton" onAction="#changeScene"/>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
-                <Button text="Help" fx:id="helpButton" onAction="#changeScene"/>
+                <Button text="Help"  onAction="#showHelpDialog"/>
             </HBox>
         </HBox>
     </top>
@@ -74,10 +74,6 @@
 
 
                 </VBox>
-                <HBox alignment="CENTER_LEFT" spacing="15">
-                    <TextFieldLimited promptText="Search appointments..."/>
-                    <Button text="Search" fx:id="searchButton" />
-                </HBox>
                 <TableView fx:id="appointmentTable" prefHeight="500" prefWidth="350">
                     <columns>
                         <TableColumn text="Appointment ID" fx:id="appointmentId" />

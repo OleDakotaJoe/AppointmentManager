@@ -1,6 +1,7 @@
 package me.stevensheaves.custom.utils;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class TimeUtilities {
 
@@ -40,5 +41,8 @@ public class TimeUtilities {
         LocalDateTime localDateTime = LocalDateTime.of(datePartBuilt, timePartBuilt);
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return zonedDateTime;
+    }
+    public static String formatDate(ZonedDateTime dateTime) {
+        return DateTimeFormatter.ofPattern("h:mm a z M/d/yy").format(dateTime);
     }
 }

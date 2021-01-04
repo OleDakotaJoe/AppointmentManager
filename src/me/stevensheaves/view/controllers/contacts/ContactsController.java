@@ -131,6 +131,22 @@ public class ContactsController {
         fetchTableData();
     }
 
+    @FXML
+    private void showHelpDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Need Some help?");
+        alert.setHeaderText("We've got your back. ");
+        alert.setContentText("\n\n\t\t\t\tTo Add An Entry\n Click the \"Add\" button. Make sure all fields have been filled out. Note: you cannot choose the ID, it will be" +
+                "automatically generated." +
+                "\n\n\t\t\t\tTo Edit an Entry\nFirst click on the entry you would like to edit, then click \"Edit\". Afterwards, " +
+                "you may edit any field which needs to be updated. When you are finished, click \"Save\". If you would like to discard changes, you may click \"cancel\" " +
+                "\n\n\t\t\t\tTo View an Entry\nFirst click on the entry you would like to view, then click \"View\". If you click " +
+                "\"View\" all fields will be disabled. If you would like to discard changes, you may click \"cancel\" " +
+                "\n\n\t\t\t\tTo Delete an Entry\nFirst click on the entry you would like to delete, then click \"Delete\". You " +
+                "will see a pop-up to confirm that you would like to delete the entry. Only click \"OK\" if you are certain that you would like to delete the entry.");
+        alert.show();
+    }
+
     /**
      * Checks whether the user has selected a contact from the table
      * @return

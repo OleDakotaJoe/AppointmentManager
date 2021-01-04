@@ -197,6 +197,17 @@ public class DashboardController {
     }
 
     @FXML
+    private void showHelpDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Need Some help?");
+        alert.setHeaderText("We've got your back. ");
+        alert.setContentText("\n\n\t\t\t\tTo Add An Entry\n Click \"Add\" underneath the table in which it was located. Afterwards, you will be redirected to the appropriate page to make your addition. " +
+                "\n\n\t\t\t\tTo Edit an Entry\nFirst click on the entry you would like to edit, then click \"Edit\" underneath the table in which it was located. Afterwards, you will be redirected to the appropriate page to make your changes." +
+                "\n\n\t\t\t\tTo View an Entry\nFirst click on the entry you would like to view, then click \"View\"underneath the table in which it was located. Afterwards, you will be redirected to the appropriate page to make your changes.");
+        alert.show();
+    }
+
+    @FXML
     private void changeScene(ActionEvent event) throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
             SceneChanger.changeScene(SceneNames.APPOINTMENT);
@@ -232,7 +243,6 @@ public class DashboardController {
             changeToAppointmentScene(allAppointments);
         }
     }
-
     @FXML
     private void handleEditAppointmentToday(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonToday)) {
@@ -250,6 +260,7 @@ public class DashboardController {
             changeToAppointmentScene(todayAppointments);
         }
     }
+
     @FXML
     private void handleEditAppointmentWeek(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonWeek)) {
@@ -285,7 +296,6 @@ public class DashboardController {
             changeToAppointmentScene(monthAppointments);
         }
     }
-
     @FXML
     private void handleContactCRUD(ActionEvent event) throws IOException {
         if(event.getSource().equals(addContact)) {
@@ -303,6 +313,7 @@ public class DashboardController {
             changeToContactScene();
         }
     }
+
     @FXML
     private void handleCustomerCRUD(ActionEvent event) throws IOException {
         if(event.getSource().equals(addCustomer)) {

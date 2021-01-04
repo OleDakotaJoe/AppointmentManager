@@ -1,8 +1,6 @@
 package me.stevensheaves.view.controllers.utils;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -10,7 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.stevensheaves.data.utils.LocationData;
-import me.stevensheaves.view.controllers.reports.Report;
+import me.stevensheaves.data.model.Report;
 
 import java.io.IOException;
 
@@ -88,13 +86,13 @@ public class SceneChanger {
     public static void addChildScene(Report.ReportType reportType, Pane currentPane) throws IOException {
         switch(reportType) {
             case APPOINTMENT_BY_CUSTOMER:
-                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbycustomer.fxml")));
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbycustomer/appointmentbycustomer.fxml")));
                 break;
             case APPOINTMENT_BY_TYPE:
-                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbytype.fxml")));
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/appointmentbytypemonth/appointmentbytype.fxml")));
                 break;
             case SCHEDULE_BY_CONTACT:
-                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/schedulebycontact.fxml")));
+                ((BorderPane) currentPane).setCenter(FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH + "reports/schedulebycontact/schedulebycontact.fxml")));
                 break;
             default:
                 break;

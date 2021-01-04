@@ -32,8 +32,7 @@ public class AppointmentController {
             dashboardButton,
             addAppointmentButton,
             editAppointmentButton,
-            viewAppointmentButton,
-            deleteAppointmentButton;
+            viewAppointmentButton;
     @FXML private BorderPane appointmentPane;
     @FXML private TableView<Appointment> appointmentTable;
     @FXML private TableColumn<Appointment, String> title;
@@ -46,7 +45,6 @@ public class AppointmentController {
     @FXML private TableColumn<Appointment, Integer> appointmentId;
     @FXML private TableColumn<Appointment, Integer> customerId;
     @FXML private RadioButton allAppointments, pastAppointments, todayAppointments, weekAppointments, monthAppointments;
-    @FXML private ToggleGroup appointmentFilter;
 
     /**
      * Retrieves and sets table data during the initialization of the instance of this class.
@@ -165,6 +163,23 @@ public class AppointmentController {
         handleAppointmentListChange();
     }
 
+    @FXML
+    private void showHelpDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Need Some help?");
+        alert.setHeaderText("We've got your back. ");
+        alert.setContentText("\n\n\t\t\t\tTo Add An Entry\n Click the \"Add\" button. Make sure all fields have been filled out. Note: you cannot choose the ID, it will be" +
+                "automatically generated." +
+                "\n\n\t\t\t\tTo Edit an Entry\nFirst click on the entry you would like to edit, then click \"Edit\". Afterwards, " +
+                "you may edit any field which needs to be updated. When you are finished, click \"Save\". If you would like to discard changes, you may click \"cancel\" " +
+                "\n\n\t\t\t\tTo View an Entry\nFirst click on the entry you would like to view, then click \"View\". If you click " +
+                "\"View\" all fields will be disabled. If you would like to discard changes, you may click \"cancel\" " +
+                "\n\n\t\t\t\tTo Delete an Entry\nFirst click on the entry you would like to delete, then click \"Delete\". You " +
+                "will see a pop-up to confirm that you would like to delete the entry. Only click \"OK\" if you are certain that you would like to delete the entry." +
+                "\n\n\t\t\t\tTo Filter Entries\nYou may filter the table by clicking the appropriate radio button, above the appointment table." +
+                " For example, if you click the radio button next to \"Today\", you will only see appointments scheduled withing 24 hours.");
+        alert.show();
+    }
     /**
      * Checks whether the user has selected a customer from the table
      * @return
@@ -225,4 +240,6 @@ public class AppointmentController {
                 "an appointment before proceeding.");
         alert.show();
     }
+
+
 }

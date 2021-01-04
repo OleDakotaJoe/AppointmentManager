@@ -1,4 +1,4 @@
-package me.stevensheaves.view.controllers.reports;
+package me.stevensheaves.data.model;
 
 public class Report {
     private String reportName;
@@ -22,5 +22,4 @@ public class Report {
         APPOINTMENT_BY_CUSTOMER,
         SCHEDULE_BY_CONTACT
     }
-
 }

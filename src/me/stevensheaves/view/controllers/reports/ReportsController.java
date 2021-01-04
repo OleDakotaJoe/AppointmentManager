@@ -4,10 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import me.stevensheaves.data.model.Report;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
@@ -58,11 +59,18 @@ public class ReportsController {
 
     @FXML
     private void runReport() {
-        System.out.println(reportTypes.getValue().getReportType());
         try {
             SceneChanger.addChildScene(reportTypes.getValue().getReportType(), mainPane);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void showHelpDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Need Some help?");
+        alert.setHeaderText("We've got your back. ");
+        alert.setContentText("\n\n\t\t\t\tTo Run a Report\n Select the appropriate report from the dropdown menu to the far left, then click \"Run Report\" and your report will automatically display in the blank space on the window.");
+        alert.show();
     }
 }
