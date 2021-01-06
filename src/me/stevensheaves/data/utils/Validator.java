@@ -40,15 +40,16 @@ public class Validator {
             } else {
                 element.positionCaret(textLength);
             }
-
         }
         return element;
     }
 
+    /**
+     * Wrapper method which calls the <code>textFieldValidator()</code> method, with the appropriate regular expression to remove all letters.
+     * @param event The <code>KeyEvent</code> Object which is passed in when calling this method. Used to determine which element to modify.
+     */
     public static void removeLetters(KeyEvent event) {
-        TextField element = (TextField) event.getSource();
         textFieldValidator(event, "[a-zA-Z]");
-
     }
 
 }

@@ -35,6 +35,13 @@ public class TimeUtilities {
         return false;
     }
 
+    /**
+     * Builds and returns a <code>ZonedDateTime</code> at system default time zone.
+     * @param datePart <code>LocalDate</code> object which constructs the <code>ZonedDateTime</code> object to be returned.
+     * @param hour <code>String</code> value representing the hour.
+     * @param minute <code>String</code> value representing the minute.
+     * @return The <code>ZonedDateTime</code> object at the <code>.systemDefault()</code> Time Zone.
+     */
     public ZonedDateTime ZonedDateTimeBuilder(LocalDate datePart, String hour, String minute) {
         LocalDate datePartBuilt = datePart;
         LocalTime timePartBuilt = LocalTime.parse(hour + ":" + minute);
@@ -42,6 +49,11 @@ public class TimeUtilities {
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return zonedDateTime;
     }
+
+    /**
+     * @param dateTime The <code>ZonedDateTime</code> object to be formatted.
+     * @return Formatted <code>String</code> representation of the ZonedDateTime object passed in.
+     */
     public static String formatDate(ZonedDateTime dateTime) {
         return DateTimeFormatter.ofPattern("h:mm a z M/d/yy").format(dateTime);
     }

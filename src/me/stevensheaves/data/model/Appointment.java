@@ -7,6 +7,10 @@ import org.w3c.dom.ls.LSOutput;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class is used in holding all data for an appointment.
+ * There are multiple constructors in the class to account for the multiple use cases where not all data may be available or required.
+ */
 public class Appointment {
     private int appointmentId;
     private String title;
@@ -24,6 +28,7 @@ public class Appointment {
     private int contactId;
     private String contactName;
 
+
     public Appointment(int appointmentId,
                        String title,
                        String description,
@@ -148,129 +153,144 @@ public class Appointment {
     }
 
 
+    /**
+     * Getter for the  <code>appointmentId</code> field.
+     * @return Returns <code>appointmentId</code>
+     */
     public int getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
+    /**
+     * Getter for the <code>title</code> field.
+     * @return Returns <code>title</code>
+     */
     public String getTitle() {
         return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Getter for the  <code>description</code> field.
+     * @return Returns <code>description</code>
+     */
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Getter for the  <code>location</code> field.
+     * @return Returns <code>location</code>
+     */
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
+    /**
+     * Getter for the  <code>type</code> field.
+     * @return Returns <code>type</code>
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Setter for the <code>type</code> field.
+     * @param type Used for changing the <code>type</code> of the appointment.
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Getter for the  <code>startDateTime</code> field.
+     * @return Returns <code>startDateTime</code>
+     */
     public ZonedDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(ZonedDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
+    /**
+     * Getter for the  <code>endDateTime</code> field.
+     * @return Returns <code>endDateTime</code>
+     */
     public ZonedDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(ZonedDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
-    public ZonedDateTime getCreatedTimestamp() {
-        return createdTimestamp;
-    }
-
-    public void setCreatedTimestamp(ZonedDateTime createdTimestamp) {
-        this.createdTimestamp = createdTimestamp;
-    }
-
-    public String getCreatedByUserName() {
-        return createdByUserName;
-    }
-
-    public void setCreatedByUserName(String createdByUserName) {
-        this.createdByUserName = createdByUserName;
-    }
-
-    public ZonedDateTime getLastUpdateTimestamp() {
-        return lastUpdateTimestamp;
-    }
-
-    public void setLastUpdateTimestamp(ZonedDateTime lastUpdateTimestamp) {
-        this.lastUpdateTimestamp = lastUpdateTimestamp;
-    }
-
-    public String getLastUpdatedByUserName() {
-        return lastUpdatedByUserName;
-    }
-
-    public void setLastUpdatedByUserName(String lastUpdatedByUserName) {
-        this.lastUpdatedByUserName = lastUpdatedByUserName;
-    }
-
+    /**
+     * Getter for the  <code>customerId</code> field.
+     * @return Returns <code>customerId</code>
+     */
     public int getCustomerId() {
         return customerId;
     }
 
+    /**
+     * Setter for the <code>customerId</code> field.
+     * @param customerId Used for changing the <code>customerId</code> of the appointment.
+     */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
+    /**
+     * Getter for the  <code>userId</code> field.
+     * @return Returns <code>userId</code>
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Setter for the <code>userId</code> field.
+     * @param userId Used for changing the <code>userId</code> of the appointment.
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    /**
+     * Getter for the  <code>contactId</code> field.
+     * @return Returns <code>contactId</code>
+     */
     public int getContactId() {
         return contactId;
     }
 
+    /**
+     * Setter for the <code>contactId</code> field.
+     * @param contactId Used for changing the <code>contactId</code> of the appointment.
+     */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
+    /**
+     * Getter for the  <code>contactName</code> field.
+     * @return Returns <code>contactName</code>
+     */
     public String getContactName() {
         return contactName;
     }
 
+    /**
+     * Setter for the <code>contactName</code> field.
+     * @param contactName Used for changing the <code>contactName</code> of the appointment.
+     */
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
 
 
 
-
+    /**
+     * Similar to a <code>toString()</code> method, except this formats the String to be visually appealing in the UI.
+     * @return Returns a formatted <code>String</code> for use in the methods which need a <code>String</code> representation of an appointment.
+     */
     public String toScheduleFormatted() {
         return "\t\tTitle: " + title + " | Appointment ID: " + appointmentId + "\n\t\t"
                 + TimeUtilities.formatDate(startDateTime)
@@ -282,6 +302,10 @@ public class Appointment {
                 + "\n\t\tDescription: " + description;
     }
 
+    /**
+     * Overrides the <code>toString()</code> method.
+     * @return Returns an easier to read toString() method.
+     */
     @Override
     public String toString() {
         return "Appointment{" +
