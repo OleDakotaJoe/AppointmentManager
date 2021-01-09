@@ -1,4 +1,4 @@
-package me.stevensheaves.data.model;
+package me.stevensheaves.data.utils;
 
 /**
  * Class for holding the name and type of <code>Report</code>.

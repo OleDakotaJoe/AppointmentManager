@@ -2,32 +2,28 @@ package me.stevensheaves.data.utils;
 
 import java.util.Locale;
 
+/**
+ * Utility class for getting and storing system location details.
+ */
 public class LocationData {
-    private static final String systemLanguage;
-    private static final String systemCountry;
-    private static final String displayLanguage;
-    private static final String displayCountry;
+    private static final Locale locale =  Locale.getDefault();
+    private static final String systemLanguage = locale.getLanguage();
+    private static final String displayCountry = locale.getDisplayCountry();
 
-     static {
-        Locale locale = Locale.getDefault();
-        systemCountry = locale.getCountry();
-        systemLanguage = locale.getLanguage();
-        displayCountry = locale.getDisplayCountry();
-        displayLanguage = locale.getDisplayLanguage();
-    }
 
+    /**
+     * Getter for <code>systemLanguage</code> field.
+     * @return Returns the String value from the <code>systemLanguage</code>
+     */
     public static String getSystemLanguage() {
         return systemLanguage;
     }
 
-    public static String getSystemCountry() {
-        return systemCountry;
-    }
 
-    public static String getDisplayLanguage() {
-        return displayLanguage;
-    }
-
+    /**
+     * Getter for <code>displayCountry</code> field.
+     * @return Returns the String value from the <code>displayCountry</code>
+     */
     public static String getDisplayCountry() {
         return displayCountry;
     }

@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.stevensheaves.data.utils.LocationData;
-import me.stevensheaves.data.model.Report;
+import me.stevensheaves.data.utils.Report;
 
 import java.io.IOException;
 

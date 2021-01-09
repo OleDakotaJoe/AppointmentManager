@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
-import me.stevensheaves.data.model.Report;
+import me.stevensheaves.data.utils.Report;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
