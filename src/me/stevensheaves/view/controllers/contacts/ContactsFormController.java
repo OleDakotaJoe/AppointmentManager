@@ -3,7 +3,10 @@ package me.stevensheaves.view.controllers.contacts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.data.model.Contact;
 import me.stevensheaves.view.controllers.state.ContactDataState;
@@ -14,6 +17,7 @@ import me.stevensheaves.database.utils.ContactDAO;
  * Data is passed between this class and the <code>ContactsController</code> class via the <code>ContactDataState</code> class.
  */
 public class ContactsFormController {
+    @FXML GridPane mainPane;
     @FXML Button saveButton, cancelButton;
     @FXML TextField contactId;
     @FXML TextFieldLimited contactName, email;
@@ -159,5 +163,14 @@ public class ContactsFormController {
         alert.setHeaderText("All fields are required.");
         alert.setContentText("You have not completed the form. You're content has not been saved. Please complete all required fields then try again. ");
         alert.show();
+    }
+
+    /**
+     * Removes the current form from the Main Window
+     */
+    @FXML
+    private void cancel() {
+        BorderPane pane = (BorderPane) mainPane.getParent();
+        pane.setCenter(null);
     }
 }

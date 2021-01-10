@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.ResolverStyle;
-
+/**
+ * This class follows the Data Access Object design pattern, and is used for retrieving all data from a database, that pertains to an Customer.
+ */
 public class CustomerDAO extends DataAccessObject<Customer>{
     private final String FIND_ALL = "SELECT * FROM customers LEFT JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID";
     private final String INSERT = "INSERT INTO customers (Customer_Name, Address, Postal_Code," +
@@ -23,6 +25,10 @@ public class CustomerDAO extends DataAccessObject<Customer>{
     private final String SELECT_LAST_INSERTED_ROW = "SELECT * FROM customers WHERE Customer_ID =(SELECT last_insert_id())";
     private final String FIND_BY_ID ="SELECT * FROM customers WHERE Customer_ID = ?";
 
+    /**
+     * Finds all <code>Customer</code>s, and returns them in an <code>ObservableList</code>
+     * @return Returns an <code>ObservableList</code> holding all <code>Customer</code>s.
+     */
     public ObservableList<Customer> findAll() {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
@@ -47,7 +53,12 @@ public class CustomerDAO extends DataAccessObject<Customer>{
 
         return customers;
     }
-
+    
+    /**
+     * Queries the "customers" table whose primary key: <code>Customer_ID</code> matches the supplied <code>id</code>.
+     * @param id The <code>Customer_ID</code> parameter in the database query.
+     * @return Returns the <code>Customer</code> object that corresponds to the specified <code>Customer_ID</code>.
+     */
     @Override
     public Customer find(int id) {
 
@@ -71,7 +82,10 @@ public class CustomerDAO extends DataAccessObject<Customer>{
         }
         return null;
     }
-
+    /**
+     * Finds and returns the last updated row in the appointment table.
+     * @return Returns an <code>Customer</code> data transfer object, representing the last row created in the "customers" table.
+     */
     public Customer findLast() {
         try (Statement inserted = connection.createStatement()) {
             int id;
@@ -86,6 +100,11 @@ public class CustomerDAO extends DataAccessObject<Customer>{
         return null;
     }
 
+    /**
+     * Updates the row in the database table "customers" whose primary key: <code>Customer_ID</code> matches the supplied <code>dto</code>'s <code>appointmentId</code>.
+     * @param dto The <code>Customer</code> object which contains all data necessary to make the successful update.
+     * @return Returns true if update was successful, and false otherwise.
+     */
     @Override
     public boolean update(Customer dto) {
         boolean didUpdate = false;
@@ -107,7 +126,11 @@ public class CustomerDAO extends DataAccessObject<Customer>{
         }
         return didUpdate;
     }
-
+    /**
+     * Creates row in the database table "customers".
+     * @param dto The <code>Customer</code> object which contains all data necessary to make the successful insertion.
+     * @return Returns true if insertion was successful, and false otherwise.
+     */
     @Override
     public boolean create(Customer dto) {
         boolean didExecute = false;
@@ -128,7 +151,10 @@ public class CustomerDAO extends DataAccessObject<Customer>{
 
         return didExecute;
     }
-
+    /**
+     * Finds and returns the last updated row in the appointment table.
+     * @return Returns an <code>Customer</code> data transfer object, representing the last row created in the "customers" table.
+     */
     @Override
     public void delete(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DELETE)) {

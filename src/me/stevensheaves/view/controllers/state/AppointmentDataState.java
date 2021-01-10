@@ -20,19 +20,36 @@ public class AppointmentDataState {
     private static final FilteredList<Appointment> filteredAppointmentList = new FilteredList(allAppointments);
     private static Appointment selectedAppointment;
 
+    /**
+     * Getter for the currentFormType
+     * @return returns the value held in the field: currentFormType.
+     */
     public static AppointmentDataState.FormType getCurrentFormType() {
         return currentFormType;
     }
 
 
+    /**
+     * Setter for the CurrentFormType field.
+     * @param currentFormType The FormType to be set as currentFormType
+     */
     public static void setCurrentFormType(AppointmentDataState.FormType currentFormType) {
         AppointmentDataState.currentFormType = currentFormType;
     }
 
+    /**
+     * Getter for the list of allAppointments.
+     * @return Returns an ObservableList of allAppointments.
+     */
     public static ObservableList<Appointment> getAllAppointments() {
         return allAppointments;
     }
 
+    /**
+     * Sets the all of the appointmentlist fields.
+     * This method contains a lambda expression for each filtered list, because it was the most succinct and clean way to set the predicate of the filtered list.
+     * @param allAppointments the list of appointments to be set.
+     */
     public static void setAllAppointments(ObservableList<Appointment> allAppointments) {
         AppointmentDataState.allAppointments.setAll(allAppointments);
         AppointmentDataState.todayAppointments.setAll(getAllAppointments().filtered(s-> s.getStartDateTime().isBefore(ZonedDateTime.now().plusDays(1)) && s.getStartDateTime().isAfter(ZonedDateTime.now())));
@@ -41,19 +58,31 @@ public class AppointmentDataState {
         AppointmentDataState.pastAppointments.setAll(getAllAppointments().filtered(s -> s.getStartDateTime().isBefore(ZonedDateTime.now())));
     }
 
+    /**
+     * Getter for the selectedAppointment field.
+     * @return Returns the Appointment set as the selectedAppointment
+     */
     public static Appointment getSelectedAppointment() {
         return selectedAppointment;
     }
 
+    /**
+     * Setter for the selectedAppointment field.
+     * @param selectedAppointment the Appointment to be set as the selectedAppointment.
+     */
     public static void setSelectedAppointment(Appointment selectedAppointment) {
         AppointmentDataState.selectedAppointment = selectedAppointment;
     }
 
+    /**
+     * Gets the filteredAppointmentList
+     * @return
+     */
     public static FilteredList<Appointment> getFilteredAppointmentList() {
         return filteredAppointmentList;
     }
 
-
+    // TODO: 1/10/2021 finish javadocs 
     public static ObservableList<Appointment> getTodayAppointments() {
         return todayAppointments;
     }

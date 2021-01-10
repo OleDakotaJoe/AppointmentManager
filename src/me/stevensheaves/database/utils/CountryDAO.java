@@ -8,27 +8,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+/**
+ * This class follows the Data Access Object design pattern, and is used for retrieving all data from a database, that pertains to an Country.
+ */
 public class CountryDAO extends DataAccessObject<Country> {
     private final String GET_ALL_WITH_DIVISIONS = "SELECT countries.Country, countries.Country_ID FROM countries" +
             " INNER JOIN first_level_divisions ON countries.Country_ID=first_level_divisions.Country_ID GROUP BY Country_ID";
     private final String GET_COUNTRY_BY_DIVISION_ID = "SELECT * FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID = ?);";
-    private final String GET_COUNTRY_ID_BY_COUNTRY_NAME= "SELECT countries.Country_ID FROM countries WHERE Country = ?";
 
-
-    public String findCountryNameByDivisionID(int divisionId) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_BY_DIVISION_ID)) {
-            statement.setInt(1, divisionId);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getString("Country");
-            }
-        } catch(SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * Queries the database for the <code>Country</code> that has a foreign key that corresponds to a specified <code>Division_ID</code>.
+     * @param divisionId The <code>Division_ID</code> parameter in the database query.
+     * @return Returns an <code>ObservableList</code> of all <code>Appointment</code>s that have a foreign key that corresponds to the specified <code>Division_ID</code>.
+     */
     public Country findCountryByDivisionId(int divisionId) {
         try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_BY_DIVISION_ID)) {
             statement.setInt(1, divisionId);
@@ -44,6 +36,10 @@ public class CountryDAO extends DataAccessObject<Country> {
         return null;
     }
 
+    /**
+     * Finds all <code>Country</code>s, and returns them in an <code>ObservableList</code>
+     * @return Returns an <code>ObservableList</code> holding all <code>Country</code>s.
+     */
     public ObservableList<Country> findAll() {
         ObservableList<Country> tempList= FXCollections.observableArrayList();
         try(PreparedStatement statement = connection.prepareStatement(GET_ALL_WITH_DIVISIONS)) {
@@ -58,31 +54,38 @@ public class CountryDAO extends DataAccessObject<Country> {
         return tempList;
     }
 
-    public int findCountryId(String countryName) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_COUNTRY_ID_BY_COUNTRY_NAME)) {
-            statement.setString(1, countryName);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) return rs.getInt("Country_ID");
-        } catch(SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return -1;
-    }
+
+    /**
+     * Dummy Method
+     * @param id
+     * @return
+     */
     @Override
     public Country find(int id) {
         return null;
     }
-
+    /**
+     * Dummy Method
+     * @param dto
+     * @return
+     */
     @Override
     public boolean update(Country dto) {
         return false;
     }
-
+    /**
+     * Dummy Method
+     * @param dto
+     * @return
+     */
     @Override
     public boolean create(Country dto) {
         return  false;
     }
-
+    /**
+     * Dummy Method
+     * @param id
+     */
     @Override
     public void delete(int id) {
 

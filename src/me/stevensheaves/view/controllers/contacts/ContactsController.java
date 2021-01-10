@@ -53,7 +53,6 @@ public class ContactsController {
         ContactDataState.setAllContacts(dao.findAll());
     }
 
-    // TODO: 12/28/2020 refactor to separate fetchTableData() from the rest of the function
     /**
      * Sets the values for each column in the <code>contactsTable</code>.
      */
@@ -131,6 +130,9 @@ public class ContactsController {
         fetchTableData();
     }
 
+    /**
+     * Utility function for displaying a "Help" dialog box when the Help button is clicked in the view.
+     */
     @FXML
     private void showHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -24,11 +24,17 @@ public class ReportsController {
     @FXML private ComboBox<Report> reportTypes;
 
 
+    /**
+     * Initializes the class by setting appropriate data.
+     */
     @FXML
     private void initialize() {
         setReportTypes();
     }
 
+    /**
+     * Generates an ObservableList of Reports to use as the reportTypes's ComboBox options.
+     */
     @FXML
     private void setReportTypes() {
         ObservableList<Report> reports =FXCollections.observableArrayList();
@@ -38,6 +44,11 @@ public class ReportsController {
         reportTypes.setItems(reports);
     }
 
+    /**
+     * Utility method for changing scenes.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void changeScene(ActionEvent event) throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
@@ -57,6 +68,9 @@ public class ReportsController {
         }
     }
 
+    /**
+     * Adds the appropriate Scene to the view.
+     */
     @FXML
     private void runReport() {
         try {
@@ -65,6 +79,10 @@ public class ReportsController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Displays an alert box with "help" instructions.
+     */
     @FXML
     private void showHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

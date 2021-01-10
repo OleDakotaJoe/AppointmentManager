@@ -1,10 +1,7 @@
 package me.stevensheaves.view.controllers.customers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -19,8 +16,6 @@ import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
 import java.io.IOException;
-
-// TODO: 12/14/2020 fix blank combobox bug
 
 
 public class CustomersFormController {
@@ -52,14 +47,6 @@ public class CustomersFormController {
         CustomerDataState.setAllCustomers(dao.findAll());
     }
 
-/*    private void setSelectedCountryAndDivisionData() {
-        CountryDAO countryDAO = new CountryDAO();
-        DivisionDAO divisionDAO = new DivisionDAO();
-        Division selectedDivision = divisionDAO.find(CustomerDataState.getSelectedCustomer().getDivisionId());
-        Country selectedCountry = countryDAO.findCountryByDivisionId(selectedDivision.getDivisionId());
-        CustomerDataState.setSelectedCountry(selectedCountry);
-        CustomerDataState.setSelectedDivision(selectedDivision);
-    }*/
 
     /**
      * Fetches and sets Data for the country and division ComboBoxes
@@ -142,6 +129,10 @@ public class CustomersFormController {
 
     }
 
+
+    /**
+     * Switch statement which calls the appropriate functions, when initializing form data, to either populate, disable, enable, and clear the form as appropriate.
+     */
     private void initializeForm() {
         CustomerDataState.FormType formType = CustomerDataState.getCurrentFormType();
         switch (formType) {
@@ -162,6 +153,9 @@ public class CustomersFormController {
         }
     }
 
+    /**
+     * Populates all fields on the form based on which customer is selected in the customers.fxml <code>customersTable</code>
+     */
     private void populateForm() {
         CountryDAO countryDAO = new CountryDAO();
         DivisionDAO divisionDAO = new DivisionDAO();
@@ -253,5 +247,13 @@ public class CustomersFormController {
         alert.setHeaderText("All fields are required.");
         alert.setContentText("You have not completed the form. You're content has not been saved. Please complete all required fields then try again. ");
         alert.show();
+    }
+    /**
+     * Removes the current form from the Main Window
+     */
+    @FXML
+    private void cancel() {
+        BorderPane pane = (BorderPane) mainPane.getParent();
+        pane.setCenter(null);
     }
 }

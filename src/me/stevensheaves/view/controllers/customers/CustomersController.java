@@ -135,6 +135,9 @@ public class CustomersController {
         fetchTableData();
     }
 
+    /**
+     * Utility function for displaying a "Help" dialog box when the Help button is clicked in the view.
+     */
     @FXML
     private void showHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

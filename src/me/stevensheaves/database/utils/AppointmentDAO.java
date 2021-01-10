@@ -8,6 +8,9 @@ import me.stevensheaves.data.model.CurrentUser;
 import java.sql.*;
 import java.time.*;
 
+/**
+ * This class follows the Data Access Object design pattern, and is used for retrieving all data from a database, that pertains to an appointment.
+ */
 public class AppointmentDAO extends DataAccessObject<Appointment> {
     private final String FIND_ALL = "SELECT * FROM appointments LEFT JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID";
     private final String FIND_BY_ID = "SELECT * FROM appointments WHERE Appointment_ID = ?";
@@ -48,6 +51,10 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
             "(?, ?, ?, ?, ?, ?, UTC_TIMESTAMP, ?, UTC_TIMESTAMP, ?, ?, ?, ?);\n";
 
 
+    /**
+     * Finds all <code>Appointment</code>s, and returns them in an <code>ObservableList</code>
+     * @return Returns an <code>ObservableList</code> holding all <code>Appointment</code>s.
+     */
     public ObservableList<Appointment> findAll() {
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try(PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
@@ -79,6 +86,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return tempList;
     }
 
+    /**
+     * Queries the database for all <code>Appointment</code>s that have a foreign key that corresponds to a specific <code>Customer_ID</code>.
+     * @param id The <code>Customer_ID</code> parameter in the database query.
+     * @return Returns an <code>ObservableList</code> of all <code>Appointment</code>s that have a foreign key that corresponds to the specified <code>Customer_ID</code>.
+     */
     public ObservableList<Appointment> findByCustomerId(int id) {
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_CUSTOMER_ID)) {
@@ -110,6 +122,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return tempList;
     }
 
+    /**
+     * Queries the database for the all <code>Appointment</code>s that have a foreign key that corresponds to a specific <code>User_ID</code>.
+     * @param id The <code>User_ID</code> parameter in the database query.
+     * @return Returns an <code>ObservableList</code> of all <code>Appointment</code>s that have a foreign key that corresponds to the specified <code>User_ID</code>.
+     */
     public ObservableList<Appointment> findByUserId(int id) {
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)) {
@@ -140,7 +157,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         }
         return tempList;
     }
-
+    /**
+     * Queries the database for the  <code>Appointment</code> that has a foreign key that corresponds to a specified <code>Contact_ID</code>.
+     * @param id The <code>Contact_ID</code> parameter in the database query.
+     * @return Returns an <code>ObservableList</code> of all <code>Appointment</code>s that have a foreign key that corresponds to the specified <code>Contact_ID</code>.
+     */
     public ObservableList<Appointment> findByContactId(int id) {
         ObservableList<Appointment> tempList = FXCollections.observableArrayList();
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_CONTACT_ID)) {
@@ -173,6 +194,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
     }
 
 
+    /**
+     * Queries the database for the the <code>Appointment</code> whose primary key: <code>Appointment_ID</code> matches the supplied <code>id</code>.
+     * @param id The <code>Appointment_ID</code> parameter in the database query.
+     * @return Returns the <code>Appointment</code> object that corresponds to the specified <code>Appointment_ID</code>.
+     */
     @Override
     public Appointment find(int id) {
         try(PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
@@ -203,6 +229,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return null;
     }
 
+    /**
+     * Updates the row in the database table "appointments" whose primary key: <code>Appointment_ID</code> matches the supplied <code>dto</code>'s <code>appointmentId</code>.
+     * @param dto The <code>Appointment</code> object which contains all data necessary to make the successful update.
+     * @return Returns true if update was successful, and false otherwise.
+     */
     @Override
     public boolean update(Appointment dto) {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
@@ -226,6 +257,11 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return false;
     }
 
+    /**
+     * Creates row in the database table "appointments".
+     * @param dto The <code>Appointment</code> object which contains all data necessary to make the successful insertion.
+     * @return Returns true if insertion was successful, and false otherwise.
+     */
     @Override
     public boolean create(Appointment dto) {
         try (PreparedStatement statement = connection.prepareStatement(INSERT)) {
@@ -247,6 +283,10 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return false;
     }
 
+    /**
+     * Finds and returns the last updated row in the appointment table.
+     * @return Returns an <code>Appointment</code> data transfer object, representing the last row created in the "appointments" table.
+     */
     public Appointment findLast() {
         try (Statement inserted = connection.createStatement()) {
             int id;
@@ -262,6 +302,10 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         return null;
     }
 
+    /**
+     * Deletes the row in the "appointments" table associated with the supplied <code>id</code>.
+     * @param id The <code>int</code> value of the id to find and delete.
+     */
     @Override
     public void delete(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
@@ -272,10 +316,19 @@ public class AppointmentDAO extends DataAccessObject<Appointment> {
         }
     }
 
+    /**
+     * Utility method for converting a <code>Timestamp</code> into a <code>ZonedDateTime</code> instance.
+     * @param timestamp The <code>Timestamp</code> to be converted.
+     * @return Returns the converted <code>ZonedDateTime</code> instance.
+     */
     private ZonedDateTime convertTimestampToZonedDateTime(Timestamp timestamp) {
         return timestamp.toLocalDateTime().atZone(ZoneId.systemDefault());
     }
-
+    /**
+     * Utility method for converting a <code>ZonedDateTime</code> into a <code>Timestamp</code> instance.
+     * @param zonedDateTime The <code>ZonedDateTime</code> to be converted.
+     * @return Returns the converted <code>Timestamp</code> instance.
+     */
     private Timestamp convertZonedDateTimeToTimestamp(ZonedDateTime zonedDateTime) {
         return Timestamp.valueOf(zonedDateTime.toLocalDateTime());
     }

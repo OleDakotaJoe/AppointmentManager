@@ -10,6 +10,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="me.stevensheaves.view.controllers.contacts.ContactsFormController"
+          fx:id="mainPane"
           prefHeight="400.0" prefWidth="600.0"
           alignment="CENTER" hgap="20" vgap="20">
     <Label text="Contact ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -19,5 +20,5 @@
     <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
     <TextFieldLimited promptText="youremail@email.com" fx:id="email" GridPane.rowIndex="2" GridPane.columnIndex="1" maxLength="50"/>
     <Button text="Save" fx:id="saveButton" onAction="#handleSaveContact" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <Button text="Cancel" fx:id="cancelButton" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Button text="Cancel" fx:id="cancelButton" onAction="#cancel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 </GridPane>

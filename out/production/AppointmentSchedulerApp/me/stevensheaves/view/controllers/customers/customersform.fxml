@@ -57,7 +57,7 @@
 
     <HBox spacing="20" GridPane.rowIndex="12" GridPane.columnIndex="2">
         <Button fx:id="saveButton" text="Save" onAction="#handleSaveCustomer"/>
-        <Button fx:id="cancelButton" text="Cancel" />
+        <Button fx:id="cancelButton" text="Cancel" onAction="#cancel"/>
     </HBox>
 
 

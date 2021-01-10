@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import me.stevensheaves.custom.utils.DateTimeCellFormatter;
 import me.stevensheaves.data.model.Appointment;
@@ -67,7 +68,7 @@ public class AppointmentController {
     }
 
     /**
-     * Sets the values for each column in the <code>customersTable</code>.
+     * Sets the values for each column in the <code>appointmentTable</code>.
      */
     @FXML
     private void setTableData() {
@@ -86,6 +87,10 @@ public class AppointmentController {
     }
 
 
+    /**
+     * Filters the appointmentList based on which radio button is clicked.
+     * Lambda expressions are used here because of their clarity and natural use in setting the predicate of a FilteredList.
+     */
     @FXML
     private void handleAppointmentListChange() {
         fetchTableData();
@@ -113,6 +118,11 @@ public class AppointmentController {
 
     }
 
+    /**
+     * Utility method for changing scenes.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void changeScene(ActionEvent event) throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
@@ -240,6 +250,4 @@ public class AppointmentController {
                 "an appointment before proceeding.");
         alert.show();
     }
-
-
 }

@@ -3,9 +3,11 @@ package me.stevensheaves.view.controllers.appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.custom.utils.TimeUtilities;
 import me.stevensheaves.data.model.*;
@@ -16,12 +18,16 @@ import me.stevensheaves.view.controllers.state.CustomerDataState;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
+import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
-// TODO: 12/23/2020 Finish Javadocs
+
+/**
+ * Controller for the appointmentform.fxml view.
+ */
 public class AppointmentFormController {
 
     @FXML
@@ -39,11 +45,11 @@ public class AppointmentFormController {
     @FXML
     private DatePicker startDate,endDate;
     @FXML
-    private Button saveButton;
+    private Button saveButton, cancelButton;
 
     /**
      * Initializes the class with appropriate data.
-     * Called when the class is instatiated.
+     * Called when the class is instantiated.
      */
     @FXML
     private void initialize() {
@@ -62,7 +68,7 @@ public class AppointmentFormController {
     }
 
     /**
-     * Sets the values for the <code>startMinute</code>,<code>startHour</code>,<code>endMinute</code>, and <code>endHour</code> <code>ComboBox</code>es
+     * Sets the values for the <code>startMinute</code>,<code>startHour</code>,<code>endMinute</code>, <code>endHour</code>, and <code>appointmentType</code> <code>ComboBox</code>es
      */
     @FXML
     private void setTimePickerValues() {
@@ -79,19 +85,26 @@ public class AppointmentFormController {
         ));
     }
 
+    /**
+     * Utility method for setting <code>customerName</code> <code>ComboBox</code>es.
+     */
     @FXML
     private void setCustomerNameComboBoxValues() {
         CustomerDAO dao = new CustomerDAO();
         CustomerDataState.setAllCustomers(dao.findAll());
         customerName.setItems(CustomerDataState.getAllCustomers());
     }
-
+    /**
+     * Utility method for setting <code>userName</code> <code>ComboBox</code>es.
+     */
     @FXML
     private void setUserNameComboBoxValues() {
         UserDAO dao = new UserDAO();
         userName.setItems(dao.findAllUserNames());
     }
-
+    /**
+     * Utility method for setting <code>contactName</code> <code>ComboBox</code>es.
+     */
     @FXML
     private void setContactComboBoxValues() {
         ContactDAO dao = new ContactDAO();
@@ -100,6 +113,9 @@ public class AppointmentFormController {
     }
 
 
+    /**
+     * Handles the saving of an appointment.
+     */
     @FXML
     private void handleSaveAppointment() {
         if(!isFormComplete()) return;
@@ -171,11 +187,18 @@ public class AppointmentFormController {
     }
 
 
+    /**
+     * Utility method for getting a startDateTime based on what values are selected for <code>startDate</code>, <code>startHour</code>, and <code>startMinute</code> controls.
+     * @return Returns a ZonedDateTime object built with the values from the appropriate controls.
+     */
     private ZonedDateTime getStartDateTime() {
         return new TimeUtilities().ZonedDateTimeBuilder(startDate.getValue(),startHour.getValue(),startMinute.getValue());
 
     }
-
+    /**
+     * Utility method for getting a startDateTime based on what values are selected for <code>endDate</code>, <code>endHour</code>, and <code>endMinute</code> controls.
+     * @return Returns a ZonedDateTime object built with the values from the appropriate controls.
+     */
     private ZonedDateTime getEndDateTime() {
         return new TimeUtilities().ZonedDateTimeBuilder(endDate.getValue(),endHour.getValue(),endMinute.getValue());
     }
@@ -208,6 +231,9 @@ public class AppointmentFormController {
         }
     }
 
+    /**
+     * Utility method for populating all form data, when the FormType is edit, or view.
+     */
     private void populateForm() {
         ContactDAO contactDAO = new ContactDAO();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -283,7 +309,8 @@ public class AppointmentFormController {
 
 
     /**
-     * Checks for completeness of the form
+     * Checks for completeness and validity of the form
+     * If form is not complete, this method will call the ap.propriate method to show a dialog box, indicating which piece of data is missing.
      * @return
      * Returns true if form is complete, and false if not.
      */
@@ -310,6 +337,12 @@ public class AppointmentFormController {
         } else return isAppointmentTimeValid();
     }
 
+    /**
+     * This method is used for verifying whether or not a particular appointment overlaps with another appointment, or falls outside business hours.
+     * In order to check whether or not the appointment falls outside business hours, the <code>TimeUtilities</code> class method
+     * <code>checkForOverlap()</code> is used, passing in business hours as the start and end times to be checked against
+     * @return Returns false if the appointment is invalid.
+     */
     private boolean isAppointmentTimeValid() {
         ZonedDateTime startTime = getStartDateTime();
         ZonedDateTime endTime = getEndDateTime();
@@ -390,5 +423,14 @@ public class AppointmentFormController {
         alert.setHeaderText("End date/time must be after start date/time.");
         alert.setContentText("Either your end date or end time is before the start date or time. You're content has not been saved. Please complete all required fields then try again. ");
         alert.show();
+    }
+
+    /**
+     * Removes the current form from the Main Window
+     */
+    @FXML
+    private void cancel() {
+        BorderPane pane = (BorderPane) mainPane.getParent();
+        pane.setCenter(null);
     }
 }

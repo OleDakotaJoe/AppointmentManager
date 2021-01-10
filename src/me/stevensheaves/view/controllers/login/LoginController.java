@@ -37,17 +37,19 @@ public class LoginController {
     private String warningLabelText;
 
 
-
-    // TODO: 12/4/2020 Determine location and change language.  
-    // TODO: 12/4/2020 Display location in a label. 
-    // TODO: 12/4/2020 launch or change next page.
-
+    /**
+     * Initializes the view by calling the change language function.
+     * Also, sets, the mainHeading's FocusTraversable property to true. This is so that the TextFields don't automatically get the focus, which obscures the prompt-text.
+     */
     @FXML
     private void initialize() {
         changeLanguage();
         mainHeading.setFocusTraversable(true);
     }
 
+    /**
+     * Sets appropriate Text Controls in the view to either French or English, depending on the SystemCountry.
+     */
     private void changeLanguage() {
         String label;
         String usernameText;
@@ -93,6 +95,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Validates and returns the User object of the validated user.
+     * Calls the validateUser function from the UserDAO class, and returns the user, as appropriate.
+     * userName can accept either a String or the User's ID
+     * @return tje Validated user, if valid, or null if not.
+     */
     private User validateAndReturnUser() {
         UserDAO dao = new UserDAO();
         User currentUser = (userName.getText().matches("\\d")
@@ -101,10 +109,18 @@ public class LoginController {
         return currentUser;
     }
 
+    /**
+     * Sets the the Calls the CurrentUser.login() method on the User object passed in.
+     * @param currentUser The User object to be logged in.
+     */
     private void setUserLoggedIn(User currentUser) {
         CurrentUser.login(currentUser.getId(), currentUser.getUserName(), true, LocalDateTime.now());
     }
 
+    /**
+     * Checks to see if User has any appointments coming up within fifteen minutes, and displays appropriate alerts.
+     * @param currentUser The User whose appointments must be checked for.
+     */
     private void checkForUpcomingAppointments(User currentUser) {
         ObservableList<Appointment> usersAppointments =  new AppointmentDAO().findByUserId(currentUser.getId());
         boolean hasAppointment = false;
@@ -125,6 +141,10 @@ public class LoginController {
         if (!hasAppointment) showNoUpcomingAppointmentAlert();
     }
 
+    /**
+     * Shows an Alert with details about an upcoming appointment.
+     * @param appointment
+     */
     private void showUpcomingAppointmentAlert(Appointment appointment) {
         Customer customer = new CustomerDAO().find(appointment.getCustomerId());
         String time = DateTimeFormatter.ofPattern("h:mm a z M/d/yy").format(appointment.getStartDateTime()) ;
@@ -136,6 +156,9 @@ public class LoginController {
         alert.showAndWait();
     }
 
+    /**
+     * Alerts that there are no upcoming appointments.
+     */
     private void showNoUpcomingAppointmentAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No upcoming appointments");
@@ -143,11 +166,19 @@ public class LoginController {
         alert.showAndWait();
     }
 
+    /**
+     * Utility method to write all login activity to a file.
+     * @param user The user that attempted to login.
+     * @param attemptedUsername The username that the user attempted to login using.
+     */
     private void writeLoginActivityToFile(User user, String attemptedUsername) {
         boolean wasSuccessful = user != null;
         ActivityLogger.getInstance().writeActivityToLog(attemptedUsername , wasSuccessful);
     }
 
+    /**
+     * Closes the login window without closing the application.
+     */
     @FXML
     private void closeWindow() {
         Stage stage = (Stage) loginButton.getParent().getScene().getWindow();

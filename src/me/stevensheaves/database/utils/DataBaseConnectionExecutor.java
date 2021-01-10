@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Executes a connection to a database.
+ */
 public class DataBaseConnectionExecutor  {
     private static final DataBaseConnectionManager dcm;
     private static Connection connection;

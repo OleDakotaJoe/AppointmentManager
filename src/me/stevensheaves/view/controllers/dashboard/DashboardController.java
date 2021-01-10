@@ -83,33 +83,51 @@ public class DashboardController {
     @FXML private TableColumn<Appointment, Integer> monthAppointmentId, monthAppointmentsCustomerId;
 
 
-
-
-
+    /**
+     * Initializes the view by calling appropriate methods for getting and setting appropriate table data.
+     */
     @FXML
     private void initialize() {
         fetchDataForAllTables();
         setTableData();
     }
 
+    /**
+     * Fetches all data for all tables.
+     */
     private void fetchDataForAllTables() {
         fetchCustomerData();
         fetchContactData();
         fetchAppointmentData();
     }
+
+    /**
+     * Fetches all Customers, and sets the <code>ObservableList</code> for <code>CustomerDataState.setAllCustomers</code>
+     */
     private void fetchCustomerData() {
         CustomerDAO dao = new CustomerDAO();
         CustomerDataState.setAllCustomers(dao.findAll());
     }
+
+    /**
+     * Fetches all Contacts, and sets the <code>ObservableList</code> for <code>ContactDataState.setAllContacts</code>
+     */
     private void fetchContactData() {
         ContactDAO dao = new ContactDAO();
         ContactDataState.setAllContacts(dao.findAll());
     }
+
+    /**
+     * Fetches all Appointments, and sets the <code>ObservableList</code> for <code>AppointmentDataState.setAllAppointments</code>
+     */
     private void fetchAppointmentData() {
         AppointmentDAO dao = new AppointmentDAO();
         AppointmentDataState.setAllAppointments(dao.findAll());
     }
 
+    /**
+     * Calls appropriate functions to set respective table data.
+     */
     private void setTableData() {
         setCustomersTable();
         setContactsTable();
@@ -119,6 +137,9 @@ public class DashboardController {
         setAppointmentsMonthTable();
     }
 
+    /**
+     * Sets the values for each column in the <code>customersTable</code>.
+     */
     private void setCustomersTable() {
         customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -129,13 +150,18 @@ public class DashboardController {
         customersTable.setItems(CustomerDataState.getAllCustomers());
     }
 
+    /**
+     * Sets the values for each column in the <code>contactsTable</code>.
+     */
     private void setContactsTable() {
         contactId.setCellValueFactory(new PropertyValueFactory<>("id"));
         contactName.setCellValueFactory(new PropertyValueFactory<>("name"));
         email.setCellValueFactory(new PropertyValueFactory<>("email"));
         contactsTable.setItems(ContactDataState.getAllContacts());
     }
-
+    /**
+     * Sets the values for each column in the <code>allAppointments</code>.
+     */
     private void setAppointmentsAllTable () {
         allAppointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         allAppointmentsTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -150,7 +176,9 @@ public class DashboardController {
         allAppointmentsCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         allAppointments.setItems(AppointmentDataState.getAllAppointments());
     }
-
+    /**
+     * Sets the values for each column in the <code>todayAppointments</code>.
+     */
     private void setAppointmentsTodayTable() {
         todayAppointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         todayAppointmentsTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -165,7 +193,9 @@ public class DashboardController {
         todayAppointmentsCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         todayAppointments.setItems(AppointmentDataState.getTodayAppointments());
     }
-
+    /**
+     * Sets the values for each column in the <code>weekAppointments</code>.
+     */
     private void setAppointmentsWeekTable() {
         weekAppointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         weekAppointmentsTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -180,7 +210,9 @@ public class DashboardController {
         weekAppointmentsCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         weekAppointments.setItems(AppointmentDataState.getThisWeekAppointments());
     }
-
+    /**
+     * Sets the values for each column in the <code>monthAppointments</code>.
+     */
     private void setAppointmentsMonthTable() {
         monthAppointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         monthAppointmentsTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -207,6 +239,11 @@ public class DashboardController {
         alert.show();
     }
 
+    /**
+     * Utility method for changing scenes.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void changeScene(ActionEvent event) throws IOException {
         if(event.getSource().equals(appointmentsButton)) {
@@ -226,6 +263,12 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleEditAppointmentAll(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonAll)) {
@@ -243,6 +286,13 @@ public class DashboardController {
             changeToAppointmentScene(allAppointments);
         }
     }
+
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleEditAppointmentToday(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonToday)) {
@@ -260,7 +310,12 @@ public class DashboardController {
             changeToAppointmentScene(todayAppointments);
         }
     }
-
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleEditAppointmentWeek(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonWeek)) {
@@ -278,7 +333,12 @@ public class DashboardController {
             changeToAppointmentScene(weekAppointments);
         }
     }
-
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleEditAppointmentMonth(ActionEvent event) throws IOException {
         if(event.getSource().equals(addAppointmentButtonMonth)) {
@@ -296,6 +356,13 @@ public class DashboardController {
             changeToAppointmentScene(monthAppointments);
         }
     }
+
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleContactCRUD(ActionEvent event) throws IOException {
         if(event.getSource().equals(addContact)) {
@@ -313,7 +380,12 @@ public class DashboardController {
             changeToContactScene();
         }
     }
-
+    /**
+     * Utility method for changing scenes when corresponding add, edit or delete button is clicked.
+     * Sets the FormType, as well changes the scene to the appropriate scene.
+     * @param event Passed by the ActionEvent which calls this method.
+     * @throws IOException If the Scene cannot be loaded, throws an IOException.
+     */
     @FXML
     private void handleCustomerCRUD(ActionEvent event) throws IOException {
         if(event.getSource().equals(addCustomer)) {
@@ -332,6 +404,11 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Checks that a Valid selection has been chosen.
+     * @param table The table whose selection is being validated.
+     * @return Returns false if nothing is selected, true otherwise.
+     */
     private boolean isValidSelection(TableView table) {
         int index = table.getSelectionModel().getSelectedIndex();
         if(index < 0) {
@@ -341,18 +418,29 @@ public class DashboardController {
         return true;
     }
 
+    /**
+     * Utility method for setting appropriate data and changing scenes.
+     * @param table The table which corresponds with the selected item.
+     * @throws IOException Throws IOException if there is an error while loading the fxml file.
+     */
     private void changeToAppointmentScene(TableView<Appointment> table) throws IOException {
         AppointmentDataState.setSelectedAppointment(table.getSelectionModel().getSelectedItem());
         Pane pane = (Pane) SceneChanger.changeScene(SceneNames.APPOINTMENT);
         SceneChanger.addChildScene(SceneNames.APPOINTMENT_FORM, pane);
     }
-
+    /**
+     * Utility method for setting appropriate data and changing scenes.
+     * @throws IOException Throws IOException if there is an error while loading the fxml file.
+     */
     private void changeToCustomerScene() throws IOException {
         CustomerDataState.setSelectedCustomer(customersTable.getSelectionModel().getSelectedItem());
         Pane pane = (Pane) SceneChanger.changeScene(SceneNames.CUSTOMERS);
         SceneChanger.addChildScene(SceneNames.CUSTOMER_FORM, pane);
     }
-
+    /**
+     * Utility method for setting appropriate data and changing scenes.
+     * @throws IOException Throws IOException if there is an error while loading the fxml file.
+     */
     private void changeToContactScene() throws IOException {
         ContactDataState.setSelectedContact(contactsTable.getSelectionModel().getSelectedItem());
         Pane pane = (Pane) SceneChanger.changeScene(SceneNames.CONTACTS);
