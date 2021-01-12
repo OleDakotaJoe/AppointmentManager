@@ -8,13 +8,13 @@ import me.stevensheaves.view.controllers.utils.SceneChanger;
 
 import java.util.Locale;
 
+/**
+ * The entry point of the application.
+ */
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        // TODO: 12/4/2020 remove the below comment 
-       // Locale.setDefault(new Locale("fr"));
-        //Locale.setDefault( new Locale.Builder().setLocale(Locale.UK).setLanguage("fr").st.build());
         SceneChanger.showPrimary(primaryStage);
     }
 

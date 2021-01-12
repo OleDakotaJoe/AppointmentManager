@@ -12,11 +12,19 @@ import me.stevensheaves.data.utils.Report;
 
 import java.io.IOException;
 
+/**
+ * This utility class is used for handling all scene changes.
+ */
 public class SceneChanger {
     private static Stage primaryStage;
     private final static String BASE_PATH= "/me/stevensheaves/view/controllers/";
     private static final String systemLanguage = LocationData.getSystemLanguage();
 
+    /**
+     * Loads the primary stage.
+     * @param primaryStage This stage is passed in by the Main method which calls it by default.
+     * @throws IOException Throws an IOException if there was an exception when loading the fxml file.
+     */
     public static void showPrimary(Stage primaryStage) throws IOException {
         SceneChanger.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(SceneChanger.class.getResource(BASE_PATH +  "mainscreen/mainscreen.fxml"));
@@ -25,9 +33,16 @@ public class SceneChanger {
         primaryStage.show();
     }
 
-    public static Parent changeScene(SceneNames sceneNames) throws IOException {
+    /**
+     * Handles the changing of scenes.
+     * Uses a switch method and the <code>SceneNames</code> enum as its' switch argument.
+     * @param sceneName The name of the scene to be added: this enum is designed to allow cleaner code by using a switch statement, instead of multiple <code>if</code> statements.
+     * @return Returns the <code>Parent</code> of the scene it is creating, so that further processing may be done on the it, when necessary.
+     * @throws IOException Throws an IOException if there was an exception when loading the fxml file.
+     */
+    public static Parent changeScene(SceneNames sceneName) throws IOException {
         Parent pane = null;
-        switch (sceneNames) {
+        switch (sceneName) {
             case LOGIN:
                 String title;
                 if(systemLanguage == "fr") {
@@ -66,6 +81,12 @@ public class SceneChanger {
         return pane;
     }
 
+    /**
+     * Adds a child scene to the Pane that is passed to it.
+     * @param sceneName The name of the scene to be added: this enum is designed to allow cleaner code by using a switch statement, instead of multiple <code>if</code> statements.
+     * @param currentPane The Pane to add the Scene to.
+     * @throws IOException Throws an IOException if there was an exception when loading the fxml file.
+     */
     public static void addChildScene(SceneNames sceneName, Pane currentPane) throws IOException {
         switch(sceneName) {
             case APPOINTMENT_FORM:
@@ -83,6 +104,12 @@ public class SceneChanger {
         }
     }
 
+    /**
+     * Adds a child scene to the Pane that is passed to it.
+     * @param reportType The name of the report to be added: this enum is designed to allow cleaner code by using a switch statement, instead of multiple <code>if</code> statements.
+     * @param currentPane The Pane to add the Scene to.
+     * @throws IOException Throws an IOException if there was an exception when loading the fxml file.
+     */
     public static void addChildScene(Report.ReportType reportType, Pane currentPane) throws IOException {
         switch(reportType) {
             case APPOINTMENT_BY_CUSTOMER:

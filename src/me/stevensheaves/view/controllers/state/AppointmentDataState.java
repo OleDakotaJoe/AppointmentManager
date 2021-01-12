@@ -10,6 +10,10 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.function.Predicate;
 
+
+/**
+ * This class is intended for holding state data as related to the appointment.fxml and apppointmentform.fxml views.
+ */
 public class AppointmentDataState {
     private static AppointmentDataState.FormType currentFormType;
     private static final ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -75,30 +79,45 @@ public class AppointmentDataState {
     }
 
     /**
-     * Gets the filteredAppointmentList
-     * @return
+     * Getter for the filteredAppointmentList
+     * @return Returns the <code>filteredAppointmentList</code>
      */
     public static FilteredList<Appointment> getFilteredAppointmentList() {
         return filteredAppointmentList;
     }
 
-    // TODO: 1/10/2021 finish javadocs 
+    /**
+     * Getter for the todayAppointments
+     * @return Returns the <code>todayAppointments</code>
+     */
     public static ObservableList<Appointment> getTodayAppointments() {
         return todayAppointments;
     }
-
+    /**
+     * Getter for the thisWeekAppointments
+     * @return Returns the <code>thisWeekAppointments</code>
+     */
     public static ObservableList<Appointment> getThisWeekAppointments() {
         return thisWeekAppointments;
     }
-
+    /**
+     * Getter for the thisMonthAppointments
+     * @return Returns the <code>thisMonthAppointments</code>
+     */
     public static ObservableList<Appointment> getThisMonthAppointments() {
         return thisMonthAppointments;
     }
-
+    /**
+     * Getter for the pastAppointments
+     * @return Returns the <code>pastAppointments</code>
+     */
     public static ObservableList<Appointment> getPastAppointments() {
         return pastAppointments;
     }
 
+    /**
+     * This <code>enum</code> is for distinguishing between what kind of form should be loaded.
+     */
     public enum FormType {
         ADD,
         EDIT,
