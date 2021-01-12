@@ -53,5 +53,5 @@ rectifying that issue before removing that customer from the database.
 #### Lambda Expressions: 
 In the ```AppointmentDataState``` class, lambda expressions are used in the ```setAllAppointments()```method.
 In the ```AppointementController``` class, lambda expressions are used in the ```handleAppointmentListChange()``` method.
-
+In ```CustomerFormController```, lambda expressions are used in the ```initializeLocationComboBoxes()```
  

@@ -50,6 +50,7 @@ public class CustomersFormController {
 
     /**
      * Fetches and sets Data for the country and division ComboBoxes
+     * Lambda Expressions are used here for adding the change listener, because of the clarity of the code.
      */
     private void initializeLocationComboBoxes() {
         CountryDAO countryDAO = new CountryDAO();
