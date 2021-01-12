@@ -32,7 +32,7 @@ public abstract class DataAccessObject<T> {
 
     /**
      * Abstract method for deleting a row from database.
-     * @param id
+     * @param id the id of the object to be deleted
      */
     public abstract void delete(int id);
 }

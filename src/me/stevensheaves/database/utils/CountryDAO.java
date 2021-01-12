@@ -57,8 +57,6 @@ public class CountryDAO extends DataAccessObject<Country> {
 
     /**
      * Dummy Method
-     * @param id
-     * @return
      */
     @Override
     public Country find(int id) {
@@ -66,8 +64,6 @@ public class CountryDAO extends DataAccessObject<Country> {
     }
     /**
      * Dummy Method
-     * @param dto
-     * @return
      */
     @Override
     public boolean update(Country dto) {
@@ -75,8 +71,6 @@ public class CountryDAO extends DataAccessObject<Country> {
     }
     /**
      * Dummy Method
-     * @param dto
-     * @return
      */
     @Override
     public boolean create(Country dto) {
@@ -84,7 +78,6 @@ public class CountryDAO extends DataAccessObject<Country> {
     }
     /**
      * Dummy Method
-     * @param id
      */
     @Override
     public void delete(int id) {

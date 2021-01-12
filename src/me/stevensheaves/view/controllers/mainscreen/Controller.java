@@ -26,7 +26,7 @@ public class Controller {
 
     /**
      * Utility method for changing scene based on which button is clicked.
-     * Calls the <code>changeScene()</code?> method on the <code>Main</code> class.
+     * Calls the <code>changeScene()</code> method on the <code>Main</code> class.
      * @param event
      * Passed into method by the button which calls it. Used to determine which button was pressed, and which scene to render.
      */

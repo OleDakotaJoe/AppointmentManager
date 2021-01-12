@@ -151,9 +151,10 @@ public class CustomerDAO extends DataAccessObject<Customer>{
 
         return didExecute;
     }
+
     /**
-     * Finds and returns the last updated row in the appointment table.
-     * @return Returns an <code>Customer</code> data transfer object, representing the last row created in the "customers" table.
+     * Deletes a Customer from the database
+     * @param id the id of the object to be deleted
      */
     @Override
     public void delete(int id) {
