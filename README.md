@@ -1,29 +1,29 @@
-# Appointment Manager 
-####Purpose
+# Appointment Manager #
+####Purpose####
  This application was built as a submission for Task 1 in WGU's C195: Software II course. <br>
  It has a connection to a MySQL database, as well a GUI front end, written in JavaFX which is used <br>
  for tracking appointments in a simulated business situation, where contacts within a company and <br>
  customers of that company meet and discuss business. 
  
- ###Copyright Information. 
+ ###Copyright Information. ###
  Author: Steven Sheaves <br>
  Email: ssheave@wgu.edu <br>
  Application Version: 1.0.01 <br>
  Date: 1/12/2021<br>
 
-###IDE and Software Information
+###IDE and Software Information###
 IntelliJ IDEA Community Edition Version 2020.2.4<br>
 Amazon Corretto JDK 11.0.7_10<br>
 JavaFX-SDK-11.0.2 <br>
 
-###To run the program
+###To run the program###git ad
 **Clone** this repo from [GitHub](https://github.com/OleDakotaJoe/AppointmentManager/)
 Ensure that a valid JDK version is included as an external library as well as well as a 
 valid version of JavaFX is included as an external library. <br>
 **Navigate** to the ```Main``` class.
 **Right Click** on ```Main``` and click ```Run Main.main()```
 
-###To interact with the program
+###To interact with the program###
 When the program launches, you land on and unassuming login page. <br>
 Click login, and you may login with the username: test, and password: test. <br>
 You will then see a popup which will display an appointment if you have one within the next 15 minutes, OR a dialog
@@ -44,15 +44,14 @@ In the Appointments tab, you may filter the results in the ```TableView``` by cl
 any of the corresponding radio buttons above it. <br>
 If at any point, you get stuck, simply click onto the "Help" button, and a knight in shining armor will come to your rescue.
 
-##Additional Report as indicated by part A.3.f of the requirements
+##Additional Report as indicated by part A.3.f of the requirements##
 The additional report provided is a schedule for all customers in the organization. 
 This is included so that if any user of the program tries to delete a customer, and they currently have items in their schedule, 
 they will be able to look up a list of appointments, so that they may take appropriate measures in 
 rectifying that issue before removing that customer from the database. 
-##Other Requirements to note
-####Lambda Expressions: 
+##Other Requirements to note##
+####Lambda Expressions: ####
 In the ```AppointmentDataState``` class, lambda expressions are used in the ```setAllAppointments()```method.<br>
 
-####The 
 
  
