@@ -3,11 +3,9 @@ package me.stevensheaves.view.controllers.appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import me.stevensheaves.custom.controls.TextFieldLimited;
 import me.stevensheaves.custom.utils.TimeUtilities;
 import me.stevensheaves.data.model.*;
@@ -18,9 +16,7 @@ import me.stevensheaves.view.controllers.state.CustomerDataState;
 import me.stevensheaves.view.controllers.utils.SceneChanger;
 import me.stevensheaves.view.controllers.utils.SceneNames;
 
-import javax.xml.transform.Result;
 import java.io.IOException;
-import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -339,11 +335,44 @@ public class AppointmentFormController {
 
     /**
      * This method is used for verifying whether or not a particular appointment overlaps with another appointment, or falls outside business hours.
-     * In order to check whether or not the appointment falls outside business hours, the <code>TimeUtilities</code> class method
-     * <code>checkForOverlap()</code> is used, passing in business hours as the start and end times to be checked against
+
      * @return Returns false if the appointment is invalid.
      */
     private boolean isAppointmentTimeValid() {
+        if(doesAppointmentOverlapWithExisting()) return false;
+        if(isAppointmentOutsideBusinessHours()) return false;
+        return true;
+    }
+
+    /**
+     * Checks if Customer's new Appointment overlaps with an existing Appointment.
+     * @return Returns true if Customer's existing appointments overlap with new appointment, false if not.
+     */
+    private boolean doesAppointmentOverlapWithExisting() {
+        ZonedDateTime startTime = getStartDateTime();
+        ZonedDateTime endTime = getEndDateTime();
+        AppointmentDAO dao = new AppointmentDAO();
+        ObservableList<Appointment> appointmentsByCx = dao.findByCustomerId(customerName.getSelectionModel().getSelectedItem().getCustomerId());
+        for (Appointment appointment : appointmentsByCx) {
+            //checks all appointments for an overlap.
+            if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), startTime, endTime,false)
+                    && (AppointmentDataState.getCurrentFormType() == AppointmentDataState.FormType.ADD || (appointment.getAppointmentId() != Integer.parseInt(appointmentId.getText()))))
+            {
+                //if overlap is found, shows appointment overlap, then
+                showAppointmentOverlapAlert(appointment);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether or not a customer's new appointment falls outside business hours.
+     * In order to check whether or not the appointment falls outside business hours, the <code>TimeUtilities</code> class method
+     * <code>checkForOverlap()</code> is used, passing in business hours as the start and end times to be checked against
+     * @return Returns true if appointment falls outside business hours.
+     */
+    private boolean isAppointmentOutsideBusinessHours() {
         ZonedDateTime startTime = getStartDateTime();
         ZonedDateTime endTime = getEndDateTime();
         ZonedDateTime startOfBusiness = LocalDateTime.of(startDate.getValue(), LocalTime.parse("08:00") ).atZone(ZoneId.of("America/New_York"));
@@ -351,30 +380,20 @@ public class AppointmentFormController {
         ZonedDateTime midnightPM = LocalDateTime.of(startDate.getValue(),LocalTime.parse("23:59") ).atZone(ZoneId.of("America/New_York"));
         ZonedDateTime midnightAM = LocalDateTime.of(startDate.getValue(),LocalTime.parse("00:00") ).atZone(ZoneId.of("America/New_York"));
 
-
-        AppointmentDAO dao = new AppointmentDAO();
-        ObservableList<Appointment> appointmentsByCx = dao.findByCustomerId(customerName.getSelectionModel().getSelectedItem().getCustomerId());
-        for (Appointment appointment : appointmentsByCx) {
-            //checks all appointments for an overlap.
-            if (new TimeUtilities().checkForOverlap(appointment.getStartDateTime(), appointment.getEndDateTime(), startTime, endTime,false)
-                && (AppointmentDataState.getCurrentFormType() == AppointmentDataState.FormType.ADD || (appointment.getAppointmentId() != Integer.parseInt(appointmentId.getText()))))
-            {
-                //if overlap is found, shows appointment overlap, then
-                showAppointmentOverlapAlert(appointment);
-                return false;
-            } else if (new TimeUtilities().checkForOverlap(midnightAM.withZoneSameInstant(ZoneId.of("UTC")),startOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")),true)
-                    || new TimeUtilities().checkForOverlap(closeOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),midnightPM.withZoneSameInstant(ZoneId.of("UTC")),startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")), true)
-                    || getEndDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
-                    || getEndDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
-                    || getStartDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
-                    || getStartDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
-            ){
-                //If appointment overlaps with business hours or falls on a weekend, then
-                showAppointmentOutsideBusinessHoursAlert();
-                return false;
-            }
+        if (new TimeUtilities().checkForOverlap(midnightAM.withZoneSameInstant(ZoneId.of("UTC")),startOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),
+                startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")),true)
+                || new TimeUtilities().checkForOverlap(closeOfBusiness.withZoneSameInstant(ZoneId.of("UTC")),midnightPM.withZoneSameInstant(ZoneId.of("UTC")),
+                startTime.withZoneSameInstant(ZoneId.of("UTC")), endTime.withZoneSameInstant(ZoneId.of("UTC")), true)
+                || getEndDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
+                || getEndDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
+                || getStartDateTime().getDayOfWeek() == DayOfWeek.SUNDAY
+                || getStartDateTime().getDayOfWeek() == DayOfWeek.SATURDAY
+        ){
+            //If appointment overlaps with business hours or falls on a weekend, then
+            showAppointmentOutsideBusinessHoursAlert();
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

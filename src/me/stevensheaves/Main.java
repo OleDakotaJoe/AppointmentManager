@@ -8,13 +8,16 @@ import me.stevensheaves.view.controllers.utils.SceneChanger;
 
 import java.util.Locale;
 
+
 /**
  * The entry point of the application.
  */
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // Locale.setDefault(new Locale("fr"));
         SceneChanger.showPrimary(primaryStage);
     }
 

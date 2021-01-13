@@ -66,12 +66,12 @@ public class LoginController {
             label = "Logging in from: ";
             usernameText = "Username";
             passwordText = "Password";
+            warningLabelText = "Your username or password was incorrect.";
         }
         mainHeading.setText(headingLabel);
         locationLabel.setText(label + systemCountry);
         userName.setPromptText(usernameText);
         password.setPromptText(passwordText);
-        warningLabelText ="Your username or password was incorrect.";
     }
 
     /**

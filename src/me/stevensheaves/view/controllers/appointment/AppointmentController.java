@@ -234,6 +234,7 @@ public class AppointmentController {
         alert.setTitle("Delete Appointment");
         alert.setHeaderText("Are you sure you want to delete this appointment?");
         alert.setContentText("This action cannot be reversed. Only proceed if you are absolutely sure you want to delete the appointment. \n" +
+                "\t\tID:"+ appointment.getAppointmentId()+"\n" +
                 " \t\tTitle: " + appointment.getTitle()+"\n" +
                 "\t\tType: " + appointment.getType());
         alert.showAndWait();
